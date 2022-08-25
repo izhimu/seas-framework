@@ -1,0 +1,17 @@
+package com.izhimu.seas.base.exception;
+
+/**
+ * 加密异常
+ *
+ * @author haoran
+ * @version v1.0
+ */
+public class EncryptException extends RuntimeException {
+
+    public EncryptException() {
+    }
+
+    public EncryptException(String message) {
+        super(message);
+    }
+}

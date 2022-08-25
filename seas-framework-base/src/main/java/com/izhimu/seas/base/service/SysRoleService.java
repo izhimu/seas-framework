@@ -1,0 +1,47 @@
+package com.izhimu.seas.base.service;
+
+import com.izhimu.seas.base.dto.SysAuthMenuDTO;
+import com.izhimu.seas.base.dto.SysUserRoleDTO;
+import com.izhimu.seas.base.entity.SysRole;
+import com.izhimu.seas.mybatis.service.IBaseService;
+
+import java.util.List;
+
+/**
+ * 用户角色服务层接口
+ *
+ * @author haoran
+ * @version v1.0
+ */
+public interface SysRoleService extends IBaseService<SysRole> {
+
+    /**
+     * 更新角色菜单关联
+     *
+     * @param dto SysRoleMenuDTO
+     */
+    void updateRoleMenu(SysAuthMenuDTO dto);
+
+    /**
+     * 获取角色菜单关联
+     *
+     * @param roleId 角色ID
+     * @return List<String>
+     */
+    List<String> getRoleMenu(Long roleId);
+
+    /**
+     * 更新用户角色关联
+     *
+     * @param dto SysUserRoleDTO
+     */
+    void updateUserRole(SysUserRoleDTO dto);
+
+    /**
+     * 获取用户角色关联
+     *
+     * @param roleId 角色ID
+     * @return List<String>
+     */
+    List<String> getUserRole(Long roleId);
+}

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6a2bc2b5-7c4f-4b26-9e3e-087780930d16" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/SeasBaseServerApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/config/LoginConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/config/MinioConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/constant/SecurityConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SecurityController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysAccountController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysAccountLogController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysDictController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysFileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysRoleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/controller/SysUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/LoginDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/SysAccountDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/SysAuthMenuDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/SysFileDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/SysUserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/dto/SysUserRoleDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/EncryptKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysAccount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysAccountLog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysAuthMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysAuthOrg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysDevice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysDict.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysOrg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysUserLocation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysUserOrg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/SysUserRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/enums/DeviceType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/enums/EncryptType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/exception/EncryptException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/exception/LoginException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/exception/PwdErrorException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/exception/VerifyCodeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/filter/CustomAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/handler/CustomAccessDeniedHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/handler/CustomLoginFailureHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/handler/CustomLoginSuccessHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/handler/CustomLogoutSuccessHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/handler/CustomNoLoginHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/holder/LoginHolder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysAccountLogMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysAccountMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysAuthMenuMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysAuthOrgMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysDeviceMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysDictMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysFileMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysMenuMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysOrgMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysRoleMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysUserLocationMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysUserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysUserOrgMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/mapper/SysUserRoleMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysAccountLogParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysAccountParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysDictParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysFileParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysMenuParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysRoleParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/param/SysUserParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/provider/CustomAuthenticationProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/resolver/DiverseHttpSessionIdResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/EncryptService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SecurityService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysAccountLogService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysAccountService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysAuthMenuService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysAuthOrgService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysDeviceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysDictService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysFileService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysMenuService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysOrgService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysRoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysUserLocationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysUserOrgService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysUserRoleService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/SysUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/RedisRsaEncryptServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SecurityServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysAccountLogServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysAccountServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysAuthMenuServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysAuthOrgServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysDeviceServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysDictServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysFileServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysMenuServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysOrgServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysRoleServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysUserLocationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysUserOrgServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysUserRoleServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/service/impl/SysUserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/utils/IpUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/LoginVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysAccountLogVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysAccountVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysDictVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysFileVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysMenuVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysRoleVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/java/com/izhimu/seas/base/vo/SysUserVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-base/src/main/resources/banner.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/src/main/java/com/izhimu/seas/cache/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/src/main/java/com/izhimu/seas/cache/helper/RedisHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/src/main/java/com/izhimu/seas/cache/serializer/KryoRedisSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/src/main/java/com/izhimu/seas/cache/service/RedisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-cache/src/main/java/com/izhimu/seas/cache/utils/KryoUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/utils/JsonUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/Result.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/ResultCode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/config/JsonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/converter/DateConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/entity/Select.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/handler/CoreExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-core/src/main/java/com/izhimu/seas/core/web/handler/CoreResponseHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-dependencies/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/annotation/OrderBy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/annotation/Search.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/config/MybatisPlusConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/entity/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/entity/Pagination.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/enums/SearchType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/handler/MybatisPlusMetaObjectHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/service/IBaseService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/service/impl/BaseServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/seas-framework-mybatis/src/main/java/com/izhimu/seas/mybatis/wrapper/ParamWrapper.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2DpvpRf8KeZXaAWphdonNwjnSn3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "temurin-17",
+    "last_opened_file_path": "E:/code/java/seas-framework/seas-framework-base/src/main/resources",
+    "project.structure.last.edited": "模块",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "fileTemplates",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\code\java\seas-framework\seas-framework-base\src\main\resources" />
+      <recent name="E:\code\java\seas-framework\seas-framework-base\src\main\java\com\izhimu\seas\base\handler" />
+      <recent name="E:\code\java\seas-framework\seas-framework-base\src\main\java\com\izhimu\seas\base" />
+      <recent name="E:\code\java\seas-framework\seas-framework-security\src\main\java\com\izhimu\seas\security" />
+      <recent name="E:\code\java\seas-framework\seas-framework-mybatis\src\main\java\com\izhimu\seas\mybatis" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.izhimu.seas.base" />
+      <recent name="com.izhimu.seas.base.service.impl" />
+      <recent name="com.izhimu.seas.base.exception" />
+      <recent name="com.izhimu.seas.base.entity" />
+      <recent name="com.izhimu.seas.base.config" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="SeasBaseServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" />
+      <module name="seas-framework-base" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.izhimu.seas.base.SeasBaseServerApplication" />
+      <option name="VM_PARAMETERS" value="--add-opens java.base/java.lang=ALL-UNNAMED" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.izhimu.seas.base.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SeasBaseServerApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="6a2bc2b5-7c4f-4b26-9e3e-087780930d16" name="变更" comment="" />
+      <created>1661409024162</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1661409024162</updated>
+      <workItem from="1661409025370" duration="15874000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
