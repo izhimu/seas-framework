@@ -32,12 +32,12 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDictMapper, SysDict> 
         config.setIdKey("key");
         config.setNameKey("label");
         return TreeUtil.build(list, 0L, config,
-                        (treeNode, tree) -> {
-                            tree.setId(treeNode.getId());
-                            tree.setParentId(treeNode.getParentId());
-                            tree.setName(treeNode.getDictName());
-                            tree.setWeight(treeNode.getSort());
-                        });
+                (treeNode, tree) -> {
+                    tree.setId(treeNode.getId());
+                    tree.setParentId(treeNode.getParentId());
+                    tree.setName(treeNode.getDictName());
+                    tree.setWeight(treeNode.getSort());
+                });
     }
 
     @Override

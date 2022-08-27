@@ -56,6 +56,11 @@
                 <artifactId>seas-framework-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-storage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.baomidou</groupId>

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginHolder {
 
-    @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
     private static final ThreadLocal<LoginDTO> LOGIN = new ThreadLocal<>();
 
     public void set(LoginDTO dto) {

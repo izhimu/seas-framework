@@ -8,9 +8,8 @@ import java.util.function.Supplier;
 /**
  * 分页对象
  *
- * @author Haoran
+ * @author haoran
  * @version v1.0
- * @date 2022/3/9 9:20
  */
 public class Pagination<T> extends Page<T> {
 

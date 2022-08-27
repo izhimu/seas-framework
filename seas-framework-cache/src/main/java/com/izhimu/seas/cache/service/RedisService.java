@@ -152,7 +152,7 @@ public class RedisService {
      */
     public boolean del(String... key) {
         try {
-            if (key == null || key.length <= 0) {
+            if (key == null || key.length == 0) {
                 return false;
             }
             Optional<Boolean> optional;
