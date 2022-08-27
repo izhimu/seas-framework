@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.entity;
+package com.izhimu.seas.storage.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

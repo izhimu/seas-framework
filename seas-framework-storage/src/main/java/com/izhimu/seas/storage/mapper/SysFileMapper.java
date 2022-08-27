@@ -1,7 +1,7 @@
-package com.izhimu.seas.base.mapper;
+package com.izhimu.seas.storage.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.izhimu.seas.base.entity.SysFile;
+import com.izhimu.seas.storage.entity.SysFile;
 
 /**
  * 文件信息映射

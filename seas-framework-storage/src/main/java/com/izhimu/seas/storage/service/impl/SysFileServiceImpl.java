@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.service.impl;
+package com.izhimu.seas.storage.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
@@ -7,13 +7,13 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.extra.cglib.CglibUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
-import com.izhimu.seas.base.config.MinioConfig;
-import com.izhimu.seas.base.dto.SysFileDTO;
-import com.izhimu.seas.base.entity.SysFile;
-import com.izhimu.seas.base.mapper.SysFileMapper;
-import com.izhimu.seas.base.service.SysFileService;
-import com.izhimu.seas.base.vo.SysFileVO;
 import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.storage.config.MinioConfig;
+import com.izhimu.seas.storage.dto.SysFileDTO;
+import com.izhimu.seas.storage.entity.SysFile;
+import com.izhimu.seas.storage.mapper.SysFileMapper;
+import com.izhimu.seas.storage.service.SysFileService;
+import com.izhimu.seas.storage.vo.SysFileVO;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
 import io.minio.MinioClient;

@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.dto;
+package com.izhimu.seas.storage.dto;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.param;
+package com.izhimu.seas.storage.param;
 
 import com.izhimu.seas.mybatis.annotation.OrderBy;
 import lombok.Data;

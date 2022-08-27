@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.vo;
+package com.izhimu.seas.storage.vo;
 
 import lombok.Data;
 

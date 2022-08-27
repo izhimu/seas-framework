@@ -1,9 +1,9 @@
-package com.izhimu.seas.base.controller;
+package com.izhimu.seas.storage.controller;
 
 import cn.hutool.core.util.IdUtil;
-import com.izhimu.seas.base.dto.SysFileDTO;
-import com.izhimu.seas.base.service.SysFileService;
-import com.izhimu.seas.base.vo.SysFileVO;
+import com.izhimu.seas.storage.dto.SysFileDTO;
+import com.izhimu.seas.storage.service.SysFileService;
+import com.izhimu.seas.storage.vo.SysFileVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -74,8 +75,11 @@ public class SysFileController {
      * @param id ID
      */
     @GetMapping("/{id}")
-    public void download(@PathVariable Long id, HttpServletResponse response) {
+    public void download(@PathVariable Long id, HttpServletResponse response) throws FileNotFoundException {
         SysFileVO sysFileVO = service.getFile(id);
+        if (Objects.isNull(sysFileVO)){
+            throw new FileNotFoundException();
+        }
         String fileName = sysFileVO.getFileName().concat(".").concat(sysFileVO.getFileSuffix());
         response.reset();
         response.setContentType(sysFileVO.getContentType());

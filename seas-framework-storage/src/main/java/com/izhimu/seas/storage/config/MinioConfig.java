@@ -1,4 +1,4 @@
-package com.izhimu.seas.base.config;
+package com.izhimu.seas.storage.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,9 +1,10 @@
-package com.izhimu.seas.base.service;
+package com.izhimu.seas.storage.service;
 
-import com.izhimu.seas.base.dto.SysFileDTO;
-import com.izhimu.seas.base.entity.SysFile;
-import com.izhimu.seas.base.vo.SysFileVO;
 import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.storage.dto.SysFileDTO;
+import com.izhimu.seas.storage.entity.SysFile;
+import com.izhimu.seas.storage.vo.SysFileVO;
+
 import java.io.InputStream;
 import java.util.List;
 

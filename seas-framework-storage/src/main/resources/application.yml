@@ -1,0 +1,43 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 10GB
+  redis:
+    host: 192.168.8.16
+    port: 6379
+    database: 0
+  datasource:
+    name: dataSource
+    url: jdbc:postgresql://192.168.8.16:5432/seas_db
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      logic-delete-field: LOGIC_DEL
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+storage:
+  minio:
+    end-point: http://192.168.8.16:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket: seas
+    proxy-host: http://127.0.0.1:8080
+
