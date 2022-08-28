@@ -4,19 +4,23 @@ import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.izhimu.seas.base.dto.SysAccountDTO;
 import com.izhimu.seas.base.dto.SysUserDTO;
-import com.izhimu.seas.base.entity.EncryptKey;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.entity.SysUser;
-import com.izhimu.seas.base.entity.User;
 import com.izhimu.seas.base.mapper.SysUserMapper;
-import com.izhimu.seas.base.service.EncryptService;
 import com.izhimu.seas.base.service.SysAccountService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.base.vo.SysUserVO;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.security.entity.EncryptKey;
+import com.izhimu.seas.security.entity.User;
+import com.izhimu.seas.security.holder.LoginHolder;
+import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.security.service.SecurityService;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -36,7 +41,7 @@ import java.util.function.Consumer;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService, SecurityService {
 
     @Resource
     private SysAccountService accountService;
@@ -46,6 +51,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Resource
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Resource
+    private LoginHolder loginHolder;
 
     @Override
     public SysUserVO get(Long id) {
@@ -163,5 +171,27 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     public User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<SysAccount> sysAccount = accountService.lambdaQuery()
+                .eq(SysAccount::getUserAccount, username)
+                .oneOpt();
+        if (sysAccount.isEmpty()) {
+            return null;
+        }
+        SysUserVO sysUserVO = this.get(sysAccount.get().getUserId());
+        SysAccount account = sysAccount.get();
+        User user = new User();
+        user.setId(account.getUserId());
+        user.setUserAccount(account.getUserAccount());
+        user.setUserCertificate(account.getUserCertificate());
+        user.setLogicDel(account.getLogicDel());
+        user.setStatus(account.getStatus());
+        user.setTypeCode(account.getTypeCode());
+        user.setNickName(sysUserVO.getUserName());
+        user.setLogin(loginHolder.get(false));
+        return user;
     }
 }

@@ -1,24 +1,20 @@
-package com.izhimu.seas.base;
+package com.izhimu.seas.security;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Seas Base Server
  *
  * @author haoran
  */
-@EnableAsync
-@MapperScan({"com.izhimu.seas.*.mapper"})
 @ComponentScan(basePackages = {"com.izhimu.seas"})
 @SpringBootApplication
-public class SeasBaseServerApplication {
+public class SeasSecurityServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SeasBaseServerApplication.class, args);
+        SpringApplication.run(SeasSecurityServerApplication.class, args);
     }
 
 }

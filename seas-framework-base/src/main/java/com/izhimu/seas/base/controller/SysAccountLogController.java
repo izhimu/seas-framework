@@ -27,7 +27,7 @@ public class SysAccountLogController {
 
     @GetMapping("/page")
     public Pagination<SysAccountLogVO> page(Pagination<SysAccountLog> page, SysAccountLogParam param) {
-        return service.page(page, param, SysAccountLogVO::new);
+        return service.findPage(page, param);
     }
 
     @GetMapping("/{id}")

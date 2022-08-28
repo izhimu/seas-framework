@@ -7,7 +7,6 @@ import cn.hutool.extra.cglib.CglibUtil;
 import com.izhimu.seas.base.entity.SysAuthMenu;
 import com.izhimu.seas.base.entity.SysMenu;
 import com.izhimu.seas.base.entity.SysUserRole;
-import com.izhimu.seas.base.entity.User;
 import com.izhimu.seas.base.mapper.SysMenuMapper;
 import com.izhimu.seas.base.param.SysMenuParam;
 import com.izhimu.seas.base.service.SysAuthMenuService;
@@ -15,6 +14,7 @@ import com.izhimu.seas.base.service.SysMenuService;
 import com.izhimu.seas.base.service.SysUserRoleService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.vo.SysMenuVO;
+import com.izhimu.seas.security.entity.User;
 import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 

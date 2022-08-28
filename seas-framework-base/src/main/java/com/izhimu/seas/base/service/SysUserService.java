@@ -2,9 +2,9 @@ package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.dto.SysUserDTO;
 import com.izhimu.seas.base.entity.SysUser;
-import com.izhimu.seas.base.entity.User;
 import com.izhimu.seas.base.vo.SysUserVO;
 import com.izhimu.seas.core.web.entity.Select;
+import com.izhimu.seas.security.entity.User;
 import com.izhimu.seas.mybatis.service.IBaseService;
 
 import java.util.List;

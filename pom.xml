@@ -16,6 +16,7 @@
         <module>seas-framework-mybatis</module>
         <module>seas-framework-base</module>
         <module>seas-framework-storage</module>
+        <module>seas-framework-security</module>
     </modules>
 
     <properties>

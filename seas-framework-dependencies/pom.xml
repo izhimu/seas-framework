@@ -13,6 +13,9 @@
     <packaging>pom</packaging>
 
     <properties>
+        <!--↓ Vulnerabilities repair ↓-->
+        <postgresql.version>42.5.0</postgresql.version>
+        <!--↑ Vulnerabilities repair ↑-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,6 +31,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--↓ Vulnerabilities repair ↓-->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <!--↑ Vulnerabilities repair ↑-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -59,6 +69,11 @@
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-storage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-security</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

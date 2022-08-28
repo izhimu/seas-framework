@@ -28,7 +28,6 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
         if (metaObject.hasSetter(CREATE_TIME)) {
             this.strictInsertFill(metaObject, CREATE_TIME, LocalDateTime.class, LocalDateTime.now());
         }
-
         if (metaObject.hasSetter(CREATE_BY)) {
             this.strictInsertFill(metaObject, CREATE_BY, Long.class, 0L);
         }
