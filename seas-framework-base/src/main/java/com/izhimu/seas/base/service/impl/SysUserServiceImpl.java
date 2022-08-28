@@ -18,7 +18,7 @@ import com.izhimu.seas.security.entity.User;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.EncryptService;
 import com.izhimu.seas.security.service.SecurityService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.izhimu.seas.security.utils.SecurityUtil;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -170,7 +170,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Override
     public User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return SecurityUtil.contextUser();
     }
 
     @Override
