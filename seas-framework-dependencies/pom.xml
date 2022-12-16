@@ -19,12 +19,12 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>2.7.3</spring.boot.version>
-        <hutool.version>5.8.5</hutool.version>
+        <spring.boot.version>2.7.6</spring.boot.version>
+        <hutool.version>5.8.10</hutool.version>
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <kryo.version>5.3.0</kryo.version>
         <cglib.version>3.3.0</cglib.version>
-        <minio.version>8.4.3</minio.version>
+        <minio.version>8.4.6</minio.version>
         <compress.version>1.21</compress.version>
         <okhttp.version>4.10.0</okhttp.version>
     </properties>

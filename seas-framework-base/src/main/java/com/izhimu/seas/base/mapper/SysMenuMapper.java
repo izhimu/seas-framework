@@ -2,6 +2,7 @@ package com.izhimu.seas.base.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.izhimu.seas.base.entity.SysMenu;
+import org.springframework.stereotype.Repository;
 
 /**
  * 字典映射层
@@ -9,5 +10,6 @@ import com.izhimu.seas.base.entity.SysMenu;
  * @author haoran
  * @version v1.0
  */
+@Repository
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 }

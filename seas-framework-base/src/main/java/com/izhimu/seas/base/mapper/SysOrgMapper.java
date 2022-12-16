@@ -2,6 +2,7 @@ package com.izhimu.seas.base.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.izhimu.seas.base.entity.SysOrg;
+import org.springframework.stereotype.Repository;
 
 /**
  * 组织架构映射层
@@ -9,5 +10,6 @@ import com.izhimu.seas.base.entity.SysOrg;
  * @author haoran
  * @version v1.0
  */
+@Repository
 public interface SysOrgMapper extends BaseMapper<SysOrg> {
 }
