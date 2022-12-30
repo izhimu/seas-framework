@@ -14,13 +14,13 @@
 
     <properties>
         <!--↓ Vulnerabilities repair ↓-->
-        <postgresql.version>42.5.0</postgresql.version>
+        <postgresql.version>42.5.1</postgresql.version>
         <!--↑ Vulnerabilities repair ↑-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.7.6</spring.boot.version>
-        <hutool.version>5.8.10</hutool.version>
+        <hutool.version>5.8.11</hutool.version>
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <kryo.version>5.3.0</kryo.version>
         <cglib.version>3.3.0</cglib.version>

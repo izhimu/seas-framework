@@ -11,12 +11,8 @@
 
     <modules>
         <module>seas-framework-dependencies</module>
-        <module>seas-framework-core</module>
-        <module>seas-framework-cache</module>
-        <module>seas-framework-mybatis</module>
-        <module>seas-framework-base</module>
-        <module>seas-framework-storage</module>
-        <module>seas-framework-security</module>
+        <module>seas-framework-server</module>
+        <module>seas-framework-component</module>
     </modules>
 
     <properties>
