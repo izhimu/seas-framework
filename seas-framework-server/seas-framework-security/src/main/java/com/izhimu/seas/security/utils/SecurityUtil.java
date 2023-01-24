@@ -2,7 +2,10 @@ package com.izhimu.seas.security.utils;
 
 import com.izhimu.seas.security.entity.User;
 import lombok.experimental.UtilityClass;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Objects;
 
 /**
  * 安全工具
@@ -19,6 +22,14 @@ public class SecurityUtil {
      * @return User
      */
     public static User contextUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.isNull(authentication)) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if (Objects.isNull(principal)) {
+            return null;
+        }
+        return (User) principal;
     }
 }
