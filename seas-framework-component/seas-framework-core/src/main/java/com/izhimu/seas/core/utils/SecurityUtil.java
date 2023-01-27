@@ -1,6 +1,6 @@
-package com.izhimu.seas.security.utils;
+package com.izhimu.seas.core.utils;
 
-import com.izhimu.seas.security.entity.User;
+import com.izhimu.seas.core.entity.User;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

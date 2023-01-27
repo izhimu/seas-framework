@@ -2,7 +2,7 @@ package com.izhimu.seas.security.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.izhimu.seas.security.entity.User;
+import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;

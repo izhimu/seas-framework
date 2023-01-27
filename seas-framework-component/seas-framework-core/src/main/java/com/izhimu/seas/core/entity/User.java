@@ -1,6 +1,6 @@
-package com.izhimu.seas.security.entity;
+package com.izhimu.seas.core.entity;
 
-import com.izhimu.seas.security.dto.LoginDTO;
+import com.izhimu.seas.core.dto.LoginDTO;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,12 +62,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.userAccount;
+        return this.userCertificate;
     }
 
     @Override
     public String getUsername() {
-        return this.userCertificate;
+        return this.userAccount;
     }
 
     @Override

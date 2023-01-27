@@ -1,6 +1,7 @@
 package com.izhimu.seas.storage.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.storage.dto.SysFileDTO;
 import com.izhimu.seas.storage.service.SysFileService;
 import com.izhimu.seas.storage.vo.SysFileVO;
@@ -42,6 +43,7 @@ public class SysFileController {
      * @param id ID
      * @return 文件信息
      */
+    @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/{id}")
     public SysFileVO getInfo(@PathVariable Long id) {
         return service.getFile(id);
@@ -53,6 +55,7 @@ public class SysFileController {
      * @param bindId 绑定ID
      * @return 文件信息
      */
+    @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/bind/{bindId}")
     public List<SysFileVO> getInfos(@PathVariable Long bindId) {
         return service.getFiles(bindId);
@@ -64,6 +67,7 @@ public class SysFileController {
      * @param bindId 绑定ID
      * @return 文件信息
      */
+    @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/bind/compression/{bindId}")
     public SysFileVO getInfosToCompression(@PathVariable Long bindId) {
         return service.getFilesToCompression(bindId);
@@ -74,10 +78,11 @@ public class SysFileController {
      *
      * @param id ID
      */
+    @OperationLog(value = "文件服务-下载文件", enable = false)
     @GetMapping("/{id}")
     public void download(@PathVariable Long id, HttpServletResponse response) throws FileNotFoundException {
         SysFileVO sysFileVO = service.getFile(id);
-        if (Objects.isNull(sysFileVO)){
+        if (Objects.isNull(sysFileVO)) {
             throw new FileNotFoundException();
         }
         String fileName = sysFileVO.getFileName().concat(".").concat(sysFileVO.getFileSuffix());
@@ -101,6 +106,7 @@ public class SysFileController {
      *
      * @param bindId 绑定ID
      */
+    @OperationLog(value = "文件服务-批量下载文件", enable = false)
     @GetMapping("/bind/{bindId}")
     public void downloads(@PathVariable Long bindId, HttpServletResponse response) {
         response.reset();
@@ -124,6 +130,7 @@ public class SysFileController {
      *
      * @param dto SysFileDTO
      */
+    @OperationLog(value = "文件服务-文件上传", enable = false)
     @PostMapping
     public List<SysFileVO> upload(SysFileDTO dto, MultipartHttpServletRequest request) {
         Collection<MultipartFile> values = request.getFileMap().values();
@@ -143,6 +150,7 @@ public class SysFileController {
      *
      * @param id Long
      */
+    @OperationLog("文件服务-删除")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delFile(id);
@@ -153,6 +161,7 @@ public class SysFileController {
      *
      * @param bindId Long
      */
+    @OperationLog("文件服务-删除")
     @DeleteMapping("/bind/{bindId}")
     public void deletes(@PathVariable Long bindId) {
         service.delFiles(bindId);
@@ -176,6 +185,7 @@ public class SysFileController {
      *
      * @return 雪花ID
      */
+    @OperationLog("文件服务-获取雪花ID")
     @GetMapping("/snowflake")
     public Long snowflake() {
         return IdUtil.getSnowflakeNextId();

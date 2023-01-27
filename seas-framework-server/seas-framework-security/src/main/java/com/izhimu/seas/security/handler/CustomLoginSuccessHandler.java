@@ -4,9 +4,9 @@ import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.core.web.Result;
-import com.izhimu.seas.security.dto.LoginDTO;
-import com.izhimu.seas.security.entity.User;
-import com.izhimu.seas.security.event.LogEvent;
+import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.security.event.LoginLogEvent;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.vo.LoginVO;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             httpServletResponse.setStatus(result.httpStatus().value());
             ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
         }
-        applicationContext.publishEvent(new LogEvent(this, loginDTO, 0));
+        applicationContext.publishEvent(new LoginLogEvent(this, loginDTO, 0));
     }
 
     /**

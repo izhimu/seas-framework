@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.holder;
 
-import com.izhimu.seas.security.dto.LoginDTO;
+import com.izhimu.seas.core.dto.LoginDTO;
 import org.springframework.stereotype.Component;
 
 /**

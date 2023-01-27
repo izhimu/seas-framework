@@ -1,5 +1,6 @@
 package com.izhimu.seas.healthy.controller;
 
+import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.healthy.service.OsService;
 import com.izhimu.seas.healthy.vo.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ public class OsController {
      *
      * @return String
      */
+    @OperationLog("系统信息-概览")
     @GetMapping("/info")
     public String getOs() {
         return osService.getOs();
@@ -37,6 +39,7 @@ public class OsController {
      *
      * @return {@link MemoryVO MemoryVO}
      */
+    @OperationLog("系统信息-内存")
     @GetMapping("/memory")
     public MemoryVO getMemory() {
         return osService.getMemory();
@@ -47,6 +50,7 @@ public class OsController {
      *
      * @return {@link SensorsVO SensorsVO}
      */
+    @OperationLog("系统信息-传感器")
     @GetMapping("/sensors")
     public SensorsVO getSensors() {
         return osService.getSensors();
@@ -57,6 +61,7 @@ public class OsController {
      *
      * @return {@link DiskVO DiskVO}
      */
+    @OperationLog("系统信息-硬盘")
     @GetMapping("/disk")
     public List<DiskVO> getDiskStores() {
         return osService.getDiskStores();
@@ -67,9 +72,10 @@ public class OsController {
      *
      * @return {@link NetworkVO NetworkVO}
      */
+    @OperationLog("系统信息-网络")
     @GetMapping("/network")
     public List<NetworkVO> getNetworkIFs() {
-       return osService.getNetworkIFs();
+        return osService.getNetworkIFs();
     }
 
     /**
@@ -77,8 +83,9 @@ public class OsController {
      *
      * @return {@link CpuInfoVO CpuInfoVO}
      */
+    @OperationLog("系统信息-处理器")
     @GetMapping("/cpu")
     public CpuInfoVO getCpuInfo() {
-       return osService.getCpuInfo();
+        return osService.getCpuInfo();
     }
 }

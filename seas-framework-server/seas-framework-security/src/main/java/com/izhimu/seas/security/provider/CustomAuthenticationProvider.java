@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.provider;
 
-import com.izhimu.seas.security.entity.User;
+import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.security.service.SecurityService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

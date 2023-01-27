@@ -6,8 +6,8 @@ import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
-import com.izhimu.seas.security.dto.LoginDTO;
-import com.izhimu.seas.security.event.LogEvent;
+import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.security.event.LoginLogEvent;
 import com.izhimu.seas.security.exception.LoginException;
 import com.izhimu.seas.security.exception.PwdErrorException;
 import com.izhimu.seas.security.exception.VerifyCodeException;
@@ -86,7 +86,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         httpServletResponse.setStatus(result.httpStatus().value());
         ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
         if (Objects.nonNull(status)) {
-            applicationContext.publishEvent(new LogEvent(this, loginDTO, status));
+            applicationContext.publishEvent(new LoginLogEvent(this, loginDTO, status));
         }
     }
 }

@@ -13,7 +13,7 @@ import com.izhimu.seas.base.service.SysDeviceService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.utils.IpUtil;
 import com.izhimu.seas.base.vo.SysAccountLogVO;
-import com.izhimu.seas.security.dto.LoginDTO;
+import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.mybatis.entity.BaseEntity;
 import com.izhimu.seas.mybatis.entity.Pagination;
 import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;

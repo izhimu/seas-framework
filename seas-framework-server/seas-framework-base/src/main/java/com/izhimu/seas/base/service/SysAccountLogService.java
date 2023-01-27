@@ -3,7 +3,7 @@ package com.izhimu.seas.base.service;
 import com.izhimu.seas.base.entity.SysAccountLog;
 import com.izhimu.seas.base.param.SysAccountLogParam;
 import com.izhimu.seas.base.vo.SysAccountLogVO;
-import com.izhimu.seas.security.dto.LoginDTO;
+import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.mybatis.entity.Pagination;
 import com.izhimu.seas.mybatis.service.IBaseService;
 

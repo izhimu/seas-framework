@@ -1,6 +1,7 @@
 package com.izhimu.seas.base.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.izhimu.seas.core.annotation.OperationLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class SysCommonController {
      *
      * @return 雪花ID
      */
+    @OperationLog("通用服务-获取雪花ID")
     @GetMapping("/snowflake")
     public Long snowflake() {
         return IdUtil.getSnowflakeNextId();

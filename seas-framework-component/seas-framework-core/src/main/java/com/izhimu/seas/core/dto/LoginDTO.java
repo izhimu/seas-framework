@@ -1,6 +1,6 @@
-package com.izhimu.seas.security.dto;
+package com.izhimu.seas.core.dto;
 
-import com.izhimu.seas.security.enums.DeviceType;
+import com.izhimu.seas.core.enums.DeviceType;
 import lombok.Data;
 
 import java.io.Serializable;

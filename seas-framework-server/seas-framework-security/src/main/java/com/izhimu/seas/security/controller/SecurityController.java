@@ -1,5 +1,6 @@
 package com.izhimu.seas.security.controller;
 
+import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.entity.EncryptKey;
 import com.izhimu.seas.security.service.EncryptService;
@@ -27,6 +28,7 @@ public class SecurityController {
      *
      * @return EncryptKey
      */
+    @OperationLog("安全控制-获取加密秘钥")
     @GetMapping("/encrypt/key")
     public EncryptKey getEncryptKey() {
         return encryptService.createEncryptKey(SecurityConstant.ENCRYPT_EXPIRE).toView();

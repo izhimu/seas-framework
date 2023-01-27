@@ -2,8 +2,8 @@ package com.izhimu.seas.security.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.core.web.Result;
-import com.izhimu.seas.security.entity.User;
-import com.izhimu.seas.security.event.LogEvent;
+import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.security.event.LoginLogEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -40,6 +40,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         }
         httpServletResponse.setStatus(result.httpStatus().value());
         ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
-        applicationContext.publishEvent(new LogEvent(this, ((User) authentication.getPrincipal()).getLogin(), 1));
+        applicationContext.publishEvent(new LoginLogEvent(this, ((User) authentication.getPrincipal()).getLogin(), 1));
     }
 }

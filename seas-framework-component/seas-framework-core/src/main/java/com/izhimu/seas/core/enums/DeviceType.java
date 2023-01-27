@@ -1,4 +1,4 @@
-package com.izhimu.seas.security.enums;
+package com.izhimu.seas.core.enums;
 
 /**
  * Describe

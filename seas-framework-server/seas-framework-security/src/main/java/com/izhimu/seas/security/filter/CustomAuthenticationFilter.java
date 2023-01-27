@@ -5,7 +5,7 @@ import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.core.web.ResultCode;
-import com.izhimu.seas.security.dto.LoginDTO;
+import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.security.entity.EncryptKey;
 import com.izhimu.seas.security.exception.LoginException;
 import com.izhimu.seas.security.holder.LoginHolder;
