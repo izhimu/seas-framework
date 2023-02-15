@@ -30,6 +30,9 @@ public class SecurityUtil {
         if (Objects.isNull(principal)) {
             return null;
         }
-        return (User) principal;
+        if (principal instanceof User) {
+            return (User) principal;
+        }
+        return null;
     }
 }
