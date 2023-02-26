@@ -3,7 +3,7 @@ package com.izhimu.seas.base.service;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.List;
 

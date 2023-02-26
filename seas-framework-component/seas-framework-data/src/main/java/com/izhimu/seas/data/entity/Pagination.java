@@ -1,4 +1,4 @@
-package com.izhimu.seas.mybatis.entity;
+package com.izhimu.seas.data.entity;
 
 import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

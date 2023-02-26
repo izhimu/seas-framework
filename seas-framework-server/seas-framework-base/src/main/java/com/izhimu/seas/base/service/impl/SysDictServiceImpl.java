@@ -8,7 +8,7 @@ import com.izhimu.seas.base.mapper.SysDictMapper;
 import com.izhimu.seas.base.param.SysDictParam;
 import com.izhimu.seas.base.service.SysDictService;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

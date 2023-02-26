@@ -6,7 +6,7 @@ import com.izhimu.seas.base.mapper.SysAccountMapper;
 import com.izhimu.seas.base.service.SysAccountService;
 import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

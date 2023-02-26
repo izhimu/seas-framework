@@ -13,32 +13,22 @@
     <packaging>pom</packaging>
 
     <properties>
-        <!--↓ Vulnerabilities repair ↓-->
-        <postgresql.version>42.5.1</postgresql.version>
-        <!--↑ Vulnerabilities repair ↑-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>2.7.8</spring.boot.version>
-        <hutool.version>5.8.11</hutool.version>
+        <spring.boot.version>2.7.9</spring.boot.version>
+        <hutool.version>5.8.12</hutool.version>
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <kryo.version>5.4.0</kryo.version>
         <cglib.version>3.3.0</cglib.version>
-        <minio.version>8.5.1</minio.version>
-        <compress.version>1.21</compress.version>
+        <minio.version>8.5.2</minio.version>
+        <compress.version>1.22</compress.version>
         <okhttp.version>4.10.0</okhttp.version>
         <oshi.version>6.4.0</oshi.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!--↓ Vulnerabilities repair ↓-->
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-            </dependency>
-            <!--↑ Vulnerabilities repair ↑-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -59,8 +49,8 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-mybatis</artifactId>
-                <version>${project.version}</version>
+                <artifactId>seas-framework-data</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>

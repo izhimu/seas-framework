@@ -4,8 +4,8 @@ import com.izhimu.seas.base.entity.SysAccountLog;
 import com.izhimu.seas.base.param.SysAccountLogParam;
 import com.izhimu.seas.base.vo.SysAccountLogVO;
 import com.izhimu.seas.core.dto.LoginDTO;
-import com.izhimu.seas.mybatis.entity.Pagination;
-import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.data.entity.Pagination;
+import com.izhimu.seas.data.service.IBaseService;
 
 /**
  * 登录日志服务层接口

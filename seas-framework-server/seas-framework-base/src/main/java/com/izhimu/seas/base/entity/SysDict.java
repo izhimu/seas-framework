@@ -1,10 +1,9 @@
 package com.izhimu.seas.base.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * 字典实体
@@ -12,15 +11,11 @@ import java.io.Serializable;
  * @author haoran
  * @version v1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_SYS_DICT")
-public class SysDict implements Serializable {
+public class SysDict extends IdEntity {
 
-    /**
-     * ID
-     */
-    @TableId
-    private Long id;
     /**
      * 父级ID
      */

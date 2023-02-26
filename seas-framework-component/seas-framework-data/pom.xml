@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>seas-framework-mybatis</artifactId>
+    <artifactId>seas-framework-data</artifactId>
 
     <properties>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -41,6 +41,16 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.izhimu</groupId>
+            <artifactId>seas-framework-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

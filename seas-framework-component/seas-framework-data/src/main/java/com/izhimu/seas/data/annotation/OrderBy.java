@@ -1,4 +1,4 @@
-package com.izhimu.seas.mybatis.annotation;
+package com.izhimu.seas.data.annotation;
 
 import java.lang.annotation.*;
 

@@ -7,7 +7,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.extra.cglib.CglibUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.storage.config.MinioConfig;
 import com.izhimu.seas.storage.dto.SysFileDTO;
 import com.izhimu.seas.storage.entity.SysFile;

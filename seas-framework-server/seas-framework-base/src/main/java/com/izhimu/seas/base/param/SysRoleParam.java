@@ -1,7 +1,7 @@
 package com.izhimu.seas.base.param;
 
-import com.izhimu.seas.mybatis.annotation.OrderBy;
-import com.izhimu.seas.mybatis.annotation.Search;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
 import lombok.Data;
 
 import java.io.Serializable;

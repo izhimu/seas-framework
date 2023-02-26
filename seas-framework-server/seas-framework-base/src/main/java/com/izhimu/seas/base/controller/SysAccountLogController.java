@@ -5,7 +5,7 @@ import com.izhimu.seas.base.param.SysAccountLogParam;
 import com.izhimu.seas.base.service.SysAccountLogService;
 import com.izhimu.seas.base.vo.SysAccountLogVO;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.mybatis.entity.Pagination;
+import com.izhimu.seas.data.entity.Pagination;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

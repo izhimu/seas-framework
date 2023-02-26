@@ -4,7 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import com.izhimu.seas.base.entity.SysMenu;
 import com.izhimu.seas.base.param.SysMenuParam;
 import com.izhimu.seas.base.vo.SysMenuVO;
-import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.List;
 

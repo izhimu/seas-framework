@@ -1,4 +1,4 @@
-package com.izhimu.seas.mybatis.enums;
+package com.izhimu.seas.data.enums;
 
 /**
  * 搜索类型

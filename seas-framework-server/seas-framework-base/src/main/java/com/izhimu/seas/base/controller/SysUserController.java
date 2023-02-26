@@ -7,7 +7,7 @@ import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.vo.SysUserVO;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.mybatis.entity.Pagination;
+import com.izhimu.seas.data.entity.Pagination;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

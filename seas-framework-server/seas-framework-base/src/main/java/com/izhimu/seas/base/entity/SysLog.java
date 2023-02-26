@@ -1,12 +1,12 @@
 package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.izhimu.seas.mybatis.handler.JsonTypeHandler;
+import com.izhimu.seas.data.entity.IdEntity;
+import com.izhimu.seas.data.handler.JsonTypeHandler;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,15 +15,11 @@ import java.time.LocalDateTime;
  * @author haoran
  * @version v1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_SYS_LOG")
-public class SysLog implements Serializable {
+public class SysLog extends IdEntity {
 
-    /**
-     * id
-     */
-    @TableId
-    private Long id;
     /**
      * 请求地址
      */

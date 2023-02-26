@@ -3,7 +3,7 @@ package com.izhimu.seas.base.service;
 import com.izhimu.seas.base.dto.SysAuthMenuDTO;
 import com.izhimu.seas.base.dto.SysUserRoleDTO;
 import com.izhimu.seas.base.entity.SysRole;
-import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.List;
 

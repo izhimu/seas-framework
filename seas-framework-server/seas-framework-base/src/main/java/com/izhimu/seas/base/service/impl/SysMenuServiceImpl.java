@@ -15,7 +15,7 @@ import com.izhimu.seas.base.service.SysUserRoleService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.vo.SysMenuVO;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

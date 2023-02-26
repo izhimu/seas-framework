@@ -21,7 +21,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-        <spring.boot.plugin.version>2.7.3</spring.boot.plugin.version>
+        <spring.boot.plugin.version>2.7.9</spring.boot.plugin.version>
     </properties>
 
     <repositories>

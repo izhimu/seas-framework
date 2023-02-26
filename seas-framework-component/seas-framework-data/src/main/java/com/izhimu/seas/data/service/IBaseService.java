@@ -1,7 +1,8 @@
-package com.izhimu.seas.mybatis.service;
+package com.izhimu.seas.data.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.izhimu.seas.mybatis.entity.Pagination;
+import com.izhimu.seas.data.entity.IdEntity;
+import com.izhimu.seas.data.entity.Pagination;
 
 import java.util.function.Supplier;
 
@@ -11,16 +12,7 @@ import java.util.function.Supplier;
  * @author haoran
  * @version v1.0
  */
-public interface IBaseService<T> extends IService<T> {
-
-    /**
-     * 分页查询视图层
-     *
-     * @param page  分页参数
-     * @param param 查询参数
-     * @return 视图层分页
-     */
-    Pagination<T> page(Pagination<T> page, Object param);
+public interface IBaseService<T extends IdEntity> extends IService<T> {
 
     /**
      * 分页查询视图层
@@ -30,7 +22,7 @@ public interface IBaseService<T> extends IService<T> {
      * @param target 目标对象
      * @return 视图层分页
      */
-    <E> Pagination<E> page(Pagination<T> page, Object param, Supplier<E> target);
+    <V> Pagination<V> page(Pagination<T> page, Object param, Supplier<V> target);
 
     /**
      * 根据ID获取对象
@@ -39,5 +31,13 @@ public interface IBaseService<T> extends IService<T> {
      * @param clazz Class
      * @return E
      */
-    <E> E get(Long id, Class<E> clazz);
+    <V> V get(Long id, Class<V> clazz);
+
+    /**
+     * 新增
+     *
+     * @param entity 实体
+     * @return ID
+     */
+    Long add(T entity);
 }

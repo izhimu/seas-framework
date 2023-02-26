@@ -1,6 +1,6 @@
-package com.izhimu.seas.mybatis.annotation;
+package com.izhimu.seas.data.annotation;
 
-import com.izhimu.seas.mybatis.enums.SearchType;
+import com.izhimu.seas.data.enums.SearchType;
 
 import java.lang.annotation.*;
 

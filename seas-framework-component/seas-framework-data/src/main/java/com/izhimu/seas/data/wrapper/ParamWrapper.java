@@ -1,4 +1,4 @@
-package com.izhimu.seas.mybatis.wrapper;
+package com.izhimu.seas.data.wrapper;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.izhimu.seas.mybatis.annotation.OrderBy;
-import com.izhimu.seas.mybatis.annotation.Search;
-import com.izhimu.seas.mybatis.enums.SearchType;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
+import com.izhimu.seas.data.enums.SearchType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;

@@ -1,8 +1,8 @@
 package com.izhimu.seas.base.service.impl;
 
-import com.izhimu.seas.mybatis.service.IMetaObjectService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.SecurityUtil;
+import com.izhimu.seas.data.service.IMetaObjectService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

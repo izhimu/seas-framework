@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.aspect;
 
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.dto.SysLogDTO;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -50,6 +52,7 @@ public class OperationLogAspect {
             log.error("LogAspect Error", e);
             params = "";
         }
+        Object target = pjp.getTarget();
         Object ret = pjp.proceed();
         long end = System.currentTimeMillis();
         if (!operationLog.enable()) {
@@ -71,7 +74,12 @@ public class OperationLogAspect {
                 dto.setAccount(user.getUsername());
                 dto.setUserName(user.getNickName());
             }
-            dto.setLogName(operationLog.value());
+            Method logPrefix = ReflectUtil.getMethodByName(target.getClass(), "logPrefix");
+            String logName = operationLog.value();
+            if (Objects.nonNull(logPrefix)) {
+                logName = ((String) logPrefix.invoke(target)).concat(logName);
+            }
+            dto.setLogName(logName);
             dto.setLogType(operationLog.type());
             dto.setRuntime((int) (end - start));
             dto.setRequestDate(LocalDateTime.now());

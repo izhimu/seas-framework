@@ -7,10 +7,9 @@ import com.izhimu.seas.base.param.SysRoleParam;
 import com.izhimu.seas.base.service.SysRoleService;
 import com.izhimu.seas.base.vo.SysRoleVO;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.mybatis.entity.Pagination;
+import com.izhimu.seas.data.controller.AbsBaseController;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,67 +20,11 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/role")
-public class SysRoleController {
+public class SysRoleController extends AbsBaseController<SysRoleService, SysRole, SysRoleVO, SysRoleParam> {
 
-    @Resource
-    private SysRoleService service;
-
-    /**
-     * 分页查询
-     *
-     * @param page  分页参数 {@link Pagination Pagination}
-     * @param param 查询参数 {@link SysRoleParam SysRoleParam}
-     * @return 分页数据 {@link SysRoleVO SysRoleVO}
-     */
-    @OperationLog("用户角色-分页查询")
-    @GetMapping("/page")
-    public Pagination<SysRoleVO> page(Pagination<SysRole> page, SysRoleParam param) {
-        return service.page(page, param, SysRoleVO::new);
-    }
-
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return {@link SysRoleVO SysRoleVO}
-     */
-    @OperationLog("用户角色-详情")
-    @GetMapping("/{id}")
-    public SysRoleVO get(@PathVariable Long id) {
-        return service.get(id, SysRoleVO.class);
-    }
-
-    /**
-     * 保存
-     *
-     * @param role {@link SysRole SysRole}
-     */
-    @OperationLog("用户角色-保存")
-    @PostMapping
-    public void save(@RequestBody SysRole role) {
-        service.save(role);
-    }
-
-    /**
-     * 更新
-     *
-     * @param role {@link SysRole SysRole}
-     */
-    @OperationLog("用户角色-更新")
-    @PutMapping
-    public void update(@RequestBody SysRole role) {
-        service.updateById(role);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id id
-     */
-    @OperationLog("用户角色-删除")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.removeById(id);
+    @Override
+    public String logPrefix() {
+        return "用户角色";
     }
 
     /**

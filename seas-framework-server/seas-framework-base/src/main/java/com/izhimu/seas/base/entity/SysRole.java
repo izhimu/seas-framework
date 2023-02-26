@@ -2,11 +2,11 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,15 +15,11 @@ import java.time.LocalDateTime;
  * @author haoran
  * @version v1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_SYS_ROLE")
-public class SysRole implements Serializable {
+public class SysRole extends IdEntity {
 
-    /**
-     * ID
-     */
-    @TableId
-    private Long id;
     /**
      * 创建人
      */

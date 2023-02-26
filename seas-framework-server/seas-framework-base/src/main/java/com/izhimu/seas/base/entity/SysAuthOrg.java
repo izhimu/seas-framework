@@ -1,10 +1,9 @@
 package com.izhimu.seas.base.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * 组织权限实体
@@ -12,15 +11,11 @@ import java.io.Serializable;
  * @author haoran
  * @version v1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_SYS_AUTH_ORG")
-public class SysAuthOrg implements Serializable {
+public class SysAuthOrg extends IdEntity {
 
-    /**
-     * id
-     */
-    @TableId
-    private Long id;
     /**
      * 组织ID
      */

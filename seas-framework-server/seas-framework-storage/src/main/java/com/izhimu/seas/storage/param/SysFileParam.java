@@ -1,6 +1,6 @@
 package com.izhimu.seas.storage.param;
 
-import com.izhimu.seas.mybatis.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.OrderBy;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -9,8 +9,8 @@ import com.izhimu.seas.base.service.SysLogService;
 import com.izhimu.seas.base.vo.SysLogVO;
 import com.izhimu.seas.core.dto.SysLogDTO;
 import com.izhimu.seas.core.utils.TimeUtil;
-import com.izhimu.seas.mybatis.entity.Pagination;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.entity.Pagination;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

@@ -15,7 +15,7 @@
     <modules>
         <module>seas-framework-core</module>
         <module>seas-framework-cache</module>
-        <module>seas-framework-mybatis</module>
+        <module>seas-framework-data</module>
     </modules>
 
     <properties>

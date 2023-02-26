@@ -1,6 +1,6 @@
 package com.izhimu.seas.storage.service;
 
-import com.izhimu.seas.mybatis.service.IBaseService;
+import com.izhimu.seas.data.service.IBaseService;
 import com.izhimu.seas.storage.dto.SysFileDTO;
 import com.izhimu.seas.storage.entity.SysFile;
 import com.izhimu.seas.storage.vo.SysFileVO;

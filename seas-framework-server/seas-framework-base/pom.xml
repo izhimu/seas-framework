@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.izhimu</groupId>
-            <artifactId>seas-framework-mybatis</artifactId>
+            <artifactId>seas-framework-data</artifactId>
         </dependency>
         <dependency>
             <groupId>com.izhimu</groupId>

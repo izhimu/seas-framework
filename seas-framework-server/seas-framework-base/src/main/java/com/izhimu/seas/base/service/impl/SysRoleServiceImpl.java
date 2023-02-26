@@ -9,7 +9,7 @@ import com.izhimu.seas.base.mapper.SysRoleMapper;
 import com.izhimu.seas.base.service.SysAuthMenuService;
 import com.izhimu.seas.base.service.SysRoleService;
 import com.izhimu.seas.base.service.SysUserRoleService;
-import com.izhimu.seas.mybatis.service.impl.BaseServiceImpl;
+import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -1,9 +1,12 @@
-package com.izhimu.seas.mybatis.entity;
+package com.izhimu.seas.data.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,14 +15,10 @@ import java.time.LocalDateTime;
  * @author haoran
  * @version v1.0
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class BaseEntity implements Serializable {
+public class BaseEntity extends IdEntity {
 
-    /**
-     * ID
-     */
-    @TableId
-    private Long id;
     /**
      * 创建人
      */

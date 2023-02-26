@@ -7,10 +7,11 @@ import com.izhimu.seas.base.service.SysDictService;
 import com.izhimu.seas.base.vo.SysDictVO;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.mybatis.entity.Pagination;
-import org.springframework.web.bind.annotation.*;
+import com.izhimu.seas.data.controller.AbsBaseController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,10 +22,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/dict")
-public class SysDictController {
+public class SysDictController extends AbsBaseController<SysDictService, SysDict, SysDictVO, SysDictParam> {
 
-    @Resource
-    private SysDictService service;
+    @Override
+    public String logPrefix() {
+        return "字典管理";
+    }
 
     /**
      * 获取树
@@ -36,64 +39,6 @@ public class SysDictController {
     @GetMapping("/tree")
     public List<Tree<Long>> tree(SysDictParam param) {
         return service.tree(param);
-    }
-
-    /**
-     * 分页查询
-     *
-     * @param page  分页参数 {@link Pagination Pagination}
-     * @param param 查询参数 {@link SysDictParam SysDictParam}
-     * @return 分页数据 {@link SysDictVO SysDictVO}
-     */
-    @OperationLog("字典管理-分页查询")
-    @GetMapping("/page")
-    public Pagination<SysDictVO> page(Pagination<SysDict> page, SysDictParam param) {
-        return service.page(page, param, SysDictVO::new);
-    }
-
-    /**
-     * 详情
-     *
-     * @param id id
-     * @return 数据 {@link SysDictVO SysDictVO}
-     */
-    @OperationLog("字典管理-详情")
-    @GetMapping("/{id}")
-    public SysDictVO get(@PathVariable Long id) {
-        return service.get(id, SysDictVO.class);
-    }
-
-    /**
-     * 保存
-     *
-     * @param role {@link SysDict SysDict}
-     */
-    @OperationLog("字典管理-保存")
-    @PostMapping
-    public void save(@RequestBody SysDict role) {
-        service.save(role);
-    }
-
-    /**
-     * 更新
-     *
-     * @param role {@link SysDict SysDict}
-     */
-    @OperationLog("字典管理-更新")
-    @PutMapping
-    public void update(@RequestBody SysDict role) {
-        service.updateById(role);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id id
-     */
-    @OperationLog("字典管理-删除")
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.removeById(id);
     }
 
     /**

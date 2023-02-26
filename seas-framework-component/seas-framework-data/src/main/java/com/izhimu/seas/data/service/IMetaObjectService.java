@@ -1,4 +1,4 @@
-package com.izhimu.seas.mybatis.service;
+package com.izhimu.seas.data.service;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;

@@ -1,7 +1,7 @@
 package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.izhimu.seas.mybatis.entity.BaseEntity;
+import com.izhimu.seas.data.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
