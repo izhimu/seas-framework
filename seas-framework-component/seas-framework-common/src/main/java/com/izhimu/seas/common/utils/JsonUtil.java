@@ -31,13 +31,18 @@ import java.time.format.DateTimeFormatter;
  * @version v1.0
  */
 @Slf4j
-@UtilityClass
 public class JsonUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
         config(MAPPER);
+    }
+
+    public static ObjectMapper newInstance() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        config(objectMapper);
+        return objectMapper;
     }
 
     /**
@@ -81,6 +86,15 @@ public class JsonUtil {
     public static String toJsonStr(Object obj) {
         try {
             return MAPPER.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            log.error("JSON转换错误", e);
+            return null;
+        }
+    }
+
+    public static byte[] toJsonByte(Object obj) {
+        try {
+            return MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
             log.error("JSON转换错误", e);
             return null;
