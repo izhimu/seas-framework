@@ -55,6 +55,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <classifier>exec</classifier>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
