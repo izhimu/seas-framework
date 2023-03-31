@@ -3,8 +3,8 @@ package com.izhimu.seas.data.controller;
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.data.entity.IdEntity;
 import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.IBaseService;
@@ -33,9 +33,8 @@ public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdE
         return service;
     }
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    public void setService(S service) {
+    public void setService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") S service) {
         this.service = service;
     }
 

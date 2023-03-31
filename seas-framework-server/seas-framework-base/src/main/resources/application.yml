@@ -39,7 +39,7 @@ storage:
     access-key: minioadmin
     secret-key: minioadmin
     bucket: seas
-    proxy-host: http://127.0.0.1:8080
+    proxy-host:
 security:
   supers:
     - admin
@@ -48,4 +48,5 @@ login:
   err-num: 5
 logging:
   level:
+    root: INFO
     oshi.util.platform.windows.WmiQueryHandler: ERROR

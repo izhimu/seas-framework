@@ -1,4 +1,4 @@
-package com.izhimu.seas.core.utils;
+package com.izhimu.seas.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;

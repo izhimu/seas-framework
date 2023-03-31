@@ -2,7 +2,7 @@ package com.izhimu.seas.core.web;
 
 import cn.hutool.core.util.IdUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.common.utils.JsonUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

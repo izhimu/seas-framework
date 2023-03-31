@@ -14,15 +14,20 @@
 
     <modules>
         <module>seas-framework-core</module>
+        <module>seas-framework-common</module>
         <module>seas-framework-cache</module>
         <module>seas-framework-data</module>
     </modules>
 
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

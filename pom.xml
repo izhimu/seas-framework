@@ -10,18 +10,17 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>seas-framework-component</module>
         <module>seas-framework-dependencies</module>
         <module>seas-framework-server</module>
-        <module>seas-framework-component</module>
+        <module>seas-framework-starter</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-        <spring.boot.plugin.version>2.7.9</spring.boot.plugin.version>
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <spring.boot.plugin.version>2.7.10</spring.boot.plugin.version>
     </properties>
 
     <repositories>
@@ -36,4 +35,21 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

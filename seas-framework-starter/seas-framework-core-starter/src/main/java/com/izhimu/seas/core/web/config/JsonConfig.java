@@ -1,7 +1,7 @@
 package com.izhimu.seas.core.web.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.common.utils.JsonUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

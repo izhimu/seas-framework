@@ -1,7 +1,7 @@
 package com.izhimu.seas.base.listener;
 
 import com.izhimu.seas.base.service.SysAccountLogService;
-import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.security.event.LoginLogEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;

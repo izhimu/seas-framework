@@ -1,4 +1,4 @@
-package com.izhimu.seas.cache.utils;
+package com.izhimu.seas.common.utils;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

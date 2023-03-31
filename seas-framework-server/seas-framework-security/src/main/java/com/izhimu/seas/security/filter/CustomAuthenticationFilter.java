@@ -3,7 +3,7 @@ package com.izhimu.seas.security.filter;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
-import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.LoginConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;

@@ -13,10 +13,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>2.7.9</spring.boot.version>
+        <spring.boot.version>2.7.10</spring.boot.version>
         <hutool.version>5.8.12</hutool.version>
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <kryo.version>5.4.0</kryo.version>
@@ -25,6 +22,7 @@
         <compress.version>1.22</compress.version>
         <okhttp.version>4.10.0</okhttp.version>
         <oshi.version>6.4.0</oshi.version>
+        <reflections.version>0.10.2</reflections.version>
     </properties>
 
     <dependencyManagement>
@@ -36,10 +34,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!-- Seas Component -->
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -50,8 +53,25 @@
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-data</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
+            <!-- Seas Starter -->
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-cache-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-core-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-data-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Seas Server -->
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-base</artifactId>
@@ -73,6 +93,11 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -112,6 +137,11 @@
                 <groupId>com.github.oshi</groupId>
                 <artifactId>oshi-core</artifactId>
                 <version>${oshi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
