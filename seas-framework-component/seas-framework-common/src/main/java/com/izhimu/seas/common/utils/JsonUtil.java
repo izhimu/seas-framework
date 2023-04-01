@@ -5,8 +5,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,7 +16,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -33,16 +34,12 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class JsonUtil {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final JsonMapper MAPPER = JsonMapper.builder()
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .build();
 
     static {
         config(MAPPER);
-    }
-
-    public static ObjectMapper newInstance() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        config(objectMapper);
-        return objectMapper;
     }
 
     /**
@@ -117,5 +114,26 @@ public class JsonUtil {
             log.error("JSON转换错误", e);
             return null;
         }
+    }
+
+    public static <T> T toObject(byte[] bytes, Class<T> clazz) {
+        try {
+            return MAPPER.readValue(bytes, clazz);
+        } catch (IOException e) {
+            log.error("JSON转换错误", e);
+            return null;
+        }
+    }
+
+    public static String removeEnter(String str) {
+        return str.replaceAll("\\s*|\r|\n|\t", "");
+    }
+
+    public static String end(String str, String end) {
+        return str.concat(end);
+    }
+
+    public static String removeEnd(String str, String end) {
+        return str.replace(end,"");
     }
 }
