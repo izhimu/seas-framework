@@ -30,19 +30,15 @@ import java.time.format.DateTimeFormatter;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("unused")
 @Slf4j
+@UtilityClass
 public class JsonUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
         config(MAPPER);
-    }
-
-    public static ObjectMapper newInstance() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        config(objectMapper);
-        return objectMapper;
     }
 
     /**
