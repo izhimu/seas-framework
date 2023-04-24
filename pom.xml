@@ -29,8 +29,9 @@
 
     <repositories>
         <repository>
-            <id>spring</id>
-            <url>https://maven.aliyun.com/repository/public</url>
+            <id>izhimu-seas-maven-releases</id>
+            <name>maven-releases</name>
+            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -71,4 +72,12 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>izhimu-seas-maven-releases</id>
+            <name>maven-releases</name>
+            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

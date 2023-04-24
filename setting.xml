@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>izhimu-seas-maven-releases</id>
+            <username>maven-releases-1682326529365</username>
+            <password>521bcd781db88d524191a3d05b743581b7524523</password>
+        </server>
+    </servers>
+</settings>
