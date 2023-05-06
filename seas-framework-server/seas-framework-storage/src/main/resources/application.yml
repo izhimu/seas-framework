@@ -35,7 +35,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 storage:
   minio:
-    end-point: http://192.168.8.16:9000
+    end-point: http://192.168.31.201:9000
     access-key: minioadmin
     secret-key: minioadmin
     bucket: seas

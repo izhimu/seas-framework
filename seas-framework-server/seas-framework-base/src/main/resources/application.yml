@@ -15,12 +15,13 @@ spring:
       max-file-size: 1GB
       max-request-size: 10GB
   redis:
-    host: 192.168.31.150
+    host: 192.168.31.201
     port: 6379
     database: 0
+    password: 123456
   datasource:
     name: dataSource
-    url: jdbc:postgresql://192.168.31.100:5432/seas_db
+    url: jdbc:postgresql://192.168.31.200:5432/seas_db
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
@@ -33,16 +34,6 @@ mybatis-plus:
       logic-delete-field: LOGIC_DEL
       logic-delete-value: 1
       logic-not-delete-value: 0
-storage:
-  minio:
-    end-point: http://192.168.31.150:9000
-    access-key: minioadmin
-    secret-key: minioadmin
-    bucket: seas
-    proxy-host:
-security:
-  supers:
-    - admin
 login:
   err-time: 300
   err-num: 5
