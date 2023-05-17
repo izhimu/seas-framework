@@ -1,5 +1,6 @@
 package com.izhimu.seas.security.config;
 
+import com.anji.captcha.service.CaptchaService;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.entity.EncryptKey;
 import com.izhimu.seas.security.filter.CustomAuthenticationFilter;
@@ -40,7 +41,7 @@ import java.util.List;
  * @author haoran
  */
 @Configuration
-@ConfigurationProperties("security")
+@ConfigurationProperties("seas.security")
 public class SecurityConfig {
 
     /**
@@ -56,6 +57,9 @@ public class SecurityConfig {
 
     @Resource
     private EncryptService<EncryptKey, String> encryptService;
+
+    @Resource
+    private CaptchaService captchaService;
 
     @Resource
     private ApplicationContext applicationContext;
@@ -79,7 +83,7 @@ public class SecurityConfig {
 
     @Bean
     public Filter authenticationFilter(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(encryptService, loginHolder, loginConfig);
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(encryptService, captchaService, loginHolder, loginConfig);
         filter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(applicationContext, loginHolder));
         filter.setAuthenticationFailureHandler(new CustomLoginFailureHandler(applicationContext, loginHolder, loginConfig));
         filter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
@@ -102,7 +106,7 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll()
-                .antMatchers("/security/**")
+                .antMatchers("/security/**", "/captcha/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

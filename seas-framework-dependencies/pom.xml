@@ -23,6 +23,7 @@
         <okhttp.version>4.10.0</okhttp.version>
         <oshi.version>6.4.0</oshi.version>
         <reflections.version>0.10.2</reflections.version>
+        <captcha.version>1.3.0</captcha.version>
     </properties>
 
     <dependencyManagement>
@@ -142,6 +143,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.anji-plus</groupId>
+                <artifactId>captcha</artifactId>
+                <version>${captcha.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

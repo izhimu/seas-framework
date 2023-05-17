@@ -45,18 +45,19 @@ public class OperationLogAspect {
     @Around(value = "@annotation(operationLog)")
     public Object logAround(ProceedingJoinPoint pjp, OperationLog operationLog) throws Throwable {
         long start = System.currentTimeMillis();
-        String params;
-        try {
-            params = JsonUtil.toJsonStr(pjp.getArgs());
-        } catch (Exception e) {
-            log.error("LogAspect Error", e);
-            params = "";
-        }
+        Object[] args = pjp.getArgs();
         Object target = pjp.getTarget();
         Object ret = pjp.proceed();
         long end = System.currentTimeMillis();
         if (!operationLog.enable()) {
             return ret;
+        }
+        String params;
+        try {
+            params = JsonUtil.toJsonStr(args);
+        } catch (Exception e) {
+            log.error("LogAspect Error", e);
+            params = "";
         }
         try {
             SysLogDTO dto = new SysLogDTO();

@@ -1,6 +1,9 @@
 package com.izhimu.seas.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.common.utils.JsonUtil;
@@ -36,12 +39,14 @@ import java.util.Optional;
 public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final EncryptService<EncryptKey, String> encryptService;
+    private final CaptchaService captchaService;
     private final LoginHolder loginHolder;
     private final LoginConfig loginConfig;
 
-    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, LoginHolder loginHolder, LoginConfig loginConfig) {
+    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, CaptchaService captchaService, LoginHolder loginHolder, LoginConfig loginConfig) {
         super(new AntPathRequestMatcher(SecurityConstant.URL_LOGIN, "POST"));
         this.encryptService = encryptService;
+        this.captchaService = captchaService;
         this.loginHolder = loginHolder;
         this.loginConfig = loginConfig;
     }
@@ -59,6 +64,14 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         } catch (Exception e) {
             log.error("", e);
             throw new LoginException(ResultCode.LOGIN_ERROR, "登录参数缺失或参数不正确");
+        }
+
+        // 验证码错误
+        CaptchaVO captcha = new CaptchaVO();
+        captcha.setCaptchaVerification(loginDTO.getVerifyCode());
+        ResponseModel verification = captchaService.verification(captcha);
+        if (!"0000".equals(verification.getRepCode())) {
+            throw new LoginException(ResultCode.LOGIN_VERIFICATION_ERROR, "安全验证未通过");
         }
 
         // 校验密码错误次数

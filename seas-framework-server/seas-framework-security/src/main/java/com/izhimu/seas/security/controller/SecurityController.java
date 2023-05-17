@@ -28,7 +28,7 @@ public class SecurityController {
      *
      * @return EncryptKey
      */
-    @OperationLog("安全控制-获取加密秘钥")
+    @OperationLog(value = "安全控制-获取加密秘钥", enable = false)
     @GetMapping("/encrypt/key")
     public EncryptKey getEncryptKey() {
         return encryptService.createEncryptKey(SecurityConstant.ENCRYPT_EXPIRE).toView();

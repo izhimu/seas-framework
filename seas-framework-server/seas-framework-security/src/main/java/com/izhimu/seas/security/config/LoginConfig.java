@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("login")
+@ConfigurationProperties("seas.login")
 public class LoginConfig {
 
     /**

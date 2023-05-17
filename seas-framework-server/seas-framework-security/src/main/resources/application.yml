@@ -11,13 +11,15 @@ spring:
     resources:
       add-mappings: false
   redis:
-    host: 192.168.8.16
+    host: 192.168.31.201
     port: 6379
     database: 0
-security:
-  supers:
-    - admin
-login:
-  err-time: 300
-  err-num: 5
+    password: 123456
+seas:
+  security:
+    supers:
+      - admin
+  login:
+    err-time: 300
+    err-num: 5
 
