@@ -8,7 +8,7 @@ import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.web.ResultCode;
-import com.izhimu.seas.security.config.LoginConfig;
+import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.entity.EncryptKey;
 import com.izhimu.seas.security.exception.LoginException;
@@ -41,14 +41,14 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     private final EncryptService<EncryptKey, String> encryptService;
     private final CaptchaService captchaService;
     private final LoginHolder loginHolder;
-    private final LoginConfig loginConfig;
+    private final SecurityConfig securityConfig;
 
-    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, CaptchaService captchaService, LoginHolder loginHolder, LoginConfig loginConfig) {
+    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, CaptchaService captchaService, LoginHolder loginHolder, SecurityConfig securityConfig) {
         super(new AntPathRequestMatcher(SecurityConstant.URL_LOGIN, "POST"));
         this.encryptService = encryptService;
         this.captchaService = captchaService;
         this.loginHolder = loginHolder;
-        this.loginConfig = loginConfig;
+        this.securityConfig = securityConfig;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         // 校验密码错误次数
         String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(loginDTO.getAccount());
         int errNum = Optional.ofNullable(RedisHelper.getInstance().get(errKey, Integer.class)).orElse(0);
-        if (errNum >= loginConfig.getErrNum()) {
+        if (errNum >= securityConfig.getErrNum()) {
             throw new LoginException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR, "用户名或密码错误次数超限");
         }
 

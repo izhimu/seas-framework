@@ -19,7 +19,8 @@ seas:
   security:
     supers:
       - admin
-  login:
+      - root
     err-time: 300
     err-num: 5
+    encrypt-mode: SM2
 

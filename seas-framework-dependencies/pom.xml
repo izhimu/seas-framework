@@ -24,6 +24,7 @@
         <oshi.version>6.4.0</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <captcha.version>1.3.0</captcha.version>
+        <bcprov.version>1.73</bcprov.version>
     </properties>
 
     <dependencyManagement>
@@ -148,6 +149,11 @@
                 <groupId>com.anji-plus</groupId>
                 <artifactId>captcha</artifactId>
                 <version>${captcha.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bcprov.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

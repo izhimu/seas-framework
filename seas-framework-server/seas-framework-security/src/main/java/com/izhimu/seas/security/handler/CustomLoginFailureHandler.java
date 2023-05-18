@@ -6,7 +6,7 @@ import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
-import com.izhimu.seas.security.config.LoginConfig;
+import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.event.LoginLogEvent;
 import com.izhimu.seas.security.exception.LoginException;
@@ -39,12 +39,12 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
     private final ApplicationContext applicationContext;
     private final LoginHolder loginHolder;
-    private final LoginConfig loginConfig;
+    private final SecurityConfig securityConfig;
 
-    public CustomLoginFailureHandler(ApplicationContext applicationContext, LoginHolder loginHolder, LoginConfig loginConfig) {
+    public CustomLoginFailureHandler(ApplicationContext applicationContext, LoginHolder loginHolder, SecurityConfig securityConfig) {
         this.applicationContext = applicationContext;
         this.loginHolder = loginHolder;
-        this.loginConfig = loginConfig;
+        this.securityConfig = securityConfig;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
             result = Result.error();
         }
         // 刷新错误次数
-        RedisHelper.getInstance().set(key, errNum, loginConfig.getErrTime());
+        RedisHelper.getInstance().set(key, errNum, securityConfig.getErrTime());
         httpServletResponse.setStatus(result.httpStatus().value());
         ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
         if (Objects.nonNull(status)) {

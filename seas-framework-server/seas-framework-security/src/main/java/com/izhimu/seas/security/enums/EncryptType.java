@@ -11,5 +11,9 @@ public enum EncryptType {
     /**
      * 非对称加密算法
      */
-    RSA
+    RSA,
+    /**
+     * 国密SM2
+     */
+    SM2
 }
