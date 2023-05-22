@@ -31,8 +31,6 @@ import java.time.Instant;
 @ConditionalOnProperty(prefix = "seas.security", name = "encrypt-mode", havingValue = "SM2", matchIfMissing = true)
 public class RedisSm2EncryptServiceImpl implements EncryptService<EncryptKey, String> {
 
-    private static final String CACHE_ENCRYPT_KEY = "seas:encrypt:sm2.key.";
-
     @Resource
     private RedisService redisService;
 
@@ -45,18 +43,18 @@ public class RedisSm2EncryptServiceImpl implements EncryptService<EncryptKey, St
         String publicKey = HexUtil.encodeHexStr(((BCECPublicKey) sm2.getPublicKey()).getQ().getEncoded(false));
 
         EncryptKey encryptKey = new EncryptKey(key, EncryptType.SM2, publicKey, privateKey, Instant.now().toEpochMilli());
-        redisService.set(CACHE_ENCRYPT_KEY.concat(key), encryptKey, timeout);
+        redisService.set(cacheKey(key), encryptKey, timeout);
         return encryptKey;
     }
 
     @Override
     public EncryptKey getEncryptKey(String key) {
-        return redisService.get(CACHE_ENCRYPT_KEY.concat(key), EncryptKey.class);
+        return redisService.get(cacheKey(key), EncryptKey.class);
     }
 
     @Override
     public boolean delEncryptKey(String key) {
-        return redisService.del(CACHE_ENCRYPT_KEY.concat(key));
+        return redisService.del(cacheKey(key));
     }
 
     @Override

@@ -44,18 +44,18 @@ public class RedisRsaEncryptServiceImpl implements EncryptService<EncryptKey, St
         String privateKey = Base64.encode(keyPair.getPrivate().getEncoded());
 
         EncryptKey encryptKey = new EncryptKey(key, EncryptType.RSA, publicKey, privateKey, Instant.now().toEpochMilli());
-        redisService.hashCache().set(cacheKey(), key, encryptKey, timeout);
+        redisService.set(cacheKey(key), encryptKey, timeout);
         return encryptKey;
     }
 
     @Override
     public EncryptKey getEncryptKey(String key) {
-        return redisService.hashCache().get(cacheKey(), key, EncryptKey.class);
+        return redisService.get(cacheKey(key), EncryptKey.class);
     }
 
     @Override
     public boolean delEncryptKey(String key) {
-        return redisService.hashCache().del(cacheKey(), key);
+        return redisService.del(cacheKey(key));
     }
 
     @Override

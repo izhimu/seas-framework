@@ -30,7 +30,7 @@ public class SecurityConstant {
      * 秘钥超时时间
      * 默认600秒
      */
-    public static final long ENCRYPT_EXPIRE = 600L;
+    public static final long ENCRYPT_EXPIRE = 120L;
 
     /**
      * 密码错误次数

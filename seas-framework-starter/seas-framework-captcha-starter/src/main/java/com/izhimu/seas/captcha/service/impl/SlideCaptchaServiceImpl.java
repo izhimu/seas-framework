@@ -35,8 +35,8 @@ import java.util.Random;
 @Service
 public class SlideCaptchaServiceImpl implements CaptchaService {
     private static final String IMAGE_TYPE_PNG = "png";
-    private static final String CACHE_CAPTCHA_KEY = "seas:captcha";
-    private static final String CACHE_CAPTCHA_RECEIPT_KEY = "seas:captcha:receipt";
+    private static final String CACHE_CAPTCHA_KEY = "seas:captcha:";
+    private static final String CACHE_CAPTCHA_RECEIPT_KEY = "seas:captcha:receipt:";
 
     @Resource
     private CaptchaConfig config;
@@ -65,7 +65,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         }
         Captcha newCaptcha = pictureTemplatesCut(originalImage, blockImage, blockImageBase64);
         // 将坐标信息存入redis中
-        redisService.hashCache().set(CACHE_CAPTCHA_KEY, newCaptcha.getToken(), newCaptcha.getPoint(), config.getCaptchaExpire());
+        redisService.set(CACHE_CAPTCHA_KEY.concat(newCaptcha.getToken()), newCaptcha.getPoint(), config.getCaptchaExpire());
         return newCaptcha.toView();
     }
 
@@ -74,15 +74,14 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         captcha.setResult(false);
         // 取坐标信息
         String token = captcha.getToken();
-        RedisService.HashCache hashCache = redisService.hashCache();
-        if (!hashCache.hasKey(CACHE_CAPTCHA_KEY, token)) {
+        if (!redisService.hasKey(CACHE_CAPTCHA_KEY.concat(token))) {
             return captcha;
         }
-        Point point = hashCache.get(CACHE_CAPTCHA_KEY, token, Point.class);
+        Point point = redisService.get(CACHE_CAPTCHA_KEY.concat(token), Point.class);
         if (Objects.isNull(point)) {
             return captcha;
         }
-        hashCache.del(CACHE_CAPTCHA_KEY, token);
+        redisService.del(CACHE_CAPTCHA_KEY.concat(token));
         // 解密
         String pointJson = captcha.getPointJson();
         pointJson = encryptService.decrypt(token, pointJson);
@@ -97,7 +96,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         }
         // 校验成功，将信息存入缓存
         String base64Key = Base64.encode(token.concat(pointJson));
-        redisService.hashCache().set(CACHE_CAPTCHA_RECEIPT_KEY, base64Key, 0, config.getReceiptExpire());
+        redisService.set(CACHE_CAPTCHA_RECEIPT_KEY.concat(base64Key), 0, config.getReceiptExpire());
         captcha.setResult(true);
         return captcha;
     }
@@ -108,10 +107,10 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             String key = captcha.getCaptchaVerification();
             key = encryptService.decrypt(captcha.getToken(), key);
             key = Base64.encode(key);
-            if (!redisService.hashCache().hasKey(CACHE_CAPTCHA_RECEIPT_KEY, key)) {
+            if (!redisService.hasKey(CACHE_CAPTCHA_RECEIPT_KEY.concat(key))) {
                 return false;
             }
-            redisService.hashCache().del(CACHE_CAPTCHA_RECEIPT_KEY, key);
+            redisService.del(CACHE_CAPTCHA_RECEIPT_KEY.concat(key));
             return true;
         } catch (Exception e) {
             log.error("验证码坐标解析失败", e);

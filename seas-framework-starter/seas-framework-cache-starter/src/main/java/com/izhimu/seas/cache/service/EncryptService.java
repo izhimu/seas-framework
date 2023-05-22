@@ -11,8 +11,8 @@ import com.izhimu.seas.cache.exception.EncryptException;
 @SuppressWarnings("unused")
 public interface EncryptService<E, K> {
 
-    default String cacheKey() {
-        return "seas:encrypt";
+    default String cacheKey(String key) {
+        return "seas:encrypt:".concat(key);
     }
 
     /**
