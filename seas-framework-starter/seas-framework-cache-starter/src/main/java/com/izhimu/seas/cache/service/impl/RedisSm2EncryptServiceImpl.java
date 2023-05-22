@@ -1,4 +1,4 @@
-package com.izhimu.seas.security.service.impl;
+package com.izhimu.seas.cache.service.impl;
 
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.IdUtil;
@@ -6,11 +6,11 @@ import cn.hutool.crypto.BCUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
+import com.izhimu.seas.cache.enums.EncryptType;
+import com.izhimu.seas.cache.exception.EncryptException;
 import com.izhimu.seas.cache.service.RedisService;
-import com.izhimu.seas.security.entity.EncryptKey;
-import com.izhimu.seas.security.enums.EncryptType;
-import com.izhimu.seas.security.exception.EncryptException;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.EncryptService;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -31,7 +31,7 @@ import java.time.Instant;
 @ConditionalOnProperty(prefix = "seas.security", name = "encrypt-mode", havingValue = "SM2", matchIfMissing = true)
 public class RedisSm2EncryptServiceImpl implements EncryptService<EncryptKey, String> {
 
-    private static final String CACHE_ENCRYPT_KEY = "encrypt:sm2.key.";
+    private static final String CACHE_ENCRYPT_KEY = "seas:encrypt:sm2.key.";
 
     @Resource
     private RedisService redisService;
@@ -51,15 +51,19 @@ public class RedisSm2EncryptServiceImpl implements EncryptService<EncryptKey, St
 
     @Override
     public EncryptKey getEncryptKey(String key) {
-        EncryptKey encryptKey = redisService.get(CACHE_ENCRYPT_KEY.concat(key), EncryptKey.class);
-        redisService.del(CACHE_ENCRYPT_KEY.concat(key));
-        return encryptKey;
+        return redisService.get(CACHE_ENCRYPT_KEY.concat(key), EncryptKey.class);
     }
 
     @Override
-    public String encrypt(EncryptKey key, String obj) throws EncryptException {
+    public boolean delEncryptKey(String key) {
+        return redisService.del(CACHE_ENCRYPT_KEY.concat(key));
+    }
+
+    @Override
+    public String encrypt(String key, String obj) throws EncryptException {
         try {
-            final SM2 sm2 = SmUtil.sm2(null, key.getPublicKey());
+            EncryptKey encryptKey = getEncryptKey(key);
+            final SM2 sm2 = SmUtil.sm2(encryptKey.getPrivateKey(), encryptKey.getPublicKey());
             return sm2.encryptHex(obj, KeyType.PublicKey);
         } catch (Exception e) {
             throw new EncryptException("Redis SM2 加密异常");
@@ -67,12 +71,35 @@ public class RedisSm2EncryptServiceImpl implements EncryptService<EncryptKey, St
     }
 
     @Override
-    public String decrypt(EncryptKey key, String obj) throws EncryptException {
+    public String decrypt(String key, String obj) throws EncryptException {
         try {
-            final SM2 sm2 = SmUtil.sm2(key.getPrivateKey(), null);
+            EncryptKey encryptKey = getEncryptKey(key);
+            final SM2 sm2 = SmUtil.sm2(encryptKey.getPrivateKey(), encryptKey.getPublicKey());
             return sm2.decryptStr(obj, KeyType.PrivateKey);
         } catch (Exception e) {
             throw new EncryptException("Redis SM2 解密异常");
+        }
+    }
+
+    @Override
+    public String sign(String key, String content) throws EncryptException {
+        try {
+            EncryptKey encryptKey = getEncryptKey(key);
+            final SM2 sm2 = SmUtil.sm2(encryptKey.getPrivateKey(), encryptKey.getPublicKey());
+            return sm2.signHex(content);
+        } catch (Exception e) {
+            throw new EncryptException("Redis SM2 签名异常");
+        }
+    }
+
+    @Override
+    public boolean verify(String key, String sign, String reference) throws EncryptException {
+        try {
+            EncryptKey encryptKey = getEncryptKey(key);
+            final SM2 sm2 = SmUtil.sm2(encryptKey.getPrivateKey(), encryptKey.getPublicKey());
+            return sm2.verifyHex(sign, reference);
+        } catch (Exception e) {
+            throw new EncryptException("Redis SM2 签名异常");
         }
     }
 }

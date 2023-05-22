@@ -1,14 +1,14 @@
 package com.izhimu.seas.security.config;
 
-import com.anji.captcha.service.CaptchaService;
+import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.entity.EncryptKey;
+import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.security.filter.CustomAuthenticationFilter;
 import com.izhimu.seas.security.handler.*;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.provider.CustomAuthenticationProvider;
 import com.izhimu.seas.security.resolver.DiverseHttpSessionIdResolver;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.security.service.SecurityService;
 import com.izhimu.seas.security.service.impl.DefSecurityServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

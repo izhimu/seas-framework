@@ -15,9 +15,9 @@ import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.SecurityUtil;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
-import com.izhimu.seas.security.entity.EncryptKey;
+import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.security.holder.LoginHolder;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.security.service.SecurityService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,8 +71,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             return;
         }
         // 账号处理
-        AtomicReference<EncryptKey> key = new AtomicReference<>();
-        sysUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(encryptService.getEncryptKey(item.getPasswordKey())));
+        AtomicReference<String> key = new AtomicReference<>();
+        sysUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(item.getPasswordKey()));
         List<SysAccount> accountList = new ArrayList<>();
         sysUser.getAccounts().forEach(newSysAccountConsumer(user, key, accountList));
         accountService.saveBatch(accountList);
@@ -89,11 +89,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             return;
         }
         // 获取密钥
-        AtomicReference<EncryptKey> key = new AtomicReference<>();
+        AtomicReference<String> key = new AtomicReference<>();
         sysUser.getAccounts().stream()
                 .filter(v -> StringUtils.isNotBlank(v.getPasswordKey()))
                 .findFirst()
-                .ifPresent(v -> key.set(encryptService.getEncryptKey(v.getPasswordKey())));
+                .ifPresent(v -> key.set(v.getPasswordKey()));
         // 删除的账号
         List<Long> accountIdList = sysUser.getAccounts().stream()
                 .map(SysAccountDTO::getId).toList();
@@ -156,7 +156,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param accountList List
      * @return Consumer
      */
-    private Consumer<SysAccountDTO> newSysAccountConsumer(SysUser user, AtomicReference<EncryptKey> key, List<SysAccount> accountList) {
+    private Consumer<SysAccountDTO> newSysAccountConsumer(SysUser user, AtomicReference<String> key, List<SysAccount> accountList) {
         return v -> {
             SysAccount sysAccount = new SysAccount();
             sysAccount.setUserId(user.getId());

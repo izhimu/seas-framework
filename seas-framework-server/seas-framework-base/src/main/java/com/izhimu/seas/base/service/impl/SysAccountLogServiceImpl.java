@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,9 +54,10 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
         if (Objects.isNull(account)) {
             return;
         }
-        SysDevice device = deviceService.lambdaQuery()
+        List<SysDevice> list = deviceService.lambdaQuery()
                 .eq(SysDevice::getDeviceCode, loginDTO.getDeviceId())
-                .one();
+                .list();
+        SysDevice device = list.isEmpty() ? null : list.get(0);
         boolean newDevice = Objects.isNull(device);
         if (newDevice) {
             device = new SysDevice();

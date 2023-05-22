@@ -18,6 +18,10 @@
         </dependency>
         <dependency>
             <groupId>com.izhimu</groupId>
+            <artifactId>seas-framework-captcha-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-core-starter</artifactId>
         </dependency>
 
@@ -33,15 +37,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.anji-plus</groupId>
-            <artifactId>captcha</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk18on</artifactId>
         </dependency>
 
         <dependency>

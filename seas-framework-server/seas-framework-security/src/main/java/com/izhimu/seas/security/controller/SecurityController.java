@@ -2,8 +2,8 @@ package com.izhimu.seas.security.controller;
 
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.entity.EncryptKey;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.EncryptService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

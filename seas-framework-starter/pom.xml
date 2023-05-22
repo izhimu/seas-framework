@@ -14,6 +14,7 @@
 
     <modules>
         <module>seas-framework-cache-starter</module>
+        <module>seas-framework-captcha-starter</module>
         <module>seas-framework-core-starter</module>
         <module>seas-framework-data-starter</module>
     </modules>

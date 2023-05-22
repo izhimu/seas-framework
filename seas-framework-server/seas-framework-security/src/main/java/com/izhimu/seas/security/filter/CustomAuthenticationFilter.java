@@ -1,19 +1,18 @@
 package com.izhimu.seas.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import com.anji.captcha.model.common.ResponseModel;
-import com.anji.captcha.model.vo.CaptchaVO;
-import com.anji.captcha.service.CaptchaService;
 import com.izhimu.seas.cache.helper.RedisHelper;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.captcha.model.Captcha;
+import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.entity.EncryptKey;
+import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.security.exception.LoginException;
 import com.izhimu.seas.security.holder.LoginHolder;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.service.EncryptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,10 +66,10 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         }
 
         // 验证码错误
-        CaptchaVO captcha = new CaptchaVO();
+        Captcha captcha = new Captcha();
+        captcha.setToken(loginDTO.getVerifyCodeKey());
         captcha.setCaptchaVerification(loginDTO.getVerifyCode());
-        ResponseModel verification = captchaService.verification(captcha);
-        if (!"0000".equals(verification.getRepCode())) {
+        if (!captchaService.verification(captcha)) {
             throw new LoginException(ResultCode.LOGIN_VERIFICATION_ERROR, "安全验证未通过");
         }
 
@@ -84,9 +83,8 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         // 解密登录凭证
         UsernamePasswordAuthenticationToken authRequest;
         try {
-            EncryptKey key = encryptService.getEncryptKey(loginDTO.getPasswordKey());
             authRequest = new UsernamePasswordAuthenticationToken(loginDTO.getAccount(),
-                    encryptService.decrypt(key, loginDTO.getPassword()));
+                    encryptService.decrypt(loginDTO.getPasswordKey(), loginDTO.getPassword()));
         } catch (Exception e) {
             throw new BadCredentialsException("账号或密码错误");
         }

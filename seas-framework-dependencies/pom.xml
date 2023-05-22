@@ -23,7 +23,6 @@
         <okhttp.version>4.10.0</okhttp.version>
         <oshi.version>6.4.0</oshi.version>
         <reflections.version>0.10.2</reflections.version>
-        <captcha.version>1.3.0</captcha.version>
         <bcprov.version>1.73</bcprov.version>
     </properties>
 
@@ -39,7 +38,12 @@
             <!-- Seas Component -->
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-core</artifactId>
+                <artifactId>seas-framework-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -49,7 +53,7 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-cache</artifactId>
+                <artifactId>seas-framework-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -61,6 +65,11 @@
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-cache-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-captcha-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -144,11 +153,6 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.anji-plus</groupId>
-                <artifactId>captcha</artifactId>
-                <version>${captcha.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>

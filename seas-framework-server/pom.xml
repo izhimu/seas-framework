@@ -14,9 +14,9 @@
 
     <modules>
         <module>seas-framework-base</module>
-        <module>seas-framework-storage</module>
-        <module>seas-framework-security</module>
         <module>seas-framework-healthy</module>
+        <module>seas-framework-security</module>
+        <module>seas-framework-storage</module>
     </modules>
 
     <dependencyManagement>
