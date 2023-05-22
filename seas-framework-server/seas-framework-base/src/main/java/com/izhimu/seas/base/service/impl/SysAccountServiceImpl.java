@@ -8,6 +8,7 @@ import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysAccountServiceImpl extends BaseServiceImpl<SysAccountMapper, SysAccount> implements SysAccountService {
 
     @Override

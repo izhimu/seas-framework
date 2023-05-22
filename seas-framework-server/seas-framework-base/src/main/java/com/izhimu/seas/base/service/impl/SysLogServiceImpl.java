@@ -12,6 +12,7 @@ import com.izhimu.seas.core.dto.SysLogDTO;
 import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog> implements SysLogService {
     @Override
     public void saveLog(SysLogDTO dto) {

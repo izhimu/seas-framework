@@ -17,6 +17,7 @@ import com.izhimu.seas.base.vo.SysMenuVO;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
     @Resource

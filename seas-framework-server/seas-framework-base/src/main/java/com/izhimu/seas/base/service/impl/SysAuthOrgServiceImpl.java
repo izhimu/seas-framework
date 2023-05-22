@@ -5,6 +5,7 @@ import com.izhimu.seas.base.entity.SysAuthOrg;
 import com.izhimu.seas.base.mapper.SysAuthOrgMapper;
 import com.izhimu.seas.base.service.SysAuthOrgService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 组织权限服务层实现
@@ -13,5 +14,6 @@ import org.springframework.stereotype.Service;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysAuthOrgServiceImpl extends ServiceImpl<SysAuthOrgMapper, SysAuthOrg> implements SysAuthOrgService {
 }

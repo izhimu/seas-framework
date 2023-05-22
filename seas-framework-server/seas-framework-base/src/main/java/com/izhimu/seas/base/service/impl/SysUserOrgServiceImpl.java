@@ -5,6 +5,7 @@ import com.izhimu.seas.base.entity.SysUserOrg;
 import com.izhimu.seas.base.mapper.SysUserOrgMapper;
 import com.izhimu.seas.base.service.SysUserOrgService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 用户组织中间服务层实现
@@ -13,5 +14,6 @@ import org.springframework.stereotype.Service;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysUserOrgServiceImpl extends ServiceImpl<SysUserOrgMapper, SysUserOrg> implements SysUserOrgService {
 }

@@ -20,6 +20,7 @@ import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMapper, SysAccountLog> implements SysAccountLogService {
 
     @Lazy
