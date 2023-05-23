@@ -90,7 +90,12 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-storage</artifactId>
+                <artifactId>seas-framework-healthy</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-job</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -100,7 +105,7 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-healthy</artifactId>
+                <artifactId>seas-framework-storage</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
