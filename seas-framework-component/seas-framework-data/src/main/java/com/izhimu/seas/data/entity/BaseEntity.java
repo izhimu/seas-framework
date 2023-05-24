@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.izhimu.seas.core.annotation.View;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,31 +23,37 @@ public class BaseEntity extends IdEntity {
     /**
      * 创建人
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
     /**
      * 创建时间
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
     /**
      * 更新人
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
     /**
      * 更新时间
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
     /**
      * 版本
      */
+    @View(ignore = true)
     @Version
     private Integer version;
     /**
      * 逻辑删除
      */
+    @View(ignore = true)
     @TableLogic
     private Integer logicDel;
 }

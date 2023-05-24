@@ -4,17 +4,17 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.event.LoginLogEvent;
 import com.izhimu.seas.security.exception.LoginException;
 import com.izhimu.seas.security.exception.PwdErrorException;
 import com.izhimu.seas.security.exception.VerifyCodeException;
 import com.izhimu.seas.security.holder.LoginHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -37,12 +37,10 @@ import java.util.Optional;
 @Slf4j
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
-    private final ApplicationContext applicationContext;
     private final LoginHolder loginHolder;
     private final SecurityConfig securityConfig;
 
-    public CustomLoginFailureHandler(ApplicationContext applicationContext, LoginHolder loginHolder, SecurityConfig securityConfig) {
-        this.applicationContext = applicationContext;
+    public CustomLoginFailureHandler(LoginHolder loginHolder, SecurityConfig securityConfig) {
         this.loginHolder = loginHolder;
         this.securityConfig = securityConfig;
     }
@@ -86,7 +84,8 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         httpServletResponse.setStatus(result.httpStatus().value());
         ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
         if (Objects.nonNull(status)) {
-            applicationContext.publishEvent(new LoginLogEvent(this, loginDTO, status));
+            loginDTO.setStatus(status);
+            EventManager.trigger(CoreEvent.E_LOGIN, loginDTO);
         }
     }
 }

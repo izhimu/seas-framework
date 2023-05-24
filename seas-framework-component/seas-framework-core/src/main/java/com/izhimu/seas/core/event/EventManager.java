@@ -79,25 +79,6 @@ public class EventManager {
     }
 
     /**
-     * 异步触发无参事件
-     *
-     * @param key key {@link IEvent Event}
-     */
-    public static void triggerAsync(IEvent key) {
-        EVENT_POOL.execute(() -> trigger(key));
-    }
-
-    /**
-     * 异步触发事件
-     *
-     * @param key  key {@link IEvent Event}
-     * @param data 数据
-     */
-    public static void triggerAsync(IEvent key, Object data) {
-        EVENT_POOL.execute(() -> trigger(key, data));
-    }
-
-    /**
      * 触发无参事件
      *
      * @param key key {@link IEvent Event}

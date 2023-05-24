@@ -6,13 +6,13 @@ import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.dto.SysLogDTO;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.event.LogEvent;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.utils.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,9 +32,6 @@ import java.util.Objects;
 @Aspect
 @Component
 public class OperationLogAspect {
-
-    @Resource
-    private ApplicationContext applicationContext;
 
     @Resource
     private HttpServletRequest request;
@@ -86,7 +83,7 @@ public class OperationLogAspect {
             dto.setRequestDate(LocalDateTime.now());
             dto.setParams(params);
             dto.setResult(JsonUtil.toJsonStr(ret));
-            applicationContext.publishEvent(new LogEvent(this, dto));
+            EventManager.trigger(CoreEvent.E_LOG, dto);
         } catch (Throwable e) {
             log.error("LogAspect Error", e);
         }

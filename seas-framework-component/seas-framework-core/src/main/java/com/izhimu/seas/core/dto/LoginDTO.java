@@ -73,4 +73,9 @@ public class LoginDTO implements Serializable {
      * 登录IP
      */
     private String ip;
+
+    /**
+     * 状态
+     */
+    private Integer status;
 }

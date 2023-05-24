@@ -1,15 +1,13 @@
 package com.izhimu.seas.base.listener;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.base.service.SysAccountLogService;
-import com.izhimu.seas.common.utils.JsonUtil;
-import com.izhimu.seas.security.event.LoginLogEvent;
+import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventListener;
+import com.izhimu.seas.core.event.IEvent;
+import com.izhimu.seas.core.event.IEventListener;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.lang.NonNull;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * 登录日志监听器
@@ -18,16 +16,31 @@ import javax.annotation.Resource;
  * @version v1.0
  */
 @Slf4j
-@Component
-public class LoginLogListener implements ApplicationListener<LoginLogEvent> {
+@EventListener
+public class LoginLogListener implements IEventListener {
 
-    @Resource
-    private SysAccountLogService service;
+    private final SysAccountLogService service;
 
-    @Async
+    public LoginLogListener() {
+        service = SpringUtil.getBean(SysAccountLogService.class);
+    }
+
     @Override
-    public void onApplicationEvent(@NonNull LoginLogEvent event) {
-        log.debug("LoginLogListener -> {}", JsonUtil.toJsonStr(event));
-        service.saveLog(event.getLoginDTO(), event.getStatus());
+    public boolean onEvent(Object data) {
+        if (data instanceof LoginDTO dto) {
+            service.saveLog(dto, dto.getStatus());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public IEvent getEvent() {
+        return CoreEvent.E_LOGIN;
+    }
+
+    @Override
+    public boolean async() {
+        return true;
     }
 }

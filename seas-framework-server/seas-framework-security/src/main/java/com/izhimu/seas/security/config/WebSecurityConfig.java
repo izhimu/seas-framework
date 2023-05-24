@@ -1,18 +1,17 @@
 package com.izhimu.seas.security.config;
 
+import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.security.filter.CustomAuthenticationFilter;
 import com.izhimu.seas.security.handler.*;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.provider.CustomAuthenticationProvider;
 import com.izhimu.seas.security.resolver.DiverseHttpSessionIdResolver;
-import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.security.service.SecurityService;
 import com.izhimu.seas.security.service.impl.DefSecurityServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -49,9 +48,6 @@ public class WebSecurityConfig {
     private CaptchaService captchaService;
 
     @Resource
-    private ApplicationContext applicationContext;
-
-    @Resource
     private LoginHolder loginHolder;
 
     @Resource
@@ -71,8 +67,8 @@ public class WebSecurityConfig {
     @Bean
     public Filter authenticationFilter(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter(encryptService, captchaService, loginHolder, securityConfig);
-        filter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(applicationContext, loginHolder));
-        filter.setAuthenticationFailureHandler(new CustomLoginFailureHandler(applicationContext, loginHolder, securityConfig));
+        filter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(loginHolder));
+        filter.setAuthenticationFailureHandler(new CustomLoginFailureHandler(loginHolder, securityConfig));
         filter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
         return filter;
     }
@@ -106,7 +102,7 @@ public class WebSecurityConfig {
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher(SecurityConstant.URL_LOGOUT, "POST"))
                 .deleteCookies()
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler(applicationContext));
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler());
 
         // 错误处理
         http.exceptionHandling()

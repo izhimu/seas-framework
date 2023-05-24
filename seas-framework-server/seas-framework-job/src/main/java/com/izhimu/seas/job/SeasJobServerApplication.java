@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Seas Storage Server
+ * Seas Job Server
  *
  * @author haoran
  */
