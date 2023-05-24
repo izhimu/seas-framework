@@ -1,7 +1,10 @@
 package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.BaseEntity;
+import com.izhimu.seas.data.enums.SearchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,18 +22,22 @@ public class SysMenu extends BaseEntity {
     /**
      * 父级ID
      */
+    @Search(type = SearchType.EQUALS)
     private Long parentId;
     /**
      * 排序
      */
+    @OrderBy
     private Integer sort;
     /**
      * 菜单名称
      */
+    @Search
     private String menuName;
     /**
      * 菜单标识
      */
+    @Search
     private String menuCode;
     /**
      * 菜单类型
@@ -44,6 +51,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 菜单地址
      */
+    @Search
     private String menuUrl;
     /**
      * 菜单组件
@@ -56,5 +64,6 @@ public class SysMenu extends BaseEntity {
     /**
      * 是否显示
      */
+    @Search(type = SearchType.EQUALS)
     private Integer display;
 }

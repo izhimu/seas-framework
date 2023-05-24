@@ -1,8 +1,6 @@
 package com.izhimu.seas.base.service;
 
-import com.izhimu.seas.base.dto.SysUserDTO;
 import com.izhimu.seas.base.entity.SysUser;
-import com.izhimu.seas.base.vo.SysUserVO;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
@@ -22,14 +20,14 @@ public interface SysUserService extends IBaseService<SysUser> {
      *
      * @param sysUser SysUserDTO
      */
-    void saveUser(SysUserDTO sysUser);
+    void saveUser(SysUser sysUser);
 
     /**
      * 更新用户
      *
      * @param sysUser SysUserDTO
      */
-    void updateUser(SysUserDTO sysUser);
+    void updateUser(SysUser sysUser);
 
     /**
      * 删除用户
@@ -43,7 +41,7 @@ public interface SysUserService extends IBaseService<SysUser> {
      *
      * @return List<SysUserVO>
      */
-    List<SysUserVO> getUserList();
+    List<SysUser> getUserList();
 
     /**
      * 模糊查询用户信息
@@ -59,7 +57,7 @@ public interface SysUserService extends IBaseService<SysUser> {
      * @param id Long
      * @return SysUserVO
      */
-    SysUserVO get(Long id);
+    SysUser get(Long id);
 
     /**
      * 获取当前登录用户

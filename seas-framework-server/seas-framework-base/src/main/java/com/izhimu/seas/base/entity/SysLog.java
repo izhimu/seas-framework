@@ -2,7 +2,11 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
+import com.izhimu.seas.data.enums.SearchType;
 import com.izhimu.seas.data.handler.JsonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,10 +27,12 @@ public class SysLog extends IdEntity {
     /**
      * 请求地址
      */
+    @Search
     private String requestUrl;
     /**
      * 请求方式
      */
+    @Search(type = SearchType.EQUALS)
     private String method;
     /**
      * 请求参数
@@ -41,10 +47,12 @@ public class SysLog extends IdEntity {
     /**
      * 请求时间
      */
+    @OrderBy(asc = false)
     private LocalDateTime requestDate;
     /**
      * 操作人
      */
+    @Search(type = SearchType.EQUALS)
     private Long userId;
     /**
      * 账号
@@ -57,6 +65,7 @@ public class SysLog extends IdEntity {
     /**
      * 日志名称
      */
+    @Search
     private String logName;
     /**
      * 日志类型
@@ -69,9 +78,31 @@ public class SysLog extends IdEntity {
     /**
      * 请求状态
      */
+    @Search
     private String status;
     /**
      * 执行用时
      */
     private Integer runtime;
+    // Param
+    /**
+     * 请求时间
+     */
+    @View(ignore = true)
+    @TableField(exist = false)
+    @Search(name = "request_date", type = SearchType.GE)
+    private LocalDateTime requestDateStart;
+    /**
+     * 请求时间
+     */
+    @View(ignore = true)
+    @TableField(exist = false)
+    @Search(name = "request_date", type = SearchType.LE)
+    private LocalDateTime requestDateEnd;
+    // View
+    /**
+     * 执行用时
+     */
+    @TableField(exist = false)
+    private String runtimeValue;
 }

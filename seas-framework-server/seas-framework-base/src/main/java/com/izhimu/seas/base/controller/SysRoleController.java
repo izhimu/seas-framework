@@ -1,11 +1,9 @@
 package com.izhimu.seas.base.controller;
 
-import com.izhimu.seas.base.dto.SysAuthMenuDTO;
-import com.izhimu.seas.base.dto.SysUserRoleDTO;
+import com.izhimu.seas.base.entity.SysAuthMenu;
 import com.izhimu.seas.base.entity.SysRole;
-import com.izhimu.seas.base.param.SysRoleParam;
+import com.izhimu.seas.base.entity.SysUserRole;
 import com.izhimu.seas.base.service.SysRoleService;
-import com.izhimu.seas.base.vo.SysRoleVO;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.data.controller.AbsBaseController;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/role")
-public class SysRoleController extends AbsBaseController<SysRoleService, SysRole, SysRoleVO, SysRoleParam> {
+public class SysRoleController extends AbsBaseController<SysRoleService, SysRole> {
 
     @Override
     public String logPrefix() {
@@ -42,11 +40,11 @@ public class SysRoleController extends AbsBaseController<SysRoleService, SysRole
     /**
      * 更新菜单
      *
-     * @param dto {@link SysAuthMenuDTO SysAuthMenuDTO}
+     * @param dto {@link SysAuthMenu SysAuthMenu}
      */
     @OperationLog("用户角色-更新菜单")
     @PostMapping("/auth/menu")
-    public void updateAuthMenu(@RequestBody SysAuthMenuDTO dto) {
+    public void updateAuthMenu(@RequestBody SysAuthMenu dto) {
         service.updateRoleMenu(dto);
     }
 
@@ -65,11 +63,11 @@ public class SysRoleController extends AbsBaseController<SysRoleService, SysRole
     /**
      * 更新用户
      *
-     * @param dto {@link SysUserRoleDTO SysUserRoleDTO}
+     * @param dto {@link SysUserRole SysUserRole}
      */
     @OperationLog("用户角色-更新用户")
     @PostMapping("/user")
-    public void updateUser(@RequestBody SysUserRoleDTO dto) {
+    public void updateUser(@RequestBody SysUserRole dto) {
         service.updateUserRole(dto);
     }
 }

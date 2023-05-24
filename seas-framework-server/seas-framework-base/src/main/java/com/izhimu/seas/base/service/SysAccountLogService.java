@@ -1,8 +1,6 @@
 package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.entity.SysAccountLog;
-import com.izhimu.seas.base.param.SysAccountLogParam;
-import com.izhimu.seas.base.vo.SysAccountLogVO;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.IBaseService;
@@ -19,10 +17,10 @@ public interface SysAccountLogService extends IBaseService<SysAccountLog> {
      * 分页查询
      *
      * @param page  Pagination
-     * @param param SysAccountLogParam
-     * @return Pagination<SysAccountLogVO>
+     * @param param SysAccountLog
+     * @return Pagination<SysAccountLog>
      */
-    Pagination<SysAccountLogVO> findPage(Pagination<SysAccountLog> page, SysAccountLogParam param);
+    Pagination<SysAccountLog> findPage(Pagination<SysAccountLog> page, SysAccountLog param);
 
     /**
      * 保存日志
@@ -38,5 +36,5 @@ public interface SysAccountLogService extends IBaseService<SysAccountLog> {
      * @param id Long
      * @return SysAccountLogVO
      */
-    SysAccountLogVO get(Long id);
+    SysAccountLog get(Long id);
 }

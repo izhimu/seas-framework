@@ -1,10 +1,8 @@
 package com.izhimu.seas.base.service.impl;
 
-import cn.hutool.extra.cglib.CglibUtil;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.mapper.SysAccountMapper;
 import com.izhimu.seas.base.service.SysAccountService;
-import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
@@ -23,10 +21,10 @@ import java.util.List;
 public class SysAccountServiceImpl extends BaseServiceImpl<SysAccountMapper, SysAccount> implements SysAccountService {
 
     @Override
-    public List<SysAccountVO> getByUserId(Long userId) {
-        return CglibUtil.copyList(this.lambdaQuery()
+    public List<SysAccount> getByUserId(Long userId) {
+        return this.lambdaQuery()
                 .eq(SysAccount::getUserId, userId)
-                .list(), SysAccountVO::new);
+                .list();
     }
 
     @Override

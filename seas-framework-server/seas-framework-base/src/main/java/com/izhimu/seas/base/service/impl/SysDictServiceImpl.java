@@ -5,7 +5,6 @@ import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.izhimu.seas.base.entity.SysDict;
 import com.izhimu.seas.base.mapper.SysDictMapper;
-import com.izhimu.seas.base.param.SysDictParam;
 import com.izhimu.seas.base.service.SysDictService;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
 public class SysDictServiceImpl extends BaseServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
     @Override
-    public List<Tree<Long>> tree(SysDictParam param) {
+    public List<Tree<Long>> tree(SysDict param) {
         List<SysDict> list = this.paramQuery().param(param).wrapper().list();
         TreeNodeConfig config = new TreeNodeConfig();
         config.setIdKey("key");

@@ -1,5 +1,6 @@
 package com.izhimu.seas.base.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.izhimu.seas.data.entity.BaseEntity;
 import lombok.Data;
@@ -42,4 +43,9 @@ public class SysAccount extends BaseEntity {
      * 最后登录信息ID
      */
     private Long lastId;
+    /**
+     * 加密Key
+     */
+    @TableField(exist = false)
+    private String passwordKey;
 }

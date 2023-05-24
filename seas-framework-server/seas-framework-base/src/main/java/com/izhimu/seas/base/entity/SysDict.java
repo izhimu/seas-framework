@@ -1,7 +1,10 @@
 package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
+import com.izhimu.seas.data.enums.SearchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,14 +22,17 @@ public class SysDict extends IdEntity {
     /**
      * 父级ID
      */
+    @Search(type = SearchType.EQUALS)
     private Long parentId;
     /**
      * 字典名称
      */
+    @Search
     private String dictName;
     /**
      * 字典编号
      */
+    @Search
     private String dictCode;
     /**
      * 是否固定
@@ -41,5 +47,6 @@ public class SysDict extends IdEntity {
     /**
      * 排序
      */
+    @OrderBy
     private Integer sort;
 }

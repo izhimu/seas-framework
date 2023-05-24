@@ -2,7 +2,10 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,9 +46,14 @@ public class SysRole extends IdEntity {
     /**
      * 角色名称
      */
+    @Search
     private String roleName;
     /**
      * 角色描述
      */
     private String roleDesc;
+    // Param
+    @TableId
+    @OrderBy(asc = false)
+    private Long id;
 }

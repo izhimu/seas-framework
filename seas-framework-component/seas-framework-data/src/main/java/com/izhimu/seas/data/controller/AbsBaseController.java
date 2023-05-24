@@ -1,8 +1,6 @@
 package com.izhimu.seas.data.controller;
 
 import cn.hutool.core.exceptions.ValidateException;
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ReflectUtil;
 import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.data.entity.IdEntity;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * 基础控制层
@@ -22,7 +19,7 @@ import java.util.function.Supplier;
  * @author haoran
  * @version 1.0
  */
-public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdEntity, V, P> {
+public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdEntity> {
 
     /**
      * 服务层
@@ -39,31 +36,6 @@ public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdE
     }
 
     /**
-     * 视图类类型
-     */
-    protected Class<V> voClass = getVoClass();
-
-    /**
-     * 视图提供者
-     */
-    protected Supplier<V> voTarget = getVoTarget();
-
-    @SuppressWarnings("unchecked")
-    public Class<V> getVoClass() {
-        if (Objects.nonNull(this.voClass)) {
-            return this.voClass;
-        }
-        return (Class<V>) ClassUtil.getTypeArgument(this.getClass(), 2);
-    }
-
-    public Supplier<V> getVoTarget() {
-        if (Objects.nonNull(this.voTarget)) {
-            return this.voTarget;
-        }
-        return () -> ReflectUtil.newInstance(getVoClass());
-    }
-
-    /**
      * 日志前缀
      *
      * @return String
@@ -73,14 +45,14 @@ public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdE
 
     @OperationLog("-分页查询")
     @GetMapping("/page")
-    public Pagination<V> page(Pagination<T> page, P param) {
-        return service.page(page, param, this.voTarget);
+    public Pagination<T> page(Pagination<T> page, T param) {
+        return service.page(page, param);
     }
 
     @OperationLog("-详情")
     @GetMapping("/{id}")
-    public V get(@PathVariable Long id) {
-        return service.get(id, this.voClass);
+    public T get(@PathVariable Long id) {
+        return service.getById(id);
     }
 
     @OperationLog("-新增")

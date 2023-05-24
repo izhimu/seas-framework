@@ -6,13 +6,11 @@ import com.izhimu.seas.base.entity.SysAccountLog;
 import com.izhimu.seas.base.entity.SysDevice;
 import com.izhimu.seas.base.entity.SysUser;
 import com.izhimu.seas.base.mapper.SysAccountLogMapper;
-import com.izhimu.seas.base.param.SysAccountLogParam;
 import com.izhimu.seas.base.service.SysAccountLogService;
 import com.izhimu.seas.base.service.SysAccountService;
 import com.izhimu.seas.base.service.SysDeviceService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.utils.IpUtil;
-import com.izhimu.seas.base.vo.SysAccountLogVO;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.entity.Pagination;
@@ -95,13 +93,13 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
     }
 
     @Override
-    public Pagination<SysAccountLogVO> findPage(Pagination<SysAccountLog> page, SysAccountLogParam param) {
-        Pagination<SysAccountLogVO> result = super.page(page, param, SysAccountLogVO::new);
+    public Pagination<SysAccountLog> findPage(Pagination<SysAccountLog> page, SysAccountLog param) {
+        Pagination<SysAccountLog> result = super.page(page, param);
         Set<Long> accountIds = result.getRecords().stream()
-                .map(SysAccountLogVO::getAccountId)
+                .map(SysAccountLog::getAccountId)
                 .collect(Collectors.toSet());
         Set<Long> userIds = result.getRecords().stream()
-                .map(SysAccountLogVO::getUserId)
+                .map(SysAccountLog::getUserId)
                 .collect(Collectors.toSet());
         Map<Long, String> accountMap;
         Map<Long, String> userMap;
@@ -133,8 +131,8 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
     }
 
     @Override
-    public SysAccountLogVO get(Long id) {
-        SysAccountLogVO sysAccountLogVO = super.get(id, SysAccountLogVO.class);
+    public SysAccountLog get(Long id) {
+        SysAccountLog sysAccountLogVO = super.getById(id);
         SysUser user = userService.getById(sysAccountLogVO.getUserId());
         sysAccountLogVO.setUserName(user.getUserName());
         SysAccount account = accountService.getById(sysAccountLogVO.getAccountId());
