@@ -132,11 +132,11 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
 
     @Override
     public SysAccountLog get(Long id) {
-        SysAccountLog sysAccountLogVO = super.getById(id);
-        SysUser user = userService.getById(sysAccountLogVO.getUserId());
-        sysAccountLogVO.setUserName(user.getUserName());
-        SysAccount account = accountService.getById(sysAccountLogVO.getAccountId());
-        sysAccountLogVO.setAccount(account.getUserAccount());
-        return sysAccountLogVO;
+        SysAccountLog sysAccountLog = super.getById(id);
+        SysUser user = userService.getById(sysAccountLog.getUserId());
+        sysAccountLog.setUserName(user.getUserName());
+        SysAccount account = accountService.getById(sysAccountLog.getAccountId());
+        sysAccountLog.setAccount(account.getUserAccount());
+        return sysAccountLog;
     }
 }

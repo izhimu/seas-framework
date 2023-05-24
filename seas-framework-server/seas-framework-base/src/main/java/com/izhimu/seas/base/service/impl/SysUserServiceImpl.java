@@ -1,6 +1,5 @@
 package com.izhimu.seas.base.service.impl;
 
-import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.entity.SysUser;
@@ -56,13 +55,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         SysUser user = this.getById(id);
         List<SysAccount> accountVOList = accountService.getByUserId(id);
         user.setAccounts(accountVOList);
+        user.setAccounts1(new SysAccount());
         return user;
     }
 
     @Override
     public void saveUser(SysUser sysUser) {
-        SysUser user = CglibUtil.copy(sysUser, SysUser.class);
-        this.save(user);
+        this.save(sysUser);
         if (sysUser.getAccounts().isEmpty()) {
             return;
         }
@@ -70,17 +69,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         AtomicReference<String> key = new AtomicReference<>();
         sysUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(item.getPasswordKey()));
         List<SysAccount> accountList = new ArrayList<>();
-        sysUser.getAccounts().forEach(newSysAccountConsumer(user, key, accountList));
+        sysUser.getAccounts().forEach(newSysAccountConsumer(sysUser, key, accountList));
         accountService.saveBatch(accountList);
     }
 
     @Override
     public void updateUser(SysUser sysUser) {
-        SysUser user = CglibUtil.copy(sysUser, SysUser.class);
-        this.updateById(user);
+        this.updateById(sysUser);
         if (sysUser.getAccounts().isEmpty()) {
             accountService.lambdaUpdate()
-                    .eq(SysAccount::getUserId, user.getId())
+                    .eq(SysAccount::getUserId, sysUser.getId())
                     .remove();
             return;
         }
@@ -95,7 +93,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
                 .map(SysAccount::getId).toList();
         List<SysAccount> delIdList = accountService.lambdaQuery()
                 .select(SysAccount::getId)
-                .eq(SysAccount::getUserId, user.getId())
+                .eq(SysAccount::getUserId, sysUser.getId())
                 .list()
                 .stream()
                 .filter(v -> !accountIdList.contains(v.getId()))
@@ -105,7 +103,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         List<SysAccount> saveAccountList = new ArrayList<>();
         sysUser.getAccounts().stream()
                 .filter(v -> Objects.isNull(v.getId()))
-                .forEach(newSysAccountConsumer(user, key, saveAccountList));
+                .forEach(newSysAccountConsumer(sysUser, key, saveAccountList));
         accountService.saveBatch(saveAccountList);
         // 修改的账号
         List<SysAccount> updateAccountList = new ArrayList<>();

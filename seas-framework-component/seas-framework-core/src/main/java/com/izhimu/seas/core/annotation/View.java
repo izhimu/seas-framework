@@ -16,4 +16,6 @@ public @interface View {
     String value() default "";
 
     boolean ignore() default false;
+
+    int recursionLevel() default 0;
 }

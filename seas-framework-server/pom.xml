@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>seas-framework-all</module>
         <module>seas-framework-base</module>
         <module>seas-framework-healthy</module>
         <module>seas-framework-job</module>
