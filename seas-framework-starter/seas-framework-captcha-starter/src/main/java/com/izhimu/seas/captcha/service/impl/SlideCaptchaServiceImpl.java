@@ -124,7 +124,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
      * @param originalImage    BufferedImage
      * @param blockImage       BufferedImage
      * @param blockImageBase64 String
-     * @return CaptchaVO
+     * @return Captcha
      */
     public Captcha pictureTemplatesCut(BufferedImage originalImage, BufferedImage blockImage, String blockImageBase64) {
         try {

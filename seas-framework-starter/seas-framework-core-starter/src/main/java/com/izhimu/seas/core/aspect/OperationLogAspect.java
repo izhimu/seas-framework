@@ -4,7 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.core.dto.SysLogDTO;
+import com.izhimu.seas.core.web.entity.Log;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
@@ -57,33 +57,33 @@ public class OperationLogAspect {
             return ret;
         }
         try {
-            SysLogDTO dto = new SysLogDTO();
+            Log data = new Log();
             if (Objects.nonNull(request)) {
-                dto.setRequestUrl(request.getRequestURI());
-                dto.setMethod(request.getMethod());
-                dto.setIp(ServletUtil.getClientIP(request));
+                data.setRequestUrl(request.getRequestURI());
+                data.setMethod(request.getMethod());
+                data.setIp(ServletUtil.getClientIP(request));
             }
             if (Objects.nonNull(response)) {
-                dto.setStatus(String.valueOf(response.getStatus()));
+                data.setStatus(String.valueOf(response.getStatus()));
             }
             User user = SecurityUtil.contextUser();
             if (Objects.nonNull(user)) {
-                dto.setUserId(user.getId());
-                dto.setAccount(user.getUsername());
-                dto.setUserName(user.getNickName());
+                data.setUserId(user.getId());
+                data.setAccount(user.getUsername());
+                data.setUserName(user.getNickName());
             }
             Method logPrefix = ReflectUtil.getMethodByName(target.getClass(), "logPrefix");
             String logName = operationLog.value();
             if (Objects.nonNull(logPrefix)) {
                 logName = ((String) logPrefix.invoke(target)).concat(logName);
             }
-            dto.setLogName(logName);
-            dto.setLogType(operationLog.type());
-            dto.setRuntime((int) (end - start));
-            dto.setRequestDate(LocalDateTime.now());
-            dto.setParams(params);
-            dto.setResult(JsonUtil.toJsonStr(ret));
-            EventManager.trigger(CoreEvent.E_LOG, dto);
+            data.setLogName(logName);
+            data.setLogType(operationLog.type());
+            data.setRuntime((int) (end - start));
+            data.setRequestDate(LocalDateTime.now());
+            data.setParams(params);
+            data.setResult(JsonUtil.toJsonStr(ret));
+            EventManager.trigger(CoreEvent.E_LOG, data);
         } catch (Throwable e) {
             log.error("LogAspect Error", e);
         }

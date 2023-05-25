@@ -5,7 +5,7 @@ import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.common.utils.JsonUtil;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
@@ -52,9 +52,9 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        LoginDTO loginDTO;
+        Login loginDTO;
         try (InputStream is = request.getInputStream()) {
-            loginDTO = JsonUtil.toObject(is, LoginDTO.class);
+            loginDTO = JsonUtil.toObject(is, Login.class);
             if (Objects.isNull(loginDTO)) {
                 throw new LoginException(ResultCode.LOGIN_ERROR, "登录信息异常");
             }

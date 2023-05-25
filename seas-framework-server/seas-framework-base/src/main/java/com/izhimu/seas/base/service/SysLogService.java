@@ -1,8 +1,8 @@
 package com.izhimu.seas.base.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.SysLog;
-import com.izhimu.seas.core.dto.SysLogDTO;
-import com.izhimu.seas.data.entity.Pagination;
+import com.izhimu.seas.core.web.entity.Log;
 import com.izhimu.seas.data.service.IBaseService;
 
 /**
@@ -16,18 +16,18 @@ public interface SysLogService extends IBaseService<SysLog> {
     /**
      * 保存日志
      *
-     * @param dto {@link SysLogDTO SysLogDTO}
+     * @param log {@link Log SysLogDTO}
      */
-    void saveLog(SysLogDTO dto);
+    void saveLog(Log log);
 
     /**
      * 分页查询数据
      *
-     * @param page 分页参数 {@link Pagination Pagination}
-     * @param dto  查询参数 {@link SysLog SysLog}
+     * @param page 分页参数 {@link Page Page}
+     * @param log  查询参数 {@link SysLog SysLog}
      * @return 分页数据 {@link SysLog SysLog}
      */
-    Pagination<SysLog> findPage(Pagination<SysLog> page, SysLog dto);
+    Page<SysLog> findPage(Page<SysLog> page, SysLog log);
 
     /**
      * 查询详情

@@ -39,7 +39,7 @@ public interface SysUserService extends IBaseService<SysUser> {
     /**
      * 获取所有用户
      *
-     * @return List<SysUserVO>
+     * @return List<SysUser>
      */
     List<SysUser> getUserList();
 
@@ -55,7 +55,7 @@ public interface SysUserService extends IBaseService<SysUser> {
      * 根据ID获取
      *
      * @param id Long
-     * @return SysUserVO
+     * @return SysUser
      */
     SysUser get(Long id);
 

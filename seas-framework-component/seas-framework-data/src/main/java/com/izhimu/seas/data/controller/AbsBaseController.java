@@ -1,10 +1,10 @@
 package com.izhimu.seas.data.controller;
 
 import cn.hutool.core.exceptions.ValidateException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.data.entity.IdEntity;
-import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdE
 
     @OperationLog("-分页查询")
     @GetMapping("/page")
-    public Pagination<T> page(Pagination<T> page, T param) {
+    public Page<T> page(Page<T> page, T param) {
         return service.page(page, param);
     }
 

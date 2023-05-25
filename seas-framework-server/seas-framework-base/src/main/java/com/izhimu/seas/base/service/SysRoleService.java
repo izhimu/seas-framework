@@ -33,9 +33,9 @@ public interface SysRoleService extends IBaseService<SysRole> {
     /**
      * 更新用户角色关联
      *
-     * @param dto SysUserRoleDTO
+     * @param entity SysUserRole
      */
-    void updateUserRole(SysUserRole dto);
+    void updateUserRole(SysUserRole entity);
 
     /**
      * 获取用户角色关联

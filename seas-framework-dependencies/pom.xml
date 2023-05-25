@@ -13,15 +13,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>2.7.10</spring.boot.version>
-        <hutool.version>5.8.12</hutool.version>
+        <spring.boot.version>2.7.12</spring.boot.version>
+        <hutool.version>5.8.18</hutool.version>
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
-        <kryo.version>5.4.0</kryo.version>
-        <cglib.version>3.3.0</cglib.version>
-        <minio.version>8.5.2</minio.version>
-        <compress.version>1.22</compress.version>
-        <okhttp.version>4.10.0</okhttp.version>
-        <oshi.version>6.4.0</oshi.version>
+        <kryo.version>5.5.0</kryo.version>
+        <minio.version>8.5.3</minio.version>
+        <compress.version>1.23.0</compress.version>
+        <okhttp.version>4.11.0</okhttp.version>
+        <oshi.version>6.4.2</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.73</bcprov.version>
     </properties>
@@ -128,11 +127,6 @@
                 <groupId>com.esotericsoftware</groupId>
                 <artifactId>kryo</artifactId>
                 <version>${kryo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>${cglib.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.minio</groupId>

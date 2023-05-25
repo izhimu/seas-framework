@@ -1,9 +1,9 @@
 package com.izhimu.seas.base.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.SysLog;
 import com.izhimu.seas.base.service.SysLogService;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.data.entity.Pagination;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +27,13 @@ public class SysLogController {
     /**
      * 分页查询
      *
-     * @param page  分页参数 {@link Pagination Pagination}
+     * @param page  分页参数 {@link Page Page}
      * @param param 查询参数 {@link SysLog SysLog}
      * @return 分页数据 {@link SysLog SysLog}
      */
     @OperationLog(value = "操作日志-分页查询", enable = false)
     @GetMapping("/page")
-    public Pagination<SysLog> page(Pagination<SysLog> page, SysLog param) {
+    public Page<SysLog> page(Page<SysLog> page, SysLog param) {
         return service.findPage(page, param);
     }
 

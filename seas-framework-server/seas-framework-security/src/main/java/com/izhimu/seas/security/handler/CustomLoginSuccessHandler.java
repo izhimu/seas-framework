@@ -2,14 +2,13 @@ package com.izhimu.seas.security.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
-import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.web.Result;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.holder.LoginHolder;
-import com.izhimu.seas.security.vo.LoginVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -35,7 +34,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-        LoginDTO loginDTO = loginHolder.get(true);
+        Login loginDTO = loginHolder.get(true);
         try {
             createToken(httpServletRequest, httpServletResponse, authentication);
             // 清除错误次数
@@ -60,13 +59,13 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
      */
     private void createToken(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         User userDetails = (User) authentication.getPrincipal();
-        LoginVO loginVO = new LoginVO();
-        loginVO.setToken(request.getSession().getId());
-        loginVO.setTokenTimeout((long) request.getSession().getMaxInactiveInterval());
-        loginVO.setUserId(userDetails.getId());
-        loginVO.setPwdExpired(false);
-        loginVO.setUserName(userDetails.getNickName());
-        Result<LoginVO> result = Result.ok(loginVO);
+        Login login = new Login();
+        login.setToken(request.getSession().getId());
+        login.setTokenTimeout((long) request.getSession().getMaxInactiveInterval());
+        login.setUserId(userDetails.getId());
+        login.setPwdExpired(false);
+        login.setUserName(userDetails.getNickName());
+        Result<Object> result = Result.ok(login.toView());
         ServletUtil.write(response, result.toString(), MediaType.APPLICATION_JSON_VALUE);
     }
 }

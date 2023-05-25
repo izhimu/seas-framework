@@ -2,9 +2,8 @@ package com.izhimu.seas.storage.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.storage.dto.SysFileDTO;
+import com.izhimu.seas.storage.entity.SysFile;
 import com.izhimu.seas.storage.service.SysFileService;
-import com.izhimu.seas.storage.vo.SysFileVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +44,7 @@ public class SysFileController {
      */
     @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/{id}")
-    public SysFileVO getInfo(@PathVariable Long id) {
+    public SysFile getInfo(@PathVariable Long id) {
         return service.getFile(id);
     }
 
@@ -57,7 +56,7 @@ public class SysFileController {
      */
     @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/bind/{bindId}")
-    public List<SysFileVO> getInfos(@PathVariable Long bindId) {
+    public List<SysFile> getInfos(@PathVariable Long bindId) {
         return service.getFiles(bindId);
     }
 
@@ -69,7 +68,7 @@ public class SysFileController {
      */
     @OperationLog("文件服务-获取文件信息")
     @GetMapping("/info/bind/compression/{bindId}")
-    public SysFileVO getInfosToCompression(@PathVariable Long bindId) {
+    public SysFile getInfosToCompression(@PathVariable Long bindId) {
         return service.getFilesToCompression(bindId);
     }
 
@@ -81,13 +80,13 @@ public class SysFileController {
     @OperationLog(value = "文件服务-下载文件", enable = false)
     @GetMapping("/{id}")
     public void download(@PathVariable Long id, HttpServletResponse response) throws FileNotFoundException {
-        SysFileVO sysFileVO = service.getFile(id);
-        if (Objects.isNull(sysFileVO)) {
+        SysFile sysFile = service.getFile(id);
+        if (Objects.isNull(sysFile)) {
             throw new FileNotFoundException();
         }
-        String fileName = sysFileVO.getFileName().concat(".").concat(sysFileVO.getFileSuffix());
+        String fileName = sysFile.getFileName().concat(".").concat(sysFile.getFileSuffix());
         response.reset();
-        response.setContentType(sysFileVO.getContentType());
+        response.setContentType(sysFile.getContentType());
         response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
         try (InputStream is = service.download(id); ServletOutputStream os = response.getOutputStream()) {
             byte[] b = new byte[1024];
@@ -128,16 +127,16 @@ public class SysFileController {
     /**
      * 文件上传
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      */
     @OperationLog(value = "文件服务-文件上传", enable = false)
     @PostMapping
-    public List<SysFileVO> upload(SysFileDTO dto, MultipartHttpServletRequest request) {
+    public List<SysFile> upload(SysFile file, MultipartHttpServletRequest request) {
         Collection<MultipartFile> values = request.getFileMap().values();
-        List<SysFileVO> vos = new ArrayList<>();
+        List<SysFile> vos = new ArrayList<>();
         values.parallelStream().forEach(v -> {
             try {
-                vos.add(service.putFile(toDTO(dto, v), v.getInputStream()));
+                vos.add(service.putFile(wrapFile(file, v), v.getInputStream()));
             } catch (IOException e) {
                 log.error("", e);
             }
@@ -167,17 +166,17 @@ public class SysFileController {
         service.delFiles(bindId);
     }
 
-    private SysFileDTO toDTO(SysFileDTO dto, MultipartFile file) {
-        SysFileDTO newDto = new SysFileDTO();
-        newDto.setBindId(dto.getBindId());
+    private SysFile wrapFile(SysFile entity, MultipartFile file) {
+        SysFile sysFile = new SysFile();
+        sysFile.setBindId(entity.getBindId());
         if (Objects.nonNull(file.getOriginalFilename())) {
             int index = file.getOriginalFilename().lastIndexOf(".");
-            newDto.setFileName(file.getOriginalFilename().substring(0, index));
-            newDto.setFileSuffix(file.getOriginalFilename().substring(index + 1));
+            sysFile.setFileName(file.getOriginalFilename().substring(0, index));
+            sysFile.setFileSuffix(file.getOriginalFilename().substring(index + 1));
         }
-        newDto.setFileSize(file.getSize());
-        newDto.setContentType(file.getContentType());
-        return newDto;
+        sysFile.setFileSize(file.getSize());
+        sysFile.setContentType(file.getContentType());
+        return sysFile;
     }
 
     /**

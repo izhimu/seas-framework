@@ -1,6 +1,7 @@
 package com.izhimu.seas.base.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.entity.SysAccountLog;
 import com.izhimu.seas.base.entity.SysDevice;
@@ -11,9 +12,8 @@ import com.izhimu.seas.base.service.SysAccountService;
 import com.izhimu.seas.base.service.SysDeviceService;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.base.utils.IpUtil;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.data.entity.BaseEntity;
-import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
@@ -47,7 +47,7 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
 
     @Async
     @Override
-    public void saveLog(LoginDTO loginDTO, int status) {
+    public void saveLog(Login loginDTO, int status) {
         SysAccount account = accountService.lambdaQuery()
                 .eq(SysAccount::getUserAccount, loginDTO.getAccount())
                 .one();
@@ -93,8 +93,8 @@ public class SysAccountLogServiceImpl extends BaseServiceImpl<SysAccountLogMappe
     }
 
     @Override
-    public Pagination<SysAccountLog> findPage(Pagination<SysAccountLog> page, SysAccountLog param) {
-        Pagination<SysAccountLog> result = super.page(page, param);
+    public Page<SysAccountLog> findPage(Page<SysAccountLog> page, SysAccountLog param) {
+        Page<SysAccountLog> result = super.page(page, param);
         Set<Long> accountIds = result.getRecords().stream()
                 .map(SysAccountLog::getAccountId)
                 .collect(Collectors.toSet());

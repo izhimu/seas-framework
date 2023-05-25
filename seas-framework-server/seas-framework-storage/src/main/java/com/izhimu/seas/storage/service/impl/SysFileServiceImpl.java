@@ -4,16 +4,13 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.extra.cglib.CglibUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.storage.config.MinioConfig;
-import com.izhimu.seas.storage.dto.SysFileDTO;
 import com.izhimu.seas.storage.entity.SysFile;
 import com.izhimu.seas.storage.mapper.SysFileMapper;
 import com.izhimu.seas.storage.service.SysFileService;
-import com.izhimu.seas.storage.vo.SysFileVO;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
@@ -50,7 +47,7 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
     private MinioConfig minioConfig;
 
     @Override
-    public SysFileVO getFile(Long id) {
+    public SysFile getFile(Long id) {
         Optional<SysFile> sysFile = this.lambdaQuery()
                 .eq(SysFile::getDelTag, 0)
                 .eq(SysFile::getId, id)
@@ -58,33 +55,32 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
         if (sysFile.isEmpty()) {
             return null;
         }
-        SysFileVO vo = CglibUtil.copy(sysFile.get(), SysFileVO.class);
-        vo.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(vo.getId())));
-        return vo;
+        SysFile file = sysFile.get();
+        file.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(file.getId())));
+        return file;
     }
 
     @Override
-    public List<SysFileVO> getFiles(Long bindId) {
-        List<SysFile> list = this.lambdaQuery()
+    public List<SysFile> getFiles(Long bindId) {
+        List<SysFile> files = this.lambdaQuery()
                 .eq(SysFile::getDelTag, 0)
                 .eq(SysFile::getBindId, bindId)
                 .list();
-        List<SysFileVO> vos = CglibUtil.copyList(list, SysFileVO::new);
-        vos.forEach(vo -> vo.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(vo.getId()))));
-        return vos;
+        files.forEach(file -> file.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(file.getId()))));
+        return files;
     }
 
     @Override
-    public SysFileVO getFilesToCompression(Long bindId) {
-        SysFileVO vo = new SysFileVO();
-        vo.setId(bindId);
-        vo.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat("bind/").concat(String.valueOf(vo.getId())));
-        return vo;
+    public SysFile getFilesToCompression(Long bindId) {
+        SysFile file = new SysFile();
+        file.setId(bindId);
+        file.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat("bind/").concat(String.valueOf(file.getId())));
+        return file;
     }
 
     @Override
     public InputStream download(Long id) {
-        SysFileVO file = getFile(id);
+        SysFile file = getFile(id);
         if (Objects.isNull(file)) {
             return null;
         }
@@ -102,13 +98,13 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
 
     @Override
     public InputStream downloads(Long bindId) {
-        List<SysFileVO> files = getFiles(bindId);
+        List<SysFile> files = getFiles(bindId);
         if (files.isEmpty()) {
             return null;
         }
         final File tempFile = FileUtil.createTempFile("TMP", ".zip", false);
         try (Archiver archiver = CompressUtil.createArchiver(CharsetUtil.CHARSET_UTF_8, ArchiveStreamFactory.ZIP, tempFile)) {
-            for (SysFileVO file : files) {
+            for (SysFile file : files) {
                 GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
                         .bucket(minioConfig.getBucket())
                         .object(file.getFilePath())
@@ -130,24 +126,23 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
     }
 
     @Override
-    public SysFileVO putFile(SysFileDTO dto, InputStream is) {
-        createFilePath(dto);
-        createStorageType(dto);
-        createFileSize(dto, is);
+    public SysFile putFile(SysFile file, InputStream is) {
+        createFilePath(file);
+        createStorageType(file);
+        createFileSize(file, is);
         try {
             minioClient().putObject(PutObjectArgs.builder()
                     .bucket(minioConfig.getBucket())
-                    .object(dto.getFilePath())
+                    .object(file.getFilePath())
                     .stream(is, is.available(), -1)
-                    .contentType(dto.getContentType())
+                    .contentType(file.getContentType())
                     .build());
-            this.save(CglibUtil.copy(dto, SysFile.class));
+            this.save(file);
         } catch (Exception e) {
             log.error("", e);
         }
-        SysFileVO vo = CglibUtil.copy(dto, SysFileVO.class);
-        vo.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(vo.getId())));
-        return vo;
+        file.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(file.getId())));
+        return file;
     }
 
     @Override
@@ -186,22 +181,22 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
     /**
      * 创建ID
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      */
-    private void createId(SysFileDTO dto) {
-        if (Objects.isNull(dto.getId())) {
-            dto.setId(IdUtil.getSnowflakeNextId());
+    private void createId(SysFile file) {
+        if (Objects.isNull(file.getId())) {
+            file.setId(IdUtil.getSnowflakeNextId());
         }
     }
 
     /**
      * 生成文件路径
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      */
-    private void createFilePath(SysFileDTO dto) {
-        createId(dto);
-        if (Objects.isNull(dto.getFilePath())) {
+    private void createFilePath(SysFile file) {
+        createId(file);
+        if (Objects.isNull(file.getFilePath())) {
             LocalDateTime now = LocalDateTime.now();
             String str = now.getYear() +
                     "/" +
@@ -209,36 +204,36 @@ public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> 
                     "/" +
                     now.getDayOfMonth() +
                     "/" +
-                    dto.getId();
-            dto.setFilePath(str);
+                    file.getId();
+            file.setFilePath(str);
         }
     }
 
     /**
      * 生成存储类型
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      */
-    private void createStorageType(SysFileDTO dto) {
-        if (Objects.isNull(dto.getStorageType())) {
+    private void createStorageType(SysFile file) {
+        if (Objects.isNull(file.getStorageType())) {
             String str = "MINIO:" + minioConfig.getBucket();
-            dto.setStorageType(str);
+            file.setStorageType(str);
         }
     }
 
     /**
      * 生成文件大小
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      * @param is  InputStream
      */
-    private void createFileSize(SysFileDTO dto, InputStream is) {
-        if (Objects.isNull(dto.getFileSize())) {
+    private void createFileSize(SysFile file, InputStream is) {
+        if (Objects.isNull(file.getFileSize())) {
             try {
-                dto.setFileSize((long) is.available());
+                file.setFileSize((long) is.available());
             } catch (IOException e) {
                 log.error("", e);
-                dto.setFileSize(0L);
+                file.setFileSize(0L);
             }
         }
     }

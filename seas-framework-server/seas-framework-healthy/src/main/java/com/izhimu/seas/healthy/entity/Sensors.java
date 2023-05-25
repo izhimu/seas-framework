@@ -1,4 +1,4 @@
-package com.izhimu.seas.healthy.vo;
+package com.izhimu.seas.healthy.entity;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @version v1.0
  */
 @Data
-public class SensorsVO implements Serializable {
+public class Sensors implements Serializable {
 
     /**
      * CPU温度

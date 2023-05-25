@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.holder;
 
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginHolder {
 
-    private static final ThreadLocal<LoginDTO> LOGIN = new ThreadLocal<>();
+    private static final ThreadLocal<Login> LOGIN = new ThreadLocal<>();
 
-    public void set(LoginDTO dto) {
-        LOGIN.set(dto);
+    public void set(Login login) {
+        LOGIN.set(login);
     }
 
-    public LoginDTO get(boolean remove) {
-        LoginDTO loginDTO = LOGIN.get();
+    public Login get(boolean remove) {
+        Login loginDTO = LOGIN.get();
         if (remove) {
             clear();
         }

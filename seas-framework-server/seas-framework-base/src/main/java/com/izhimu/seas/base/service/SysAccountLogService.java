@@ -1,8 +1,8 @@
 package com.izhimu.seas.base.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.SysAccountLog;
-import com.izhimu.seas.core.dto.LoginDTO;
-import com.izhimu.seas.data.entity.Pagination;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.data.service.IBaseService;
 
 /**
@@ -20,21 +20,21 @@ public interface SysAccountLogService extends IBaseService<SysAccountLog> {
      * @param param SysAccountLog
      * @return Pagination<SysAccountLog>
      */
-    Pagination<SysAccountLog> findPage(Pagination<SysAccountLog> page, SysAccountLog param);
+    Page<SysAccountLog> findPage(Page<SysAccountLog> page, SysAccountLog param);
 
     /**
      * 保存日志
      *
-     * @param dto    LoginDTO
+     * @param login    Login
      * @param status 状态 0.登录，1.退出，2.密码错误，3.多次重试，4.禁用，5.登录失败
      */
-    void saveLog(LoginDTO dto, int status);
+    void saveLog(Login login, int status);
 
     /**
-     * 获取VO
+     * 获取
      *
      * @param id Long
-     * @return SysAccountLogVO
+     * @return SysAccountLog
      */
     SysAccountLog get(Long id);
 }

@@ -2,7 +2,10 @@ package com.izhimu.seas.storage.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +26,7 @@ public class SysFile extends IdEntity {
     /**
      * 绑定ID
      */
+    @View(ignore = true)
     private Long bindId;
     /**
      * 文件名称
@@ -48,20 +52,34 @@ public class SysFile extends IdEntity {
     /**
      * 存储类型
      */
+    @View(ignore = true)
     private String storageType;
     /**
      * 删除标记
      * 0，非删除，1，已删除
      */
+    @View(ignore = true)
     private Integer delTag;
     /**
      * 创建人
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
     /**
      * 创建时间
      */
+    @View(ignore = true)
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
+
+    @TableId
+    @OrderBy(asc = false)
+    private Long id;
+    // View
+    /**
+     * 文件地址
+     */
+    @TableField(exist = false)
+    private String fileUrl;
 }

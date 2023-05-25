@@ -18,7 +18,7 @@ public interface SysAccountService extends IBaseService<SysAccount> {
      * 根据用户ID获取账号列表
      *
      * @param userId 用户ID
-     * @return List<SysAccountVO>
+     * @return List<SysAccount>
      */
     List<SysAccount> getByUserId(Long userId);
 

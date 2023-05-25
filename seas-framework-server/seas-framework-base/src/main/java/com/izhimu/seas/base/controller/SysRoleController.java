@@ -40,12 +40,12 @@ public class SysRoleController extends AbsBaseController<SysRoleService, SysRole
     /**
      * 更新菜单
      *
-     * @param dto {@link SysAuthMenu SysAuthMenu}
+     * @param entity {@link SysAuthMenu SysAuthMenu}
      */
     @OperationLog("用户角色-更新菜单")
     @PostMapping("/auth/menu")
-    public void updateAuthMenu(@RequestBody SysAuthMenu dto) {
-        service.updateRoleMenu(dto);
+    public void updateAuthMenu(@RequestBody SysAuthMenu entity) {
+        service.updateRoleMenu(entity);
     }
 
     /**
@@ -63,11 +63,11 @@ public class SysRoleController extends AbsBaseController<SysRoleService, SysRole
     /**
      * 更新用户
      *
-     * @param dto {@link SysUserRole SysUserRole}
+     * @param entity {@link SysUserRole SysUserRole}
      */
     @OperationLog("用户角色-更新用户")
     @PostMapping("/user")
-    public void updateUser(@RequestBody SysUserRole dto) {
-        service.updateUserRole(dto);
+    public void updateUser(@RequestBody SysUserRole entity) {
+        service.updateUserRole(entity);
     }
 }

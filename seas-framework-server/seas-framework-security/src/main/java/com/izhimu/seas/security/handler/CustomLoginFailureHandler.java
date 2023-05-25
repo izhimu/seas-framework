@@ -3,7 +3,7 @@ package com.izhimu.seas.security.handler;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.web.Result;
@@ -49,7 +49,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) {
         Result<?> result;
         Integer status = null;
-        LoginDTO loginDTO = loginHolder.get(true);
+        Login loginDTO = loginHolder.get(true);
         String key = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(loginDTO.getAccount());
         int errNum = Optional.ofNullable(RedisHelper.getInstance().get(key, Integer.class)).orElse(0);
         if (e instanceof UsernameNotFoundException) {

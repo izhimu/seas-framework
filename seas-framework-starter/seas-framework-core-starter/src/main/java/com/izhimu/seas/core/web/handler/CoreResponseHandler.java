@@ -1,6 +1,5 @@
 package com.izhimu.seas.core.web.handler;
 
-import com.izhimu.seas.core.util.ViewUtil;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.entity.IView;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -42,10 +41,10 @@ public class CoreResponseHandler implements ResponseBodyAdvice<Serializable> {
             return body;
         }
         if (body instanceof String) {
-            return Result.ok(body);
+            return Result.ok(body).toString();
         }
         if (body instanceof IView view) {
-            return Result.ok(ViewUtil.toView(view));
+            return Result.ok(view.toView());
         }
         return Result.ok(body);
     }

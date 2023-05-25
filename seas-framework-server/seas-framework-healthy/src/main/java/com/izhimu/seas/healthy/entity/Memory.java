@@ -1,4 +1,4 @@
-package com.izhimu.seas.healthy.vo;
+package com.izhimu.seas.healthy.entity;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @version v1.0
  */
 @Data
-public class MemoryVO implements Serializable {
+public class Memory implements Serializable {
 
     /**
      * 总数

@@ -1,8 +1,8 @@
 package com.izhimu.seas.data.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.izhimu.seas.data.entity.IdEntity;
-import com.izhimu.seas.data.entity.Pagination;
 
 /**
  * 基础服务层接口封装
@@ -19,7 +19,7 @@ public interface IBaseService<T extends IdEntity> extends IService<T> {
      * @param param  查询参数
      * @return 视图层分页
      */
-    Pagination<T> page(Pagination<T> page, Object param);
+    Page<T> page(Page<T> page, Object param);
 
     /**
      * 新增

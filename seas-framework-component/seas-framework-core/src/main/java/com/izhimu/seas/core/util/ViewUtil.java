@@ -19,8 +19,6 @@ import java.util.*;
 @UtilityClass
 public class ViewUtil {
 
-    public static final List<String> BOOLEAN_TYPE = List.of("class java.lang.Boolean", "boolean");
-
     public static Map<String, Object> toView(Object obj) {
         Map<String, Object> data = new HashMap<>();
         if (!isView(obj)) {
@@ -30,12 +28,7 @@ public class ViewUtil {
             Field[] fields = ReflectUtil.getFields(obj.getClass());
             for (Field field : fields) {
                 String fieldName = ReflectUtil.getFieldName(field);
-                String methodName = CharSequenceUtil.upperFirst(fieldName);
-                if (BOOLEAN_TYPE.contains(field.getGenericType().toString())) {
-                    methodName = "is".concat(methodName);
-                } else {
-                    methodName = "get".concat(methodName);
-                }
+                String methodName = getMethodName(fieldName, field.getGenericType().getTypeName());
                 View view = field.getAnnotation(View.class);
                 if (Objects.nonNull(view)) {
                     if (view.ignore()) {
@@ -44,7 +37,7 @@ public class ViewUtil {
                     if (StrUtil.isNotBlank(view.value())) {
                         fieldName = view.value();
                     }
-                    if (view.recursionLevel() > 0){
+                    if (view.recursionLevel() > 0) {
 
                     }
                 }
@@ -64,7 +57,30 @@ public class ViewUtil {
         return data;
     }
 
+    /**
+     * 是否是View对象
+     *
+     * @param obj Object
+     * @return boolean
+     */
     public static boolean isView(Object obj) {
         return obj instanceof IView;
+    }
+
+    /**
+     * 获取Get方法名称
+     *
+     * @param fieldName String
+     * @param fieldType String
+     * @return String
+     */
+    public static String getMethodName(String fieldName, String fieldType) {
+        String methodName = CharSequenceUtil.upperFirst(fieldName);
+        if (fieldType.equals("boolean")) {
+            methodName = "is".concat(methodName);
+        } else {
+            methodName = "get".concat(methodName);
+        }
+        return methodName;
     }
 }

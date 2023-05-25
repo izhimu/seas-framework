@@ -1,10 +1,10 @@
 package com.izhimu.seas.base.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.SysUser;
 import com.izhimu.seas.base.service.SysUserService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.web.entity.Select;
-import com.izhimu.seas.data.entity.Pagination;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,13 +26,13 @@ public class SysUserController {
     /**
      * 分页查询
      *
-     * @param page  分页参数 {@link Pagination Pagination}
+     * @param page  分页参数 {@link Page Page}
      * @param param 查询参数 {@link SysUser SysUser}
      * @return 分页数据 {@link SysUser SysUser}
      */
     @OperationLog("用户管理-分页查询")
     @GetMapping("/page")
-    public Pagination<SysUser> page(Pagination<SysUser> page, SysUser param) {
+    public Page<SysUser> page(Page<SysUser> page, SysUser param) {
         return service.page(page, param);
     }
 

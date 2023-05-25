@@ -1,6 +1,6 @@
 package com.izhimu.seas.core.entity;
 
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,7 +53,7 @@ public class User implements UserDetails {
     /**
      * 登录信息
      */
-    private LoginDTO login;
+    private Login login;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

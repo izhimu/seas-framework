@@ -2,7 +2,7 @@ package com.izhimu.seas.base.listener;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.base.service.SysLogService;
-import com.izhimu.seas.core.dto.SysLogDTO;
+import com.izhimu.seas.core.web.entity.Log;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventListener;
 import com.izhimu.seas.core.event.IEvent;
@@ -27,8 +27,8 @@ public class LogListener implements IEventListener {
 
     @Override
     public boolean onEvent(Object data) {
-        if (data instanceof SysLogDTO dto) {
-            service.saveLog(dto);
+        if (data instanceof Log) {
+            service.saveLog((Log) data);
             return true;
         }
         return false;

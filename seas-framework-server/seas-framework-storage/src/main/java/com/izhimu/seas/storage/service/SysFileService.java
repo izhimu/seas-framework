@@ -1,9 +1,7 @@
 package com.izhimu.seas.storage.service;
 
 import com.izhimu.seas.data.service.IBaseService;
-import com.izhimu.seas.storage.dto.SysFileDTO;
 import com.izhimu.seas.storage.entity.SysFile;
-import com.izhimu.seas.storage.vo.SysFileVO;
 
 import java.io.InputStream;
 import java.util.List;
@@ -20,25 +18,25 @@ public interface SysFileService extends IBaseService<SysFile> {
      * 获取文件
      *
      * @param id id
-     * @return SysFileVO
+     * @return SysFile
      */
-    SysFileVO getFile(Long id);
+    SysFile getFile(Long id);
 
     /**
      * 获取文件
      *
      * @param bindId 绑定ID
-     * @return List<SysFileVO>
+     * @return List<SysFile>
      */
-    List<SysFileVO> getFiles(Long bindId);
+    List<SysFile> getFiles(Long bindId);
 
     /**
      * 获取文件并压缩
      *
      * @param bindId 绑定ID
-     * @return List<SysFileVO>
+     * @return List<SysFile>
      */
-    SysFileVO getFilesToCompression(Long bindId);
+    SysFile getFilesToCompression(Long bindId);
 
     /**
      * 下载文件
@@ -59,11 +57,11 @@ public interface SysFileService extends IBaseService<SysFile> {
     /**
      * 保存文件
      *
-     * @param dto SysFileDTO
+     * @param file SysFile
      * @param is  InputStream
      * @return SysFileDTO
      */
-    SysFileVO putFile(SysFileDTO dto, InputStream is);
+    SysFile putFile(SysFile file, InputStream is);
 
     /**
      * 删除文件

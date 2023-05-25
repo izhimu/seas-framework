@@ -55,7 +55,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         SysUser user = this.getById(id);
         List<SysAccount> accountVOList = accountService.getByUserId(id);
         user.setAccounts(accountVOList);
-        user.setAccounts1(new SysAccount());
         return user;
     }
 

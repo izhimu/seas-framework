@@ -79,6 +79,7 @@ public class SysUser extends BaseEntity {
     @OrderBy
     private Long id;
 
+    @SuppressWarnings("unused")
     public Integer getStatus() {
         return Objects.nonNull(status) ? status : 0;
     }

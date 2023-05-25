@@ -2,7 +2,6 @@ package com.izhimu.seas.cache.connector;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.TypeReference;
-import cn.hutool.extra.cglib.CglibUtil;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -234,7 +232,7 @@ public class RedisConnector {
      * @param keys 键
      * @return 值
      */
-    public <T> List<T> get(List<String> keys, Supplier<T> target) {
+    public <T> List<T> get(List<String> keys, Class<T> target) {
         return getObject(get(keys), target);
     }
 
@@ -317,11 +315,13 @@ public class RedisConnector {
      * @param <T>    类型
      * @return 转换对象
      */
-    private <T> List<T> getObject(List<Object> objs, Supplier<T> target) {
+    private <T> List<T> getObject(List<Object> objs, Class<T> target) {
         if (Objects.isNull(objs)) {
             return Collections.emptyList();
         }
-        return CglibUtil.copyList(objs, target);
+        //noinspection Convert2Diamond
+        return Convert.convert(new TypeReference<List<T>>() {
+        }, objs);
     }
 
     /**

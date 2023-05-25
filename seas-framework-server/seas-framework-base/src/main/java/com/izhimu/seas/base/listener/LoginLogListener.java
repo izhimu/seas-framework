@@ -2,7 +2,7 @@ package com.izhimu.seas.base.listener;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.base.service.SysAccountLogService;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventListener;
 import com.izhimu.seas.core.event.IEvent;
@@ -27,8 +27,8 @@ public class LoginLogListener implements IEventListener {
 
     @Override
     public boolean onEvent(Object data) {
-        if (data instanceof LoginDTO dto) {
-            service.saveLog(dto, dto.getStatus());
+        if (data instanceof Login login) {
+            service.saveLog(login, login.getStatus());
             return true;
         }
         return false;

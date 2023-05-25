@@ -1,7 +1,7 @@
 package com.izhimu.seas.security.handler;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.core.web.entity.Login;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
@@ -35,7 +35,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         }
         httpServletResponse.setStatus(result.httpStatus().value());
         ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
-        LoginDTO loginDTO = ((User) authentication.getPrincipal()).getLogin();
+        Login loginDTO = ((User) authentication.getPrincipal()).getLogin();
         loginDTO.setStatus(1);
         EventManager.trigger(CoreEvent.E_LOGIN, loginDTO);
     }

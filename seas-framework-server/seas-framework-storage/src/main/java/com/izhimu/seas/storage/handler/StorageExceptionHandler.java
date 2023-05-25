@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 
 /**
  * 全局异常处理
@@ -32,7 +31,7 @@ public class StorageExceptionHandler {
      */
     @ExceptionHandler(value = FileNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> noHandlerFoundExceptionHandler() {
+    public ResponseEntity<Result<Object>> noHandlerFoundExceptionHandler() {
         return Result.fail(ResultCode.NOT_FOUND).buildResponseEntity();
     }
 }

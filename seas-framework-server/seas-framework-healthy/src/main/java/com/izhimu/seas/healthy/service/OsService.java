@@ -1,11 +1,9 @@
 package com.izhimu.seas.healthy.service;
 
-import cn.hutool.system.oshi.CpuInfo;
-import com.izhimu.seas.healthy.vo.*;
+import com.izhimu.seas.healthy.entity.*;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.NetworkIF;
-import oshi.hardware.Sensors;
 
 import java.util.List;
 
@@ -29,33 +27,33 @@ public interface OsService {
      *
      * @return {@link GlobalMemory GlobalMemory}
      */
-    MemoryVO getMemory();
+    Memory getMemory();
 
     /**
      * 获取传感器相关信息
      *
-     * @return {@link Sensors Sensors}
+     * @return {@link oshi.hardware.Sensors Sensors}
      */
-    SensorsVO getSensors();
+    Sensors getSensors();
 
     /**
      * 获取磁盘相关信息
      *
      * @return {@link HWDiskStore HWDiskStore}
      */
-    List<DiskVO> getDiskStores();
+    List<Disk> getDiskStores();
 
     /**
      * 获取网络相关信息
      *
      * @return {@link NetworkIF NetworkIF}
      */
-    List<NetworkVO> getNetworkIFs();
+    List<Network> getNetworkIFs();
 
     /**
      * 获取系统CPU信息
      *
-     * @return {@link CpuInfo CpuInfo}
+     * @return {@link cn.hutool.system.oshi.CpuInfo CpuInfo}
      */
-    CpuInfoVO getCpuInfo();
+    CpuInfo getCpuInfo();
 }

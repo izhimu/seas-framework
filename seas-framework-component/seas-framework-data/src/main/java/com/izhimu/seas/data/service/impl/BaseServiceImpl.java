@@ -1,9 +1,9 @@
 package com.izhimu.seas.data.service.impl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.izhimu.seas.data.entity.IdEntity;
-import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.IBaseService;
 import com.izhimu.seas.data.wrapper.ParamWrapper;
 
@@ -25,7 +25,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends IdEntit
     }
 
     @Override
-    public Pagination<T> page(Pagination<T> page, Object param) {
+    public Page<T> page(Page<T> page, Object param) {
         return this.paramQuery().param(param).orderBy().wrapper().page(page);
     }
 

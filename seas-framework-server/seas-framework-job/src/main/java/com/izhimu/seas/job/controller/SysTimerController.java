@@ -2,9 +2,7 @@ package com.izhimu.seas.job.controller;
 
 import com.izhimu.seas.data.controller.AbsBaseController;
 import com.izhimu.seas.job.entity.SysTimer;
-import com.izhimu.seas.job.param.SysTimerParam;
 import com.izhimu.seas.job.service.SysTimerService;
-import com.izhimu.seas.job.vo.SysTimerVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/sys/timer")
-public class SysTimerController extends AbsBaseController<SysTimerService, SysTimer, SysTimerVO, SysTimerParam> {
+public class SysTimerController extends AbsBaseController<SysTimerService, SysTimer> {
     @Override
     public String logPrefix() {
         return "定时任务";

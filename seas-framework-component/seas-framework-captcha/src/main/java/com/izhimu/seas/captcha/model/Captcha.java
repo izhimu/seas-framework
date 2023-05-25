@@ -48,7 +48,7 @@ public class Captcha implements Serializable {
     private Point point;
 
     /**
-     * 转换VO对象
+     * 转换对象
      *
      * @return Captcha
      */

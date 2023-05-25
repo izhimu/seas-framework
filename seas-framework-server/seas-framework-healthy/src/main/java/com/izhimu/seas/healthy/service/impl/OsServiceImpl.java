@@ -1,15 +1,13 @@
 package com.izhimu.seas.healthy.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.izhimu.seas.healthy.service.OsService;
-import com.izhimu.seas.healthy.vo.*;
+import com.izhimu.seas.healthy.entity.*;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.NetworkIF;
-import oshi.hardware.Sensors;
 import oshi.software.os.FileSystem;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
@@ -33,94 +31,94 @@ public class OsServiceImpl implements OsService {
     }
 
     @Override
-    public MemoryVO getMemory() {
+    public Memory getMemory() {
         GlobalMemory memory = OshiUtil.getMemory();
-        MemoryVO vo = new MemoryVO();
-        vo.setTotal(memory.getTotal());
-        vo.setTotalStr(FormatUtil.formatBytes(vo.getTotal()));
-        vo.setUsed(memory.getTotal()-memory.getAvailable());
-        vo.setUsedStr(FormatUtil.formatBytes(vo.getUsed()));
-        vo.setSwapTotal(memory.getVirtualMemory().getSwapTotal());
-        vo.setSwapTotalStr(FormatUtil.formatBytes(vo.getSwapTotal()));
-        vo.setSwapUsed(memory.getVirtualMemory().getSwapUsed());
-        vo.setSwapUsedStr(FormatUtil.formatBytes(vo.getSwapUsed()));
-        vo.setVirtualMax(memory.getVirtualMemory().getVirtualMax());
-        vo.setVirtualMaxStr(FormatUtil.formatBytes(vo.getVirtualMax()));
-        vo.setVirtualInUse(memory.getVirtualMemory().getVirtualInUse());
-        vo.setVirtualInUseStr(FormatUtil.formatBytes(vo.getVirtualInUse()));
-        return vo;
+        Memory data = new Memory();
+        data.setTotal(memory.getTotal());
+        data.setTotalStr(FormatUtil.formatBytes(data.getTotal()));
+        data.setUsed(memory.getTotal()-memory.getAvailable());
+        data.setUsedStr(FormatUtil.formatBytes(data.getUsed()));
+        data.setSwapTotal(memory.getVirtualMemory().getSwapTotal());
+        data.setSwapTotalStr(FormatUtil.formatBytes(data.getSwapTotal()));
+        data.setSwapUsed(memory.getVirtualMemory().getSwapUsed());
+        data.setSwapUsedStr(FormatUtil.formatBytes(data.getSwapUsed()));
+        data.setVirtualMax(memory.getVirtualMemory().getVirtualMax());
+        data.setVirtualMaxStr(FormatUtil.formatBytes(data.getVirtualMax()));
+        data.setVirtualInUse(memory.getVirtualMemory().getVirtualInUse());
+        data.setVirtualInUseStr(FormatUtil.formatBytes(data.getVirtualInUse()));
+        return data;
     }
 
     @Override
-    public SensorsVO getSensors() {
-        Sensors sensors = OshiUtil.getSensors();
-        SensorsVO vo = new SensorsVO();
-        vo.setCpuTemperature(sensors.getCpuTemperature());
-        vo.setCpuVoltage(sensors.getCpuVoltage());
+    public Sensors getSensors() {
+        oshi.hardware.Sensors sensors = OshiUtil.getSensors();
+        Sensors data = new Sensors();
+        data.setCpuTemperature(sensors.getCpuTemperature());
+        data.setCpuVoltage(sensors.getCpuVoltage());
         List<Integer> fanList = new ArrayList<>();
         for (int fanSpeed : sensors.getFanSpeeds()) {
             fanList.add(fanSpeed);
         }
-        vo.setFanSpeeds(fanList);
-        return vo;
+        data.setFanSpeeds(fanList);
+        return data;
     }
 
     @Override
-    public List<DiskVO> getDiskStores() {
+    public List<Disk> getDiskStores() {
         SystemInfo systemInfo = new SystemInfo();
         OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
         FileSystem fileSystem = operatingSystem.getFileSystem();
         return fileSystem.getFileStores().stream()
                 .map(v -> {
-                    DiskVO vo = new DiskVO();
-                    vo.setUuid(v.getUUID());
-                    vo.setName(v.getName());
-                    vo.setVolume(v.getVolume());
-                    vo.setType(v.getType());
-                    vo.setTotal(v.getTotalSpace());
-                    vo.setTotalStr(FormatUtil.formatBytes(vo.getTotal()));
-                    vo.setUsed(v.getTotalSpace() - v.getFreeSpace());
-                    vo.setUsedStr(FormatUtil.formatBytes(vo.getUsed()));
-                    return vo;
+                    Disk data = new Disk();
+                    data.setUuid(v.getUUID());
+                    data.setName(v.getName());
+                    data.setVolume(v.getVolume());
+                    data.setType(v.getType());
+                    data.setTotal(v.getTotalSpace());
+                    data.setTotalStr(FormatUtil.formatBytes(data.getTotal()));
+                    data.setUsed(v.getTotalSpace() - v.getFreeSpace());
+                    data.setUsedStr(FormatUtil.formatBytes(data.getUsed()));
+                    return data;
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<NetworkVO> getNetworkIFs() {
+    public List<Network> getNetworkIFs() {
         List<NetworkIF> networkIFs = OshiUtil.getNetworkIFs();
         return networkIFs.stream()
                 .map(v -> {
-                    NetworkVO vo = new NetworkVO();
-                    vo.setId(IdUtil.nanoId());
-                    vo.setName(v.getName());
-                    vo.setAlias(v.getIfAlias());
-                    vo.setDisplayName(v.getDisplayName());
-                    vo.setStatus(v.getIfOperStatus().name());
-                    vo.setMac(v.getMacaddr());
-                    vo.setIpv4(v.getIPv4addr().length > 0 ? v.getIPv4addr()[0] : "");
-                    vo.setIpv6(v.getIPv6addr().length > 0 ? v.getIPv6addr()[0] : "");
-                    vo.setMtu(v.getMTU());
-                    vo.setSpeed((int) (v.getSpeed() / 1000000));
-                    vo.setBytesRecv(FormatUtil.formatBytes(v.getBytesRecv()));
-                    vo.setBytesSent(FormatUtil.formatBytes(v.getBytesSent()));
-                    vo.setPacketsRecv(FormatUtil.formatBytes(v.getPacketsRecv()));
-                    vo.setPacketsSent(FormatUtil.formatBytes(v.getPacketsSent()));
-                    return vo;
+                    Network data = new Network();
+                    data.setId(IdUtil.nanoId());
+                    data.setName(v.getName());
+                    data.setAlias(v.getIfAlias());
+                    data.setDisplayName(v.getDisplayName());
+                    data.setStatus(v.getIfOperStatus().name());
+                    data.setMac(v.getMacaddr());
+                    data.setIpv4(v.getIPv4addr().length > 0 ? v.getIPv4addr()[0] : "");
+                    data.setIpv6(v.getIPv6addr().length > 0 ? v.getIPv6addr()[0] : "");
+                    data.setMtu(v.getMTU());
+                    data.setSpeed((int) (v.getSpeed() / 1000000));
+                    data.setBytesRecv(FormatUtil.formatBytes(v.getBytesRecv()));
+                    data.setBytesSent(FormatUtil.formatBytes(v.getBytesSent()));
+                    data.setPacketsRecv(FormatUtil.formatBytes(v.getPacketsRecv()));
+                    data.setPacketsSent(FormatUtil.formatBytes(v.getPacketsSent()));
+                    return data;
                 })
-                .sorted(Comparator.comparing(NetworkVO::getStatus).reversed())
+                .sorted(Comparator.comparing(Network::getStatus).reversed())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CpuInfoVO getCpuInfo() {
-        CpuInfo cpuInfo = OshiUtil.getCpuInfo();
-        CpuInfoVO vo = new CpuInfoVO();
-        vo.setTotal(cpuInfo.getCpuNum());
-        vo.setSys(cpuInfo.getSys());
-        vo.setUser(cpuInfo.getUser());
-        vo.setFree(cpuInfo.getFree());
-        vo.setModel(cpuInfo.getCpuModel());
-        return vo;
+    public CpuInfo getCpuInfo() {
+        cn.hutool.system.oshi.CpuInfo cpuInfo = OshiUtil.getCpuInfo();
+        CpuInfo data = new CpuInfo();
+        data.setTotal(cpuInfo.getCpuNum());
+        data.setSys(cpuInfo.getSys());
+        data.setUser(cpuInfo.getUser());
+        data.setFree(cpuInfo.getFree());
+        data.setModel(cpuInfo.getCpuModel());
+        return data;
     }
 }

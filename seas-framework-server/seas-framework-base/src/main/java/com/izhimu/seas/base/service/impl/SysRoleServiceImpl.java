@@ -58,14 +58,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     }
 
     @Override
-    public void updateUserRole(SysUserRole dto) {
+    public void updateUserRole(SysUserRole entity) {
         userRoleService.lambdaUpdate()
-                .eq(SysUserRole::getRoleId, dto.getRoleId())
+                .eq(SysUserRole::getRoleId, entity.getRoleId())
                 .remove();
-        List<SysUserRole> userRoleList = dto.getUserIds().stream()
+        List<SysUserRole> userRoleList = entity.getUserIds().stream()
                 .map(v -> {
                     SysUserRole userRole = new SysUserRole();
-                    userRole.setRoleId(dto.getRoleId());
+                    userRole.setRoleId(entity.getRoleId());
                     userRole.setUserId(v);
                     return userRole;
                 }).collect(Collectors.toList());
