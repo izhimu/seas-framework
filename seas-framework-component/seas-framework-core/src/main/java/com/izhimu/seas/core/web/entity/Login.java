@@ -1,6 +1,6 @@
 package com.izhimu.seas.core.web.entity;
 
-import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.core.enums.DeviceType;
 import lombok.Data;
 
@@ -13,72 +13,72 @@ import java.io.Serializable;
  * @version v1.0
  */
 @Data
-public class Login implements Serializable, IView {
+public class Login implements Serializable {
 
     /**
      * 账号
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String account;
     /**
      * 密码
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String password;
     /**
      * 密码加密key
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String passwordKey;
     /**
      * 验证码
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String verifyCode;
     /**
      * 验证码key
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String verifyCodeKey;
     /**
      * 设备类型
      */
-    @View(ignore = true)
+    @ViewIgnore
     private DeviceType deviceType;
     /**
      * 设备号
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String deviceId;
     /**
      * 设备名称
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String deviceName;
     /**
      * 时间戳
      */
-    @View(ignore = true)
+    @ViewIgnore
     private Long timestamp;
     /**
      * 版本号
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String version;
     /**
      * 系统版本
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String systemVersion;
     /**
      * 登录IP
      */
-    @View(ignore = true)
+    @ViewIgnore
     private String ip;
     /**
      * 状态
      */
-    @View(ignore = true)
+    @ViewIgnore
     private Integer status;
     // View
     /**
@@ -101,6 +101,4 @@ public class Login implements Serializable, IView {
      * 用户名
      */
     private String userName;
-
-    private boolean pwdExpiredb;
 }

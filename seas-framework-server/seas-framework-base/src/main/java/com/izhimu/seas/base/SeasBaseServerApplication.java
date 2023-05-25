@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @author haoran
  */
 @EnableAsync
-@MapperScan({"com.izhimu.seas.*.mapper"})
+@MapperScan({"com.izhimu.seas.base.mapper"})
 @ComponentScan(basePackages = {"com.izhimu"})
 @SpringBootApplication
 public class SeasBaseServerApplication {

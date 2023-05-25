@@ -23,6 +23,7 @@
         <oshi.version>6.4.2</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.73</bcprov.version>
+        <fastjson.version>2.0.32</fastjson.version>
     </properties>
 
     <dependencyManagement>

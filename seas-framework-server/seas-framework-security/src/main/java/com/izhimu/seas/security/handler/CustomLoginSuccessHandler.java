@@ -65,7 +65,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         login.setUserId(userDetails.getId());
         login.setPwdExpired(false);
         login.setUserName(userDetails.getNickName());
-        Result<Object> result = Result.ok(login.toView());
+        Result<Object> result = Result.ok(login);
         ServletUtil.write(response, result.toString(), MediaType.APPLICATION_JSON_VALUE);
     }
 }

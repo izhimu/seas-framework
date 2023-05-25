@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * @author haoran
  */
-@MapperScan({"com.izhimu.seas.*.mapper"})
+@MapperScan({"com.izhimu.seas.storage.mapper"})
 @ComponentScan(basePackages = {"com.izhimu.seas"})
 @SpringBootApplication
 public class SeasStorageServerApplication {

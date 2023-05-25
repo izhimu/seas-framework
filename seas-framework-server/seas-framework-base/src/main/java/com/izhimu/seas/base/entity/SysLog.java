@@ -2,7 +2,7 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
@@ -88,14 +88,14 @@ public class SysLog extends IdEntity {
     /**
      * 请求时间
      */
-    @View(ignore = true)
+    @ViewIgnore
     @TableField(exist = false)
     @Search(name = "request_date", type = SearchType.GE)
     private LocalDateTime requestDateStart;
     /**
      * 请求时间
      */
-    @View(ignore = true)
+    @ViewIgnore
     @TableField(exist = false)
     @Search(name = "request_date", type = SearchType.LE)
     private LocalDateTime requestDateEnd;

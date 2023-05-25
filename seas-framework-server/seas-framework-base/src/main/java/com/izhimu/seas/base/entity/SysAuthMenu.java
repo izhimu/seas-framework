@@ -2,7 +2,7 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,7 +32,7 @@ public class SysAuthMenu extends IdEntity {
     /**
      * 菜单列表
      */
-    @View(ignore = true)
+    @ViewIgnore
     @TableField(exist = false)
     private List<Long> menuIds;
 }

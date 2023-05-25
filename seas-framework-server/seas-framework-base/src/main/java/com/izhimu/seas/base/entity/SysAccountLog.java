@@ -2,7 +2,7 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.izhimu.seas.core.annotation.View;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
@@ -74,14 +74,14 @@ public class SysAccountLog extends IdEntity {
     /**
      * 登录时间
      */
-    @View(ignore = true)
+    @ViewIgnore
     @TableField(exist = false)
     @Search(name = "login_time", type = SearchType.GE)
     private LocalDateTime loginTimeStart;
     /**
      * 登录时间
      */
-    @View(ignore = true)
+    @ViewIgnore
     @TableField(exist = false)
     @Search(name = "login_time", type = SearchType.LE)
     private LocalDateTime loginTimeEnd;
