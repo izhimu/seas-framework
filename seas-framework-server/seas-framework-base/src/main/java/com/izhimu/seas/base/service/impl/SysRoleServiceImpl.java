@@ -1,7 +1,5 @@
 package com.izhimu.seas.base.service.impl;
 
-import com.izhimu.seas.base.dto.SysAuthMenuDTO;
-import com.izhimu.seas.base.dto.SysUserRoleDTO;
 import com.izhimu.seas.base.entity.SysAuthMenu;
 import com.izhimu.seas.base.entity.SysRole;
 import com.izhimu.seas.base.entity.SysUserRole;
@@ -11,6 +9,7 @@ import com.izhimu.seas.base.service.SysRoleService;
 import com.izhimu.seas.base.service.SysUserRoleService;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
     @Resource
@@ -32,14 +32,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     private SysUserRoleService userRoleService;
 
     @Override
-    public void updateRoleMenu(SysAuthMenuDTO dto) {
+    public void updateRoleMenu(SysAuthMenu menu) {
         authMenuService.lambdaUpdate()
-                .eq(SysAuthMenu::getRoleId, dto.getRoleId())
+                .eq(SysAuthMenu::getRoleId, menu.getRoleId())
                 .remove();
-        List<SysAuthMenu> authMenuList = dto.getMenuIds().stream()
+        List<SysAuthMenu> authMenuList = menu.getMenuIds().stream()
                 .map(v -> {
                     SysAuthMenu authMenu = new SysAuthMenu();
-                    authMenu.setRoleId(dto.getRoleId());
+                    authMenu.setRoleId(menu.getRoleId());
                     authMenu.setMenuId(v);
                     return authMenu;
                 }).collect(Collectors.toList());
@@ -58,7 +58,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     }
 
     @Override
-    public void updateUserRole(SysUserRoleDTO dto) {
+    public void updateUserRole(SysUserRole dto) {
         userRoleService.lambdaUpdate()
                 .eq(SysUserRole::getRoleId, dto.getRoleId())
                 .remove();

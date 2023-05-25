@@ -34,10 +34,14 @@ mybatis-plus:
       logic-delete-field: LOGIC_DEL
       logic-delete-value: 1
       logic-not-delete-value: 0
-login:
-  err-time: 300
-  err-num: 5
 logging:
   level:
     root: INFO
     oshi.util.platform.windows.WmiQueryHandler: ERROR
+seas:
+  security:
+    supers:
+      - admin
+      - root
+    err-time: 300
+    err-num: 5

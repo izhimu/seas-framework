@@ -13,9 +13,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>seas-framework-core</module>
-        <module>seas-framework-common</module>
         <module>seas-framework-cache</module>
+        <module>seas-framework-captcha</module>
+        <module>seas-framework-common</module>
+        <module>seas-framework-core</module>
         <module>seas-framework-data</module>
     </modules>
 

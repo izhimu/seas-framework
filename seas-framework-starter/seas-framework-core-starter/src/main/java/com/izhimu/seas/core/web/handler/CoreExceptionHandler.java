@@ -39,7 +39,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = NoHandlerFoundException.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> noHandlerFoundExceptionHandler() {
+    public ResponseEntity<Result<Object>> noHandlerFoundExceptionHandler() {
         return Result.fail(ResultCode.NOT_FOUND).buildResponseEntity();
     }
 
@@ -50,7 +50,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> httpRequestMethodNotSupportedExceptionHandler() {
+    public ResponseEntity<Result<Object>> httpRequestMethodNotSupportedExceptionHandler() {
         return Result.fail(ResultCode.WRONG_METHOD).buildResponseEntity();
     }
 
@@ -61,7 +61,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = ValidateException.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> validationExceptionHandler(Exception e) {
+    public ResponseEntity<Result<Object>> validationExceptionHandler(Exception e) {
         if (CharSequenceUtil.isNotBlank(e.getMessage())) {
             return Result.fail(ResultCode.VERIFY_ERROR, e.getMessage()).buildResponseEntity();
         } else {
@@ -76,7 +76,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> springValidationExceptionHandler(MethodArgumentNotValidException e) {
+    public ResponseEntity<Result<Object>> springValidationExceptionHandler(MethodArgumentNotValidException e) {
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
         List<String> errors = new ArrayList<>();
         for (ObjectError allError : allErrors) {
@@ -97,7 +97,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> defaultErrorHandler(Exception e) {
+    public ResponseEntity<Result<Object>> defaultErrorHandler(Exception e) {
         //500
         log.error("", e);
         return Result.error().buildResponseEntity();

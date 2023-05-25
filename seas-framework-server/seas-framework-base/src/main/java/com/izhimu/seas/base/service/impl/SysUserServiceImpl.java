@@ -1,23 +1,18 @@
 package com.izhimu.seas.base.service.impl;
 
-import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.izhimu.seas.base.dto.SysAccountDTO;
-import com.izhimu.seas.base.dto.SysUserDTO;
 import com.izhimu.seas.base.entity.SysAccount;
 import com.izhimu.seas.base.entity.SysUser;
 import com.izhimu.seas.base.mapper.SysUserMapper;
 import com.izhimu.seas.base.service.SysAccountService;
 import com.izhimu.seas.base.service.SysUserService;
-import com.izhimu.seas.base.vo.SysAccountVO;
-import com.izhimu.seas.base.vo.SysUserVO;
+import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.SecurityUtil;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
-import com.izhimu.seas.security.entity.EncryptKey;
 import com.izhimu.seas.security.holder.LoginHolder;
-import com.izhimu.seas.security.service.EncryptService;
 import com.izhimu.seas.security.service.SecurityService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,50 +51,49 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private LoginHolder loginHolder;
 
     @Override
-    public SysUserVO get(Long id) {
-        SysUserVO sysUserVO = super.get(id, SysUserVO.class);
-        List<SysAccountVO> accountVOList = accountService.getByUserId(id);
-        sysUserVO.setAccounts(accountVOList);
-        return sysUserVO;
+    public SysUser get(Long id) {
+        SysUser user = this.getById(id);
+        List<SysAccount> accountVOList = accountService.getByUserId(id);
+        user.setAccounts(accountVOList);
+        user.setAccounts1(new SysAccount());
+        return user;
     }
 
     @Override
-    public void saveUser(SysUserDTO sysUser) {
-        SysUser user = CglibUtil.copy(sysUser, SysUser.class);
-        this.save(user);
+    public void saveUser(SysUser sysUser) {
+        this.save(sysUser);
         if (sysUser.getAccounts().isEmpty()) {
             return;
         }
         // 账号处理
-        AtomicReference<EncryptKey> key = new AtomicReference<>();
-        sysUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(encryptService.getEncryptKey(item.getPasswordKey())));
+        AtomicReference<String> key = new AtomicReference<>();
+        sysUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(item.getPasswordKey()));
         List<SysAccount> accountList = new ArrayList<>();
-        sysUser.getAccounts().forEach(newSysAccountConsumer(user, key, accountList));
+        sysUser.getAccounts().forEach(newSysAccountConsumer(sysUser, key, accountList));
         accountService.saveBatch(accountList);
     }
 
     @Override
-    public void updateUser(SysUserDTO sysUser) {
-        SysUser user = CglibUtil.copy(sysUser, SysUser.class);
-        this.updateById(user);
+    public void updateUser(SysUser sysUser) {
+        this.updateById(sysUser);
         if (sysUser.getAccounts().isEmpty()) {
             accountService.lambdaUpdate()
-                    .eq(SysAccount::getUserId, user.getId())
+                    .eq(SysAccount::getUserId, sysUser.getId())
                     .remove();
             return;
         }
         // 获取密钥
-        AtomicReference<EncryptKey> key = new AtomicReference<>();
+        AtomicReference<String> key = new AtomicReference<>();
         sysUser.getAccounts().stream()
                 .filter(v -> StringUtils.isNotBlank(v.getPasswordKey()))
                 .findFirst()
-                .ifPresent(v -> key.set(encryptService.getEncryptKey(v.getPasswordKey())));
+                .ifPresent(v -> key.set(v.getPasswordKey()));
         // 删除的账号
         List<Long> accountIdList = sysUser.getAccounts().stream()
-                .map(SysAccountDTO::getId).toList();
+                .map(SysAccount::getId).toList();
         List<SysAccount> delIdList = accountService.lambdaQuery()
                 .select(SysAccount::getId)
-                .eq(SysAccount::getUserId, user.getId())
+                .eq(SysAccount::getUserId, sysUser.getId())
                 .list()
                 .stream()
                 .filter(v -> !accountIdList.contains(v.getId()))
@@ -109,7 +103,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         List<SysAccount> saveAccountList = new ArrayList<>();
         sysUser.getAccounts().stream()
                 .filter(v -> Objects.isNull(v.getId()))
-                .forEach(newSysAccountConsumer(user, key, saveAccountList));
+                .forEach(newSysAccountConsumer(sysUser, key, saveAccountList));
         accountService.saveBatch(saveAccountList);
         // 修改的账号
         List<SysAccount> updateAccountList = new ArrayList<>();
@@ -133,8 +127,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
-    public List<SysUserVO> getUserList() {
-        return CglibUtil.copyList(this.list(), SysUserVO::new);
+    public List<SysUser> getUserList() {
+        return this.list();
     }
 
     @Override
@@ -156,7 +150,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
      * @param accountList List
      * @return Consumer
      */
-    private Consumer<SysAccountDTO> newSysAccountConsumer(SysUser user, AtomicReference<EncryptKey> key, List<SysAccount> accountList) {
+    private Consumer<SysAccount> newSysAccountConsumer(SysUser user, AtomicReference<String> key, List<SysAccount> accountList) {
         return v -> {
             SysAccount sysAccount = new SysAccount();
             sysAccount.setUserId(user.getId());
@@ -181,7 +175,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         if (sysAccount.isEmpty()) {
             return null;
         }
-        SysUserVO sysUserVO = this.get(sysAccount.get().getUserId());
+        SysUser sysUser = this.get(sysAccount.get().getUserId());
         SysAccount account = sysAccount.get();
         User user = new User();
         user.setId(account.getUserId());
@@ -190,7 +184,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         user.setLogicDel(account.getLogicDel());
         user.setStatus(account.getStatus());
         user.setTypeCode(account.getTypeCode());
-        user.setNickName(sysUserVO.getUserName());
+        user.setNickName(sysUser.getUserName());
         user.setLogin(loginHolder.get(false));
         return user;
     }

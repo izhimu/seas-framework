@@ -1,7 +1,6 @@
 package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.entity.SysAccount;
-import com.izhimu.seas.base.vo.SysAccountVO;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
 
@@ -21,7 +20,7 @@ public interface SysAccountService extends IBaseService<SysAccount> {
      * @param userId 用户ID
      * @return List<SysAccountVO>
      */
-    List<SysAccountVO> getByUserId(Long userId);
+    List<SysAccount> getByUserId(Long userId);
 
     /**
      * 模糊查询账号信息

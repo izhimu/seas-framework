@@ -1,10 +1,7 @@
 package com.izhimu.seas.base.controller;
 
-import com.izhimu.seas.base.dto.SysUserDTO;
 import com.izhimu.seas.base.entity.SysUser;
-import com.izhimu.seas.base.param.SysUserParam;
 import com.izhimu.seas.base.service.SysUserService;
-import com.izhimu.seas.base.vo.SysUserVO;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.entity.Pagination;
@@ -30,46 +27,46 @@ public class SysUserController {
      * 分页查询
      *
      * @param page  分页参数 {@link Pagination Pagination}
-     * @param param 查询参数 {@link SysUserParam SysUserParam}
-     * @return 分页数据 {@link SysUserVO SysUserVO}
+     * @param param 查询参数 {@link SysUser SysUser}
+     * @return 分页数据 {@link SysUser SysUser}
      */
     @OperationLog("用户管理-分页查询")
     @GetMapping("/page")
-    public Pagination<SysUserVO> page(Pagination<SysUser> page, SysUserParam param) {
-        return service.page(page, param, SysUserVO::new);
+    public Pagination<SysUser> page(Pagination<SysUser> page, SysUser param) {
+        return service.page(page, param);
     }
 
     /**
      * 详情
      *
      * @param id id
-     * @return {@link SysUserVO SysUserVO}
+     * @return {@link SysUser SysUser}
      */
     @OperationLog("用户管理-详情")
     @GetMapping("/{id}")
-    public SysUserVO get(@PathVariable Long id) {
+    public SysUser get(@PathVariable Long id) {
         return service.get(id);
     }
 
     /**
      * 新增
      *
-     * @param user {@link SysUserDTO SysUserDTO}
+     * @param user {@link SysUser SysUser}
      */
     @OperationLog("用户管理-新增")
     @PostMapping
-    public void save(@RequestBody SysUserDTO user) {
+    public void save(@RequestBody SysUser user) {
         service.saveUser(user);
     }
 
     /**
      * 更新
      *
-     * @param user {@link SysUserDTO SysUserDTO}
+     * @param user {@link SysUser SysUser}
      */
     @OperationLog("用户管理-更新")
     @PutMapping
-    public void update(@RequestBody SysUserDTO user) {
+    public void update(@RequestBody SysUser user) {
         service.updateUser(user);
     }
 
@@ -87,11 +84,11 @@ public class SysUserController {
     /**
      * 列表
      *
-     * @return {@link SysUserVO SysUserVO}
+     * @return {@link SysUser SysUser}
      */
     @OperationLog("用户管理-列表")
     @GetMapping("/list")
-    public List<SysUserVO> list() {
+    public List<SysUser> list() {
         return service.getUserList();
     }
 

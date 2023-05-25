@@ -18,6 +18,10 @@
         </dependency>
         <dependency>
             <groupId>com.izhimu</groupId>
+            <artifactId>seas-framework-captcha-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-core-starter</artifactId>
         </dependency>
 

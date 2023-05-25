@@ -1,9 +1,13 @@
 package com.izhimu.seas.base.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.View;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * 菜单权限实体
@@ -24,4 +28,11 @@ public class SysAuthMenu extends IdEntity {
      * 角色ID
      */
     private Long roleId;
+    // DTO
+    /**
+     * 菜单列表
+     */
+    @View(ignore = true)
+    @TableField(exist = false)
+    private List<Long> menuIds;
 }

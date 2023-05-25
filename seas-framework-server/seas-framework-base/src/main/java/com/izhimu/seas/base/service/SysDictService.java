@@ -2,7 +2,6 @@ package com.izhimu.seas.base.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.izhimu.seas.base.entity.SysDict;
-import com.izhimu.seas.base.param.SysDictParam;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
 
@@ -22,7 +21,7 @@ public interface SysDictService extends IBaseService<SysDict> {
      * @param param 参数
      * @return 树数据
      */
-    List<Tree<Long>> tree(SysDictParam param);
+    List<Tree<Long>> tree(SysDict param);
 
     /**
      * 根据字典编号获取选择器数据

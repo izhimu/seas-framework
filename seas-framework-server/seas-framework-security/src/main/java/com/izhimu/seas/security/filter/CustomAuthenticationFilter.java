@@ -2,15 +2,17 @@ package com.izhimu.seas.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
-import com.izhimu.seas.core.dto.LoginDTO;
+import com.izhimu.seas.captcha.model.Captcha;
+import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.core.web.ResultCode;
-import com.izhimu.seas.security.config.LoginConfig;
+import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.entity.EncryptKey;
+import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.security.exception.LoginException;
 import com.izhimu.seas.security.holder.LoginHolder;
-import com.izhimu.seas.security.service.EncryptService;
+import com.izhimu.seas.cache.service.EncryptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,14 +38,16 @@ import java.util.Optional;
 public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final EncryptService<EncryptKey, String> encryptService;
+    private final CaptchaService captchaService;
     private final LoginHolder loginHolder;
-    private final LoginConfig loginConfig;
+    private final SecurityConfig securityConfig;
 
-    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, LoginHolder loginHolder, LoginConfig loginConfig) {
+    public CustomAuthenticationFilter(EncryptService<EncryptKey, String> encryptService, CaptchaService captchaService, LoginHolder loginHolder, SecurityConfig securityConfig) {
         super(new AntPathRequestMatcher(SecurityConstant.URL_LOGIN, "POST"));
         this.encryptService = encryptService;
+        this.captchaService = captchaService;
         this.loginHolder = loginHolder;
-        this.loginConfig = loginConfig;
+        this.securityConfig = securityConfig;
     }
 
     @Override
@@ -61,19 +65,26 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
             throw new LoginException(ResultCode.LOGIN_ERROR, "登录参数缺失或参数不正确");
         }
 
+        // 验证码错误
+        Captcha captcha = new Captcha();
+        captcha.setToken(loginDTO.getVerifyCodeKey());
+        captcha.setCaptchaVerification(loginDTO.getVerifyCode());
+        if (!captchaService.verification(captcha)) {
+            throw new LoginException(ResultCode.LOGIN_VERIFICATION_ERROR, "安全验证未通过");
+        }
+
         // 校验密码错误次数
         String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(loginDTO.getAccount());
         int errNum = Optional.ofNullable(RedisHelper.getInstance().get(errKey, Integer.class)).orElse(0);
-        if (errNum >= loginConfig.getErrNum()) {
+        if (errNum >= securityConfig.getErrNum()) {
             throw new LoginException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR, "用户名或密码错误次数超限");
         }
 
         // 解密登录凭证
         UsernamePasswordAuthenticationToken authRequest;
         try {
-            EncryptKey key = encryptService.getEncryptKey(loginDTO.getPasswordKey());
             authRequest = new UsernamePasswordAuthenticationToken(loginDTO.getAccount(),
-                    encryptService.decrypt(key, loginDTO.getPassword()));
+                    encryptService.decrypt(loginDTO.getPasswordKey(), loginDTO.getPassword()));
         } catch (Exception e) {
             throw new BadCredentialsException("账号或密码错误");
         }

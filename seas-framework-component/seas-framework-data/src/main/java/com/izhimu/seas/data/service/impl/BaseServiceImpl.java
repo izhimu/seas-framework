@@ -1,15 +1,11 @@
 package com.izhimu.seas.data.service.impl;
 
-import cn.hutool.extra.cglib.CglibUtil;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.izhimu.seas.data.entity.IdEntity;
 import com.izhimu.seas.data.entity.Pagination;
 import com.izhimu.seas.data.service.IBaseService;
 import com.izhimu.seas.data.wrapper.ParamWrapper;
-
-import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * 基础服务层实现封装
@@ -29,18 +25,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends IdEntit
     }
 
     @Override
-    public <E> Pagination<E> page(Pagination<T> page, Object param, Supplier<E> target) {
-        Pagination<T> result = this.paramQuery().param(param).orderBy().wrapper().page(page);
-        return Pagination.of(result, target);
-    }
-
-    @Override
-    public <E> E get(Long id, Class<E> clazz) {
-        T byId = super.getById(id);
-        if (Objects.isNull(byId)) {
-            return null;
-        }
-        return CglibUtil.copy(byId, clazz);
+    public Pagination<T> page(Pagination<T> page, Object param) {
+        return this.paramQuery().param(param).orderBy().wrapper().page(page);
     }
 
     @Override

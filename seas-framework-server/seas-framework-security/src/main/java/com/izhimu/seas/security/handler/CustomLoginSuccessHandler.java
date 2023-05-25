@@ -4,13 +4,13 @@ import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.core.dto.LoginDTO;
 import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.event.LoginLogEvent;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.vo.LoginVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -27,11 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final ApplicationContext applicationContext;
     private final LoginHolder loginHolder;
 
-    public CustomLoginSuccessHandler(ApplicationContext applicationContext, LoginHolder loginHolder) {
-        this.applicationContext = applicationContext;
+    public CustomLoginSuccessHandler(LoginHolder loginHolder) {
         this.loginHolder = loginHolder;
     }
 
@@ -49,7 +47,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             httpServletResponse.setStatus(result.httpStatus().value());
             ServletUtil.write(httpServletResponse, result.toString(), MediaType.APPLICATION_JSON_VALUE);
         }
-        applicationContext.publishEvent(new LoginLogEvent(this, loginDTO, 0));
+        loginDTO.setStatus(0);
+        EventManager.trigger(CoreEvent.E_LOGIN, loginDTO);
     }
 
     /**

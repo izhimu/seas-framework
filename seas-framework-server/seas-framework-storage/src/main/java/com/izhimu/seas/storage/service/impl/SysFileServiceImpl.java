@@ -21,6 +21,7 @@ import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.*;
@@ -38,6 +39,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysFileServiceImpl extends BaseServiceImpl<SysFileMapper, SysFile> implements SysFileService {
 
     private static final String BASE_URL = "/sys/file/";

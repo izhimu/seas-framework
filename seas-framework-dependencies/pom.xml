@@ -23,6 +23,7 @@
         <okhttp.version>4.10.0</okhttp.version>
         <oshi.version>6.4.0</oshi.version>
         <reflections.version>0.10.2</reflections.version>
+        <bcprov.version>1.73</bcprov.version>
     </properties>
 
     <dependencyManagement>
@@ -37,7 +38,12 @@
             <!-- Seas Component -->
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-core</artifactId>
+                <artifactId>seas-framework-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-captcha</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -47,7 +53,7 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-cache</artifactId>
+                <artifactId>seas-framework-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -59,6 +65,11 @@
             <dependency>
                 <groupId>com.izhimu</groupId>
                 <artifactId>seas-framework-cache-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-captcha-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -79,7 +90,12 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-storage</artifactId>
+                <artifactId>seas-framework-healthy</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.izhimu</groupId>
+                <artifactId>seas-framework-job</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -89,7 +105,7 @@
             </dependency>
             <dependency>
                 <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-healthy</artifactId>
+                <artifactId>seas-framework-storage</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -142,6 +158,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bcprov.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

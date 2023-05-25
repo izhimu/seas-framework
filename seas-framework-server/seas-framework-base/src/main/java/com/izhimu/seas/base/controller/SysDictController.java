@@ -2,9 +2,7 @@ package com.izhimu.seas.base.controller;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.izhimu.seas.base.entity.SysDict;
-import com.izhimu.seas.base.param.SysDictParam;
 import com.izhimu.seas.base.service.SysDictService;
-import com.izhimu.seas.base.vo.SysDictVO;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.web.entity.Select;
 import com.izhimu.seas.data.controller.AbsBaseController;
@@ -22,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/dict")
-public class SysDictController extends AbsBaseController<SysDictService, SysDict, SysDictVO, SysDictParam> {
+public class SysDictController extends AbsBaseController<SysDictService, SysDict> {
 
     @Override
     public String logPrefix() {
@@ -32,12 +30,12 @@ public class SysDictController extends AbsBaseController<SysDictService, SysDict
     /**
      * 获取树
      *
-     * @param param 查询参数 {@link SysDictParam SysDictParam}
+     * @param param 查询参数 {@link SysDict SysDict}
      * @return 树数据 {@link Tree Tree}
      */
     @OperationLog("字典管理-获取树")
     @GetMapping("/tree")
-    public List<Tree<Long>> tree(SysDictParam param) {
+    public List<Tree<Long>> tree(SysDict param) {
         return service.tree(param);
     }
 

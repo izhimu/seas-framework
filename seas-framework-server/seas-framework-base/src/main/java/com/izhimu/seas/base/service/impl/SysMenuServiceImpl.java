@@ -3,20 +3,18 @@ package com.izhimu.seas.base.service.impl;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
-import cn.hutool.extra.cglib.CglibUtil;
 import com.izhimu.seas.base.entity.SysAuthMenu;
 import com.izhimu.seas.base.entity.SysMenu;
 import com.izhimu.seas.base.entity.SysUserRole;
 import com.izhimu.seas.base.mapper.SysMenuMapper;
-import com.izhimu.seas.base.param.SysMenuParam;
 import com.izhimu.seas.base.service.SysAuthMenuService;
 import com.izhimu.seas.base.service.SysMenuService;
 import com.izhimu.seas.base.service.SysUserRoleService;
 import com.izhimu.seas.base.service.SysUserService;
-import com.izhimu.seas.base.vo.SysMenuVO;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -29,6 +27,7 @@ import java.util.stream.Collectors;
  * @version v1.0
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
 
     @Resource
@@ -41,7 +40,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     private SysAuthMenuService authMenuService;
 
     @Override
-    public List<Tree<Long>> tree(SysMenuParam param) {
+    public List<Tree<Long>> tree(SysMenu param) {
         List<SysMenu> list = this.paramQuery().param(param).orderBy().wrapper().list();
         TreeNodeConfig config = new TreeNodeConfig();
         config.setIdKey("key");
@@ -56,10 +55,10 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
     }
 
     @Override
-    public List<SysMenuVO> auth() {
+    public List<SysMenu> auth() {
         User user = userService.getCurrentUser();
         if (Boolean.TRUE.equals(user.getIsSuper())) {
-            return CglibUtil.copyList(this.lambdaQuery().orderByAsc(SysMenu::getSort).list(), SysMenuVO::new);
+            return this.lambdaQuery().orderByAsc(SysMenu::getSort).list();
         }
         List<SysMenu> all = this.lambdaQuery().eq(SysMenu::getDisplay, 1).list();
         Map<Long, SysMenu> allMap = all.stream().collect(Collectors.toMap(SysMenu::getId, v -> v));
@@ -88,7 +87,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
             result.add(allMap.get(v));
             getAuthMenuIds(result, allMap, v);
         });
-        return CglibUtil.copyList(result.stream().sorted(Comparator.comparing(SysMenu::getSort)).collect(Collectors.toList()), SysMenuVO::new);
+        return result.stream().sorted(Comparator.comparing(SysMenu::getSort)).collect(Collectors.toList());
     }
 
     /**
