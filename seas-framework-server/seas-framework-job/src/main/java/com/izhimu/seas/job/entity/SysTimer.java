@@ -1,7 +1,9 @@
 package com.izhimu.seas.job.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.IdEntity;
+import com.izhimu.seas.data.enums.SearchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,16 +17,18 @@ import java.time.LocalDateTime;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("SEAS_SYS_FILE")
+@TableName("SEAS_SYS_TIMER")
 public class SysTimer extends IdEntity {
 
     /**
      * 定时器名称
      */
+    @Search
     private String name;
     /**
      * 定时器标识
      */
+    @Search
     private String key;
     /**
      * 定时器类型
@@ -55,5 +59,6 @@ public class SysTimer extends IdEntity {
      * 状态
      * 0.就绪 1.运行 2.完成
      */
+    @Search(type = SearchType.EQUALS)
     private Integer status;
 }

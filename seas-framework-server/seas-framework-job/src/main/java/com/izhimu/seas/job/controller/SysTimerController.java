@@ -1,8 +1,11 @@
 package com.izhimu.seas.job.controller;
 
+import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.data.controller.AbsBaseController;
 import com.izhimu.seas.job.entity.SysTimer;
 import com.izhimu.seas.job.service.SysTimerService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,5 +21,12 @@ public class SysTimerController extends AbsBaseController<SysTimerService, SysTi
     @Override
     public String logPrefix() {
         return "定时任务";
+    }
+
+    @OperationLog("-执行")
+    @PostMapping("/exec")
+    public void exec(@RequestBody SysTimer entity) {
+        SysTimer timer = service.getById(entity.getId());
+        service.execSchedule(timer);
     }
 }

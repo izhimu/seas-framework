@@ -10,4 +10,35 @@ import com.izhimu.seas.job.entity.SysTimer;
  * @version v1.0
  */
 public interface SysTimerService extends IBaseService<SysTimer> {
+
+    /**
+     * 初始化任务
+     *
+     * @return boolean
+     */
+    boolean initSchedule();
+
+    /**
+     * 添加任务
+     *
+     * @param timer SysTimer
+     * @return boolean
+     */
+    boolean addSchedule(SysTimer timer);
+
+    /**
+     * 删除任务
+     *
+     * @param timer SysTimer
+     * @return boolean
+     */
+    boolean removeSchedule(SysTimer timer);
+
+    /**
+     * 立即执行任务
+     *
+     * @param timer SysTimer
+     * @return boolean
+     */
+    boolean execSchedule(SysTimer timer);
 }
