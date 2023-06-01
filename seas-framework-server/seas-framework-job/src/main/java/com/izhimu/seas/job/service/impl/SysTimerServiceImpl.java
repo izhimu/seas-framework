@@ -162,10 +162,10 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
         String expression = timer.getExpression();
         Integer type = timer.getType();
         if (type == 0) {
-            return new RangeCronTrigger(expression, timer.getStartTime(), timer.getEndTime());
+            return new RangeCronTrigger(timer.getKey(), expression, timer.getStartTime(), timer.getEndTime());
         } else if (type == 1) {
             DateTime date = DateUtil.parse(expression, "yyyy-MM-dd HH:mm:ss");
-            return new OnlyTrigger(date);
+            return new OnlyTrigger(timer.getKey(), date);
         } else if (type == 2) {
             TimeUnit timeUnit = null;
             long time = 0;
@@ -188,7 +188,7 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
             if (Objects.isNull(timeUnit)) {
                 return null;
             }
-            return new RangePeriodicTrigger(time, timeUnit, timer.getStartTime(), timer.getEndTime());
+            return new RangePeriodicTrigger(timer.getKey(), time, timeUnit, timer.getStartTime(), timer.getEndTime());
         } else {
             return null;
         }
