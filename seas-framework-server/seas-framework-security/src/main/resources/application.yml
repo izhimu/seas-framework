@@ -11,7 +11,7 @@ spring:
     resources:
       add-mappings: false
   redis:
-    host: 192.168.31.201
+    host: inner.izhimu.cn
     port: 6379
     database: 0
     password: 123456

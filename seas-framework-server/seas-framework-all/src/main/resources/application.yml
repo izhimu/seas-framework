@@ -15,13 +15,13 @@ spring:
       max-file-size: 1GB
       max-request-size: 10GB
   redis:
-    host: 192.168.31.201
+    host: inner.izhimu.cn
     port: 6379
     database: 0
     password: 123456
   datasource:
     name: dataSource
-    url: jdbc:postgresql://192.168.31.200:5432/seas_db
+    url: jdbc:postgresql://inner.izhimu.cn:5432/seas_db
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
@@ -46,7 +46,7 @@ seas:
     err-time: 300
     err-num: 5
   minio:
-    end-point: http://192.168.31.201:9000
+    end-point: http://minio.inner.izhimu.cn
     access-key: minioadmin
     secret-key: minioadmin
     bucket: seas

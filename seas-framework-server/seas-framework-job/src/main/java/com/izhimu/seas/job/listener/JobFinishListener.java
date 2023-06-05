@@ -1,9 +1,14 @@
 package com.izhimu.seas.job.listener;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.core.event.EventListener;
 import com.izhimu.seas.core.event.IEvent;
 import com.izhimu.seas.core.event.IEventListener;
+import com.izhimu.seas.job.entity.SysTimer;
 import com.izhimu.seas.job.event.JobEvent;
+import com.izhimu.seas.job.service.SysTimerService;
+
+import java.util.Objects;
 
 /**
  * 任务完成监听器
@@ -13,10 +18,22 @@ import com.izhimu.seas.job.event.JobEvent;
  */
 @EventListener
 public class JobFinishListener implements IEventListener {
+
+    private final SysTimerService timerService;
+
+    public JobFinishListener() {
+        timerService = SpringUtil.getBean(SysTimerService.class);
+    }
+
     @Override
     public boolean onEvent(Object data) {
-        System.out.println(data);
-        return true;
+        if (Objects.isNull(data)) {
+            return false;
+        }
+        return timerService.lambdaUpdate()
+                .eq(SysTimer::getKey, data)
+                .set(SysTimer::getStatus, 2)
+                .update();
     }
 
     @Override

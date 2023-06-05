@@ -99,6 +99,9 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
             job.setKey(timer.getKey());
             job.setParam(getParam(timer.getParam()));
             ScheduledFuture<?> schedule = scheduler.schedule(job, trigger);
+            if (Objects.isNull(schedule)) {
+                continue;
+            }
             TASK_MAP.put(timer.getKey(), schedule);
             count++;
             log.info("[{}]任务 => expression: {}, class: {} 加载完成", timer.getName(), timer.getExpression(), timer.getClassPath());
