@@ -19,22 +19,6 @@ public interface SysTimerService extends IBaseService<SysTimer> {
     boolean initSchedule();
 
     /**
-     * 添加任务
-     *
-     * @param timer SysTimer
-     * @return boolean
-     */
-    boolean addSchedule(SysTimer timer);
-
-    /**
-     * 删除任务
-     *
-     * @param timer SysTimer
-     * @return boolean
-     */
-    boolean removeSchedule(SysTimer timer);
-
-    /**
      * 立即执行任务
      *
      * @param timer SysTimer

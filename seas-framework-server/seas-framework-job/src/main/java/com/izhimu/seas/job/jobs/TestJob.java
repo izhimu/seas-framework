@@ -13,6 +13,6 @@ import java.util.Map;
 public class TestJob extends AbstractJob {
     @Override
     public void run(Map<String, Object> param) {
-        log.info(LocalDateTime.now().toString());
+        log.info("[{}] - {}", LocalDateTime.now(), param);
     }
 }

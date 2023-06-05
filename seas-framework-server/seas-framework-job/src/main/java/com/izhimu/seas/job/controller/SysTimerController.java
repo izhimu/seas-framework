@@ -26,7 +26,6 @@ public class SysTimerController extends AbsBaseController<SysTimerService, SysTi
     @OperationLog("-执行")
     @PostMapping("/exec")
     public void exec(@RequestBody SysTimer entity) {
-        SysTimer timer = service.getById(entity.getId());
-        service.execSchedule(timer);
+        service.execSchedule(entity);
     }
 }
