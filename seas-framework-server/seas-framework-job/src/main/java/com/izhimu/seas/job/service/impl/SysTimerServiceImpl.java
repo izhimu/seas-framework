@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 定时器服务层实现
@@ -35,7 +34,10 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
             entity.setStatus(0);
         }
         if (entity.getStatus() == 1) {
-            scheduleService.add(entity);
+            boolean result = scheduleService.add(entity);
+            if (!result) {
+                entity.setStatus(3);
+            }
         }
         return super.add(entity);
     }
@@ -43,12 +45,23 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
     @Override
     public boolean updateById(SysTimer entity) {
         super.updateById(entity);
+        if (Objects.isNull(entity.getStartTime()) || Objects.isNull(entity.getEndTime())) {
+            this.lambdaUpdate()
+                    .eq(SysTimer::getId, entity.getId())
+                    .set(SysTimer::getStartTime, entity.getStartTime())
+                    .set(SysTimer::getEndTime, entity.getEndTime())
+                    .update();
+        }
         SysTimer timer = this.getById(entity.getId());
         if (scheduleService.has(timer.getKey())) {
             scheduleService.del(timer);
         }
         if (timer.getStatus() == 1) {
-            scheduleService.add(timer);
+            boolean result = scheduleService.add(timer);
+            if (!result) {
+                entity.setStatus(3);
+                super.updateById(entity);
+            }
         }
         return true;
     }
@@ -65,17 +78,19 @@ public class SysTimerServiceImpl extends BaseServiceImpl<SysTimerMapper, SysTime
     @Override
     public boolean initSchedule() {
         log.info("加载定时任务 => 开始");
-        AtomicInteger count = new AtomicInteger();
         List<SysTimer> list = this.lambdaQuery()
                 .eq(SysTimer::getStatus, 1)
                 .list();
-        list.forEach(timer -> {
-            boolean add = scheduleService.add(timer);
-            if (add) {
-                count.getAndIncrement();
-            }
-        });
-        log.info("加载定时任务 <= 结束 | 任务数：{}", count);
+        list.stream()
+                .filter(timer -> !scheduleService.has(timer.getKey()))
+                .forEach(timer -> {
+                    boolean result = scheduleService.add(timer);
+                    if (!result) {
+                        timer.setStatus(3);
+                        this.updateById(timer);
+                    }
+                });
+        log.info("加载定时任务 <= 结束");
         return true;
     }
 

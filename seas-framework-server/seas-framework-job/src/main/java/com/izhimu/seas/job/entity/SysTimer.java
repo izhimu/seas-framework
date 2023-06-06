@@ -57,7 +57,7 @@ public class SysTimer extends IdEntity {
     private LocalDateTime endTime;
     /**
      * 状态
-     * 0.就绪 1.运行 2.完成
+     * 0.就绪 1.运行 2.完成 3.异常
      */
     @Search(type = SearchType.EQUALS)
     private Integer status;

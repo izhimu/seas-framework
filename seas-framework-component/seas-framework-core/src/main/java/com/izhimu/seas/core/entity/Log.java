@@ -1,4 +1,4 @@
-package com.izhimu.seas.core.web.entity;
+package com.izhimu.seas.core.entity;
 
 import lombok.Data;
 

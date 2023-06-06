@@ -29,8 +29,8 @@ public class EventListenerScanHandler implements IScanHandler {
                 EventListener annotation = aClass.getAnnotation(EventListener.class);
                 if (annotation.autoRegister()) {
                     Object o = aClass.getDeclaredConstructor().newInstance();
-                    if (o instanceof IEventListener) {
-                        EventManager.register((IEventListener) o);
+                    if (o instanceof IEventListener eventListener) {
+                        EventManager.register(eventListener);
                     }
                 }
             } catch (Exception e) {

@@ -7,7 +7,7 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.common.utils.JsonUtil;
 import com.izhimu.seas.job.entity.SysTimer;
-import com.izhimu.seas.job.jobs.AbstractJob;
+import com.izhimu.seas.core.job.AbstractJob;
 import com.izhimu.seas.job.service.ScheduleService;
 import com.izhimu.seas.job.trigger.OnlyTrigger;
 import com.izhimu.seas.job.trigger.RangeCronTrigger;
@@ -97,7 +97,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private AbstractJob getAbstractJob(SysTimer timer) {
-        Class<?> aClass = ClassLoaderUtil.loadClass(timer.getClassPath());
+        Class<?> aClass;
+        try {
+            aClass = ClassLoaderUtil.loadClass(timer.getClassPath());
+        } catch (Exception ignored) {
+            return null;
+        }
         if (!AbstractJob.class.isAssignableFrom(aClass)) {
             return null;
         }

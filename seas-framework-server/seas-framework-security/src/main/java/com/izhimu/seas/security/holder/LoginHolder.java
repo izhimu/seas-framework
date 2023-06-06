@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.holder;
 
-import com.izhimu.seas.core.web.entity.Login;
+import com.izhimu.seas.core.entity.Login;
 import org.springframework.stereotype.Component;
 
 /**

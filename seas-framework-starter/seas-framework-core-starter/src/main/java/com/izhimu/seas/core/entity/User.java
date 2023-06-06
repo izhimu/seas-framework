@@ -1,6 +1,5 @@
 package com.izhimu.seas.core.entity;
 
-import com.izhimu.seas.core.web.entity.Login;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

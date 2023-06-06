@@ -6,7 +6,7 @@ import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.web.Result;
-import com.izhimu.seas.core.web.entity.Login;
+import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.holder.LoginHolder;
 import lombok.extern.slf4j.Slf4j;

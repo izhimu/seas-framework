@@ -1,4 +1,4 @@
-package com.izhimu.seas.core.web.entity;
+package com.izhimu.seas.core.entity;
 
 import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.core.enums.DeviceType;
