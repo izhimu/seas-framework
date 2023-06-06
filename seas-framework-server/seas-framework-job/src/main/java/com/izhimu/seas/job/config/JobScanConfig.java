@@ -2,7 +2,7 @@ package com.izhimu.seas.job.config;
 
 import com.izhimu.seas.core.scan.ScanHandlerHolder;
 import com.izhimu.seas.job.handler.JobRegisterScanHandler;
-import com.izhimu.seas.job.service.SysTimerService;
+import com.izhimu.seas.job.service.JobTimerService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 public class JobScanConfig implements ApplicationRunner {
 
     @Resource
-    private SysTimerService timerService;
+    private JobTimerService timerService;
 
     @Override
     public void run(ApplicationArguments args) {

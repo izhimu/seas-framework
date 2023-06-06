@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("storage.minio")
+@ConfigurationProperties("seas.minio")
 public class MinioConfig {
 
     /**

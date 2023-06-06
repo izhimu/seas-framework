@@ -2,8 +2,8 @@ package com.izhimu.seas.job.handler;
 
 import com.izhimu.seas.core.scan.IScanHandler;
 import com.izhimu.seas.core.annotation.JobRegister;
-import com.izhimu.seas.job.entity.SysTimer;
-import com.izhimu.seas.job.service.SysTimerService;
+import com.izhimu.seas.job.entity.JobTimer;
+import com.izhimu.seas.job.service.JobTimerService;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
@@ -17,9 +17,9 @@ import java.util.Set;
 @Slf4j
 public class JobRegisterScanHandler implements IScanHandler {
 
-    private final SysTimerService timerService;
+    private final JobTimerService timerService;
 
-    public JobRegisterScanHandler(SysTimerService timerService) {
+    public JobRegisterScanHandler(JobTimerService timerService) {
         this.timerService = timerService;
     }
 
@@ -34,11 +34,11 @@ public class JobRegisterScanHandler implements IScanHandler {
         for (Class<?> aClass : typesAnnotatedWith) {
             try {
                 JobRegister annotation = aClass.getAnnotation(JobRegister.class);
-                List<SysTimer> list = timerService.lambdaQuery()
-                        .eq(SysTimer::getKey, annotation.key())
+                List<JobTimer> list = timerService.lambdaQuery()
+                        .eq(JobTimer::getKey, annotation.key())
                         .list();
                 boolean save = list.isEmpty();
-                SysTimer timer = save ? new SysTimer() : list.get(0);
+                JobTimer timer = save ? new JobTimer() : list.get(0);
                 timer.setStatus(annotation.enable() ? 1 : 0);
                 if (save) {
                     timer.setName(annotation.name());

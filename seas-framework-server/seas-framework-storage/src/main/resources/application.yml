@@ -33,7 +33,7 @@ mybatis-plus:
       logic-delete-field: LOGIC_DEL
       logic-delete-value: 1
       logic-not-delete-value: 0
-storage:
+seas:
   minio:
     end-point: http://minio.inner.izhimu.cn
     access-key: minioadmin

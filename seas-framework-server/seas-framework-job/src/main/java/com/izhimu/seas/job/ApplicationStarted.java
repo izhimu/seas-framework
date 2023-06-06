@@ -1,6 +1,6 @@
 package com.izhimu.seas.job;
 
-import com.izhimu.seas.job.service.SysTimerService;
+import com.izhimu.seas.job.service.JobTimerService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class ApplicationStarted implements ApplicationRunner {
 
     @Resource
-    private SysTimerService timerService;
+    private JobTimerService timerService;
 
     @Override
     public void run(ApplicationArguments args) {

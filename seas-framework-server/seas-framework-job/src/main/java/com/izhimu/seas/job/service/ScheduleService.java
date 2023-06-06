@@ -1,6 +1,6 @@
 package com.izhimu.seas.job.service;
 
-import com.izhimu.seas.job.entity.SysTimer;
+import com.izhimu.seas.job.entity.JobTimer;
 
 /**
  * 定时服务接口
@@ -8,6 +8,7 @@ import com.izhimu.seas.job.entity.SysTimer;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("UnusedReturnValue")
 public interface ScheduleService {
 
     /**
@@ -16,7 +17,7 @@ public interface ScheduleService {
      * @param timer SysTimer
      * @return boolean
      */
-    boolean add(SysTimer timer);
+    boolean add(JobTimer timer);
 
     /**
      * 删除定时任务
@@ -24,7 +25,7 @@ public interface ScheduleService {
      * @param timer SysTimer
      * @return boolean
      */
-    boolean del(SysTimer timer);
+    boolean del(JobTimer timer);
 
     /**
      * 执行定时任务
@@ -32,7 +33,7 @@ public interface ScheduleService {
      * @param timer SysTimer
      * @return boolean
      */
-    boolean run(SysTimer timer);
+    boolean run(JobTimer timer);
 
     /**
      * 是否在执行列表中

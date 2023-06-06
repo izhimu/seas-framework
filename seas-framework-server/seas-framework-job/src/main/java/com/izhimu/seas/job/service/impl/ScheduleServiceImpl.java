@@ -6,7 +6,7 @@ import cn.hutool.core.util.ClassLoaderUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.common.utils.JsonUtil;
-import com.izhimu.seas.job.entity.SysTimer;
+import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.core.job.AbstractJob;
 import com.izhimu.seas.job.service.ScheduleService;
 import com.izhimu.seas.job.trigger.OnlyTrigger;
@@ -43,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ThreadPoolTaskScheduler scheduler;
 
     @Override
-    public boolean add(SysTimer timer) {
+    public boolean add(JobTimer timer) {
         if (StrUtil.isBlank(timer.getExpression()) || StrUtil.isBlank(timer.getClassPath())) {
             return false;
         }
@@ -62,7 +62,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean del(SysTimer timer) {
+    public boolean del(JobTimer timer) {
         if (StrUtil.isBlank(timer.getKey())) {
             return false;
         }
@@ -79,7 +79,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean run(SysTimer timer) {
+    public boolean run(JobTimer timer) {
         if (StrUtil.isBlank(timer.getClassPath())) {
             return false;
         }
@@ -96,7 +96,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return TASK_MAP.containsKey(key);
     }
 
-    private AbstractJob getAbstractJob(SysTimer timer) {
+    private AbstractJob getAbstractJob(JobTimer timer) {
         Class<?> aClass;
         try {
             aClass = ClassLoaderUtil.loadClass(timer.getClassPath());
@@ -112,7 +112,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return job;
     }
 
-    private Trigger getTrigger(SysTimer timer) {
+    private Trigger getTrigger(JobTimer timer) {
         String expression = timer.getExpression();
         Integer type = timer.getType();
         if (type == 0) {

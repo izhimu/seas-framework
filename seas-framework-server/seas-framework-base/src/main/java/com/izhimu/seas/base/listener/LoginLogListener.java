@@ -1,8 +1,8 @@
 package com.izhimu.seas.base.listener;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.izhimu.seas.base.service.SysAccountLogService;
-import com.izhimu.seas.core.web.entity.Login;
+import com.izhimu.seas.base.service.BasAccountLogService;
+import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventListener;
 import com.izhimu.seas.core.event.IEvent;
@@ -19,10 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @EventListener
 public class LoginLogListener implements IEventListener {
 
-    private final SysAccountLogService service;
+    private final BasAccountLogService service;
 
     public LoginLogListener() {
-        service = SpringUtil.getBean(SysAccountLogService.class);
+        service = SpringUtil.getBean(BasAccountLogService.class);
     }
 
     @Override

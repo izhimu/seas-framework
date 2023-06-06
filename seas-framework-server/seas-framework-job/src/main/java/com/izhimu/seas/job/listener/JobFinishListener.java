@@ -4,9 +4,9 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.core.event.EventListener;
 import com.izhimu.seas.core.event.IEvent;
 import com.izhimu.seas.core.event.IEventListener;
-import com.izhimu.seas.job.entity.SysTimer;
+import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.event.JobEvent;
-import com.izhimu.seas.job.service.SysTimerService;
+import com.izhimu.seas.job.service.JobTimerService;
 
 import java.util.Objects;
 
@@ -19,10 +19,10 @@ import java.util.Objects;
 @EventListener
 public class JobFinishListener implements IEventListener {
 
-    private final SysTimerService timerService;
+    private final JobTimerService timerService;
 
     public JobFinishListener() {
-        timerService = SpringUtil.getBean(SysTimerService.class);
+        timerService = SpringUtil.getBean(JobTimerService.class);
     }
 
     @Override
@@ -31,8 +31,8 @@ public class JobFinishListener implements IEventListener {
             return false;
         }
         return timerService.lambdaUpdate()
-                .eq(SysTimer::getKey, data)
-                .set(SysTimer::getStatus, 2)
+                .eq(JobTimer::getKey, data)
+                .set(JobTimer::getStatus, 2)
                 .update();
     }
 

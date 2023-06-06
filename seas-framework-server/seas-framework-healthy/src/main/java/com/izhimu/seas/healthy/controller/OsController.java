@@ -17,7 +17,7 @@ import java.util.List;
  * @version v1.0
  */
 @RestController
-@RequestMapping("/healthy/os")
+@RequestMapping("/hea/os")
 public class OsController {
 
     @Resource
