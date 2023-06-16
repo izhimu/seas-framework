@@ -50,7 +50,7 @@ public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> 
                     tree.setId(treeNode.getId());
                     tree.setParentId(treeNode.getParentId());
                     tree.setName(treeNode.getMenuName());
-                    tree.setWeight(treeNode.getSort() + "-" + treeNode.getId());
+                    tree.setWeight(treeNode.getSort());
                 });
     }
 
