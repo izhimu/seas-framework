@@ -47,7 +47,7 @@ public class BasDictController extends AbsBaseController<BasDictService, BasDict
      */
     @OperationLog("字典管理-获取选择列表")
     @GetMapping("/select")
-    public List<Select<Long>> select(String code) {
+    public List<Select<String>> select(String code) {
         return service.select(code);
     }
 }
