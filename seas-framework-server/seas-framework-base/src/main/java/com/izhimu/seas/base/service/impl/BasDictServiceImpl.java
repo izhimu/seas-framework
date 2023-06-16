@@ -42,18 +42,34 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
     }
 
     @Override
-    public List<Select<Long>> select(String dictCode) {
+    public List<Select<String>> select(String dictCode) {
         Optional<BasDict> sysDict = this.lambdaQuery()
                 .select(BasDict::getId)
                 .eq(BasDict::getDictCode, dictCode)
                 .oneOpt();
         return sysDict.map(dict -> this.lambdaQuery()
-                .select(BasDict::getDictName, BasDict::getId)
+                .select(BasDict::getDictName, BasDict::getDictCode)
                 .eq(BasDict::getParentId, dict.getId())
                 .orderByAsc(BasDict::getSort)
                 .list()
                 .stream()
-                .map(item -> new Select<>(item.getDictName(), item.getId()))
+                .map(item -> new Select<>(item.getDictName(), item.getDictCode()))
                 .collect(Collectors.toList())).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public BasDict getDictByCode(String dictType, String dictCode) {
+        Optional<BasDict> parentDictOptional = this.lambdaQuery()
+                .select(BasDict::getId)
+                .eq(BasDict::getDictCode, dictType)
+                .oneOpt();
+        if (parentDictOptional.isEmpty()) {
+            return null;
+        }
+        BasDict parentDict = parentDictOptional.get();
+        return this.lambdaQuery()
+                .eq(BasDict::getParentId, parentDict.getId())
+                .eq(BasDict::getDictCode, dictCode)
+                .one();
     }
 }

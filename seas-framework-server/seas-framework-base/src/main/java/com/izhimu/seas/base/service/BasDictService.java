@@ -29,5 +29,14 @@ public interface BasDictService extends IBaseService<BasDict> {
      * @param dictCode 字典编号
      * @return 选择器数据
      */
-    List<Select<Long>> select(String dictCode);
+    List<Select<String>> select(String dictCode);
+
+    /**
+     * 根据字典编号获取字典
+     *
+     * @param dictType 字典类型
+     * @param dictCode 字典编号
+     * @return 字典
+     */
+    BasDict getDictByCode(String dictType, String dictCode);
 }
