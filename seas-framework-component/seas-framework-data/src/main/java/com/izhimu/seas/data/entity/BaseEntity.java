@@ -23,25 +23,21 @@ public class BaseEntity extends IdEntity {
     /**
      * 创建人
      */
-    @ViewIgnore
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
     /**
      * 创建时间
      */
-    @ViewIgnore
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
     /**
      * 更新人
      */
-    @ViewIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
     /**
      * 更新时间
      */
-    @ViewIgnore
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedTime;
     /**
