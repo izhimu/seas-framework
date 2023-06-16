@@ -56,4 +56,11 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
                 .map(item -> new Select<>(item.getDictName(), item.getId()))
                 .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
+
+    @Override
+    public BasDict getDictByCode(String dictCode) {
+        return this.lambdaQuery()
+                .eq(BasDict::getDictCode, dictCode)
+                .one();
+    }
 }
