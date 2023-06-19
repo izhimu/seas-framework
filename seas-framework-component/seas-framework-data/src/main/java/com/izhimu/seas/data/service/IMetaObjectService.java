@@ -55,11 +55,11 @@ public interface IMetaObjectService extends MetaObjectHandler {
     @Override
     default void updateFill(MetaObject metaObject) {
         if (metaObject.hasSetter(UPDATE_TIME)) {
-            this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
+            this.strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
         }
         Long userId = getUserId();
         if (metaObject.hasSetter(UPDATE_BY) && Objects.nonNull(userId)) {
-            this.strictInsertFill(metaObject, UPDATE_BY, Long.class, userId);
+            this.strictUpdateFill(metaObject, UPDATE_BY, Long.class, userId);
         }
     }
 
