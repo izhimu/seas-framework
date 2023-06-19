@@ -35,9 +35,15 @@ public interface IMetaObjectService extends MetaObjectHandler {
         if (metaObject.hasSetter(CREATE_TIME)) {
             this.strictInsertFill(metaObject, CREATE_TIME, LocalDateTime.class, LocalDateTime.now());
         }
+        if (metaObject.hasSetter(UPDATE_TIME)) {
+            this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
+        }
         Long userId = getUserId();
         if (metaObject.hasSetter(CREATE_BY) && Objects.nonNull(userId)) {
             this.strictInsertFill(metaObject, CREATE_BY, Long.class, userId);
+        }
+        if (metaObject.hasSetter(UPDATE_BY) && Objects.nonNull(userId)) {
+            this.strictInsertFill(metaObject, UPDATE_BY, Long.class, userId);
         }
     }
 
