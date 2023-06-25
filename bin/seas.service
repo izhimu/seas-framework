@@ -1,0 +1,13 @@
+[Unit]
+Description=Seas Framework Server daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/bin/bash /usr/local/seas/bin/server.sh start
+ExecReload=/bin/bash /usr/local/seas/bin/server.sh restart
+ExecStop=/bin/bash /usr/local/seas/bin/server.sh stop
+ExecQuit=/bin/bash /usr/local/seas/bin/server.sh quit
+
+[Install]
+WantedBy=multi-user.target
