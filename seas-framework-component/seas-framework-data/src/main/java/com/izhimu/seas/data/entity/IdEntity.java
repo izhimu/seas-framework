@@ -1,6 +1,7 @@
 package com.izhimu.seas.data.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.izhimu.seas.data.annotation.OrderBy;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,5 +19,6 @@ public class IdEntity implements Serializable {
      * ID
      */
     @TableId
+    @OrderBy(asc = false)
     private Long id;
 }

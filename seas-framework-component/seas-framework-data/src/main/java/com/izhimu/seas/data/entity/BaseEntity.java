@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("unused")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BaseEntity extends IdEntity {
@@ -59,4 +60,17 @@ public class BaseEntity extends IdEntity {
     @ViewIgnore
     @TableLogic
     private Integer logicDel;
+
+    /**
+     * 清除基本信息
+     */
+    public void cleanBaseInfo() {
+        this.setId(null);
+        this.setCreatedBy(null);
+        this.setCreatedTime(null);
+        this.setUpdatedBy(null);
+        this.setUpdatedTime(null);
+        this.setVersion(null);
+        this.setLogicDel(null);
+    }
 }
