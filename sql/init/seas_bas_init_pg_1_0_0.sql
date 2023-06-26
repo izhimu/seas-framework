@@ -496,6 +496,37 @@ COMMENT ON TABLE "public"."seas_bas_user_role" IS '用户角色中间表';
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for seas_bas_conf
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."seas_bas_conf";
+CREATE TABLE "public"."seas_bas_conf" (
+                                          "id" int8 NOT NULL,
+                                          "conf_name" varchar(255) COLLATE "pg_catalog"."default",
+                                          "conf_key" varchar(255) COLLATE "pg_catalog"."default",
+                                          "conf_value" text COLLATE "pg_catalog"."default",
+                                          "conf_info" varchar(255) COLLATE "pg_catalog"."default",
+                                          "created_by" int8,
+                                          "created_time" timestamp(6),
+                                          "updated_by" int8,
+                                          "updated_time" timestamp(6),
+                                          "version" int4 DEFAULT 1,
+                                          "logic_del" int4 DEFAULT 0
+)
+;
+COMMENT ON COLUMN "public"."seas_bas_conf"."id" IS 'ID';
+COMMENT ON COLUMN "public"."seas_bas_conf"."conf_name" IS '配置名称';
+COMMENT ON COLUMN "public"."seas_bas_conf"."conf_key" IS '配置标识';
+COMMENT ON COLUMN "public"."seas_bas_conf"."conf_value" IS '配置值';
+COMMENT ON COLUMN "public"."seas_bas_conf"."conf_info" IS '备注信息';
+COMMENT ON COLUMN "public"."seas_bas_conf"."created_by" IS '创建者';
+COMMENT ON COLUMN "public"."seas_bas_conf"."created_time" IS '创建时间';
+COMMENT ON COLUMN "public"."seas_bas_conf"."updated_by" IS '修改者';
+COMMENT ON COLUMN "public"."seas_bas_conf"."updated_time" IS '修改时间';
+COMMENT ON COLUMN "public"."seas_bas_conf"."version" IS '版本';
+COMMENT ON COLUMN "public"."seas_bas_conf"."logic_del" IS '逻辑删除';
+COMMENT ON TABLE "public"."seas_bas_conf" IS '配置信息表';
+
+-- ----------------------------
 -- Primary Key structure for table seas_bas_account
 -- ----------------------------
 ALTER TABLE "public"."seas_bas_account" ADD CONSTRAINT "seas_sys_account_pkey" PRIMARY KEY ("id");
@@ -559,3 +590,8 @@ ALTER TABLE "public"."seas_bas_user_org" ADD CONSTRAINT "seas_sys_user_org_pkey"
 -- Primary Key structure for table seas_bas_user_role
 -- ----------------------------
 ALTER TABLE "public"."seas_bas_user_role" ADD CONSTRAINT "seas_sys_user_role_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table seas_bas_conf
+-- ----------------------------
+ALTER TABLE "public"."seas_bas_conf" ADD CONSTRAINT "seas_bas_conf_pkey" PRIMARY KEY ("id");
