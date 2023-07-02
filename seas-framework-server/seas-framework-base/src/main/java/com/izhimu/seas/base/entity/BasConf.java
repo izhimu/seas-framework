@@ -1,6 +1,7 @@
 package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,10 +20,12 @@ public class BasConf extends BaseEntity {
     /**
      * 配置名称
      */
+    @Search
     private String confName;
     /**
      * 配置标识
      */
+    @Search
     private String confKey;
     /**
      * 配置值
