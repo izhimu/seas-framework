@@ -13,10 +13,7 @@ import com.izhimu.seas.data.enums.SearchType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 参数条件构造器
@@ -169,8 +166,8 @@ public class ParamWrapper<T> {
             case LIKE -> wrapper.like(name, value);
             case LIKE_L -> wrapper.likeLeft(name, value);
             case LIKE_R -> wrapper.likeRight(name, value);
-            case IN -> wrapper.in(name, value);
-            case NOT_IN -> wrapper.notIn(name, value);
+            case IN -> wrapper.in(name, (Collection<?>) value);
+            case NOT_IN -> wrapper.notIn(name, (Collection<?>) value);
             case GT -> wrapper.gt(name, value);
             case GE -> wrapper.ge(name, value);
             case LT -> wrapper.lt(name, value);
