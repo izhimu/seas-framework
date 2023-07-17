@@ -31,7 +31,7 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      * @param id id
      * @return 菜单列表
      */
-    @OperationLog("用户角色-获取菜单")
+    @OperationLog("@-获取菜单")
     @GetMapping("/auth/menu/{id}")
     public List<String> authMenu(@PathVariable Long id) {
         return service.getRoleMenu(id);
@@ -42,7 +42,7 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      *
      * @param entity {@link BasAuthMenu SysAuthMenu}
      */
-    @OperationLog("用户角色-更新菜单")
+    @OperationLog("@-更新菜单")
     @PostMapping("/auth/menu")
     public void updateAuthMenu(@RequestBody BasAuthMenu entity) {
         service.updateRoleMenu(entity);
@@ -54,7 +54,7 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      * @param id id
      * @return 用户列表
      */
-    @OperationLog("用户角色-获取用户")
+    @OperationLog("@-获取用户")
     @GetMapping("/user/{id}")
     public List<String> user(@PathVariable Long id) {
         return service.getUserRole(id);
@@ -65,7 +65,7 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      *
      * @param entity {@link BasUserRole SysUserRole}
      */
-    @OperationLog("用户角色-更新用户")
+    @OperationLog("@-更新用户")
     @PostMapping("/user")
     public void updateUser(@RequestBody BasUserRole entity) {
         service.updateUserRole(entity);

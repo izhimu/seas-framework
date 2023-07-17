@@ -23,13 +23,13 @@ public class BasConfController extends AbsBaseController<BasConfService, BasConf
         return "配置信息";
     }
 
-    @OperationLog("-获取配置")
+    @OperationLog("@-获取配置")
     @GetMapping("/get")
     public String get(String key) {
         return service.get(key);
     }
 
-    @OperationLog("-Key是否可用")
+    @OperationLog("@-Key是否可用")
     @GetMapping("/usable")
     public boolean usable(Long id, String key) {
         return service.usableKey(id, key);

@@ -43,37 +43,37 @@ public abstract class AbsBaseController<S extends IBaseService<T>, T extends IdE
     @SuppressWarnings("unused")
     public abstract String logPrefix();
 
-    @OperationLog("-分页查询")
+    @OperationLog("@-分页查询")
     @GetMapping("/page")
     public Page<T> page(Page<T> page, T param) {
         return service.page(page, param);
     }
 
-    @OperationLog("-详情")
+    @OperationLog("@-详情")
     @GetMapping("/{id}")
     public T get(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @OperationLog("-新增")
+    @OperationLog("@-新增")
     @PostMapping
     public Long add(@RequestBody T entity) {
         return service.add(entity);
     }
 
-    @OperationLog("-修改")
+    @OperationLog("@-修改")
     @PutMapping
     public void edit(@RequestBody T entity) {
         service.updateById(entity);
     }
 
-    @OperationLog("-删除")
+    @OperationLog("@-删除")
     @DeleteMapping("/{id}")
     public void del(@PathVariable Long id) {
         service.removeById(id);
     }
 
-    @OperationLog("-批量删除")
+    @OperationLog("@-批量删除")
     @DeleteMapping("/batch")
     public void batchDel(@RequestBody String data) {
         Map<?, ?> map = JsonUtil.toObject(data, Map.class);

@@ -33,6 +33,8 @@ import java.util.Objects;
 @Component
 public class OperationLogAspect {
 
+    private static final String PLACEHOLDER = "@";
+
     @Resource
     private HttpServletRequest request;
 
@@ -74,8 +76,9 @@ public class OperationLogAspect {
             }
             Method logPrefix = ReflectUtil.getMethodByName(target.getClass(), "logPrefix");
             String logName = operationLog.value();
-            if (Objects.nonNull(logPrefix)) {
-                logName = ((String) logPrefix.invoke(target)).concat(logName);
+            if (Objects.nonNull(logPrefix) && logName.contains(PLACEHOLDER)) {
+                String invoke = (String) logPrefix.invoke(target);
+                logName = logName.replace(PLACEHOLDER, invoke);
             }
             data.setLogName(logName);
             data.setLogType(operationLog.type());

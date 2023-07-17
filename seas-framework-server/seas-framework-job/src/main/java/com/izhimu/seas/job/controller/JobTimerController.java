@@ -23,7 +23,7 @@ public class JobTimerController extends AbsBaseController<JobTimerService, JobTi
         return "定时任务";
     }
 
-    @OperationLog("-执行")
+    @OperationLog("@-执行")
     @PostMapping("/exec")
     public void exec(@RequestBody JobTimer entity) {
         service.execSchedule(entity);

@@ -32,7 +32,7 @@ public class BasMenuController extends AbsBaseController<BasMenuService, BasMenu
      * @param param 查询参数 {@link BasMenu SysMenu}
      * @return {@link Tree Tree}
      */
-    @OperationLog("用户菜单-获取树")
+    @OperationLog("@-获取树")
     @GetMapping("/tree")
     public List<Tree<Long>> tree(BasMenu param) {
         return service.tree(param);
@@ -43,7 +43,7 @@ public class BasMenuController extends AbsBaseController<BasMenuService, BasMenu
      *
      * @return 权限菜单列表 {@link BasMenu SysMenu}
      */
-    @OperationLog("用户菜单-权限菜单")
+    @OperationLog("@-权限菜单")
     @GetMapping("/auth")
     public List<BasMenu> auth() {
         return service.auth();
