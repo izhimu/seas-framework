@@ -1,17 +1,21 @@
 package com.izhimu.seas.base.service.impl;
 
 import com.izhimu.seas.base.entity.BasAuthMenu;
+import com.izhimu.seas.base.entity.BasAuthOrg;
 import com.izhimu.seas.base.entity.BasRole;
 import com.izhimu.seas.base.entity.BasUserRole;
 import com.izhimu.seas.base.mapper.BasRoleMapper;
 import com.izhimu.seas.base.service.BasAuthMenuService;
+import com.izhimu.seas.base.service.BasAuthOrgService;
 import com.izhimu.seas.base.service.BasRoleService;
 import com.izhimu.seas.base.service.BasUserRoleService;
+import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,9 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
 
     @Resource
     private BasAuthMenuService authMenuService;
+
+    @Resource
+    private BasAuthOrgService authOrgService;
 
     @Resource
     private BasUserRoleService userRoleService;
@@ -58,6 +65,32 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
     }
 
     @Override
+    public void updateRoleOrg(BasAuthOrg org) {
+        authOrgService.lambdaUpdate()
+                .eq(BasAuthOrg::getRoleId, org.getRoleId())
+                .remove();
+        List<BasAuthOrg> authOrgList = org.getOrgIds().stream()
+                .map(v -> {
+                    BasAuthOrg authOrg = new BasAuthOrg();
+                    authOrg.setRoleId(org.getRoleId());
+                    authOrg.setOrgId(v);
+                    return authOrg;
+                }).collect(Collectors.toList());
+        authOrgService.saveBatch(authOrgList);
+    }
+
+    @Override
+    public List<String> getRoleOrg(Long roleId) {
+        return authOrgService.lambdaQuery()
+                .select(BasAuthOrg::getOrgId)
+                .eq(BasAuthOrg::getRoleId, roleId)
+                .list()
+                .stream()
+                .map(v -> String.valueOf(v.getOrgId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateUserRole(BasUserRole entity) {
         userRoleService.lambdaUpdate()
                 .eq(BasUserRole::getRoleId, entity.getRoleId())
@@ -81,5 +114,28 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                 .stream()
                 .map(v -> String.valueOf(v.getUserId()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Select<Long>> select() {
+        return this.list()
+                .stream()
+                .map(v -> new Select<>(v.getRoleName(), v.getId()))
+                .toList();
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        boolean b = super.removeById(id);
+        userRoleService.lambdaUpdate()
+                .eq(BasUserRole::getRoleId, id)
+                .remove();
+        authMenuService.lambdaUpdate()
+                .eq(BasAuthMenu::getRoleId, id)
+                .remove();
+        authOrgService.lambdaUpdate()
+                .eq(BasAuthOrg::getRoleId, id)
+                .remove();
+        return b;
     }
 }

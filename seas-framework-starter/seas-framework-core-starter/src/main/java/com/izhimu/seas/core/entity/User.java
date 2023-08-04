@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private Integer typeCode;
     /**
      * 状态
-     * 0、正常 1、过期 2、锁定 3、密码过期
+     * 0、正常 1、锁定 2、密码过期
      */
     private Integer status;
     /**
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return !Objects.equals(1, this.status);
+        return true;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !Objects.equals(1, this.status);
+        return !Objects.equals(2, this.status);
     }
 
     @Override

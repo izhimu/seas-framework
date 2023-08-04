@@ -1,7 +1,7 @@
 package com.izhimu.seas.base.utils;
 
 import cn.hutool.http.HttpUtil;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
 import lombok.Data;
 
 import java.util.List;

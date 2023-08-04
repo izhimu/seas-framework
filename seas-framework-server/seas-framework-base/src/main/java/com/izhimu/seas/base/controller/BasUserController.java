@@ -103,4 +103,15 @@ public class BasUserController {
     public List<Select<String>> like(String search) {
         return service.likeUser(search);
     }
+
+    /**
+     * 当前用户信息
+     *
+     * @return user
+     */
+    @OperationLog("用户管理-当前用户")
+    @GetMapping("/current")
+    public BasUser current() {
+        return service.current();
+    }
 }

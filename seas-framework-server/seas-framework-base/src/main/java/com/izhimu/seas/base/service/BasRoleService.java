@@ -1,8 +1,10 @@
 package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.entity.BasAuthMenu;
+import com.izhimu.seas.base.entity.BasAuthOrg;
 import com.izhimu.seas.base.entity.BasRole;
 import com.izhimu.seas.base.entity.BasUserRole;
+import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.List;
@@ -31,6 +33,21 @@ public interface BasRoleService extends IBaseService<BasRole> {
     List<String> getRoleMenu(Long roleId);
 
     /**
+     * 更新角色组织关联
+     *
+     * @param org BasAuthOrg
+     */
+    void updateRoleOrg(BasAuthOrg org);
+
+    /**
+     * 获取角色组织关联
+     *
+     * @param roleId 角色ID
+     * @return List<String>
+     */
+    List<String> getRoleOrg(Long roleId);
+
+    /**
      * 更新用户角色关联
      *
      * @param entity SysUserRole
@@ -44,4 +61,11 @@ public interface BasRoleService extends IBaseService<BasRole> {
      * @return List<String>
      */
     List<String> getUserRole(Long roleId);
+
+    /**
+     * 获取选项
+     *
+     * @return Select
+     */
+    List<Select<Long>> select();
 }

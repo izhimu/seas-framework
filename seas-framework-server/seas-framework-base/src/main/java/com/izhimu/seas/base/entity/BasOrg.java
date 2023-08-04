@@ -1,7 +1,10 @@
 package com.izhimu.seas.base.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.BaseEntity;
+import com.izhimu.seas.data.enums.SearchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,10 +22,12 @@ public class BasOrg extends BaseEntity {
     /**
      * 父级ID
      */
+    @Search(type = SearchType.EQUALS)
     private Long parentId;
     /**
      * 组织名称
      */
+    @Search
     private String orgName;
     /**
      * 组织代码
@@ -31,7 +36,12 @@ public class BasOrg extends BaseEntity {
     /**
      * 组织类型
      */
-    private Long orgType;
+    private String orgType;
+    /**
+     * 组织类型
+     */
+    @TableField(exist = false)
+    private String orgTypeName;
     /**
      * 级别
      */
@@ -51,7 +61,7 @@ public class BasOrg extends BaseEntity {
     /**
      * 备注
      */
-    private String remark;
+    private String remarks;
     /**
      * 排序
      */

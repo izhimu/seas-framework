@@ -1,10 +1,12 @@
 package com.izhimu.seas.base.controller;
 
 import com.izhimu.seas.base.entity.BasAuthMenu;
+import com.izhimu.seas.base.entity.BasAuthOrg;
 import com.izhimu.seas.base.entity.BasRole;
 import com.izhimu.seas.base.entity.BasUserRole;
 import com.izhimu.seas.base.service.BasRoleService;
 import com.izhimu.seas.core.annotation.OperationLog;
+import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.controller.AbsBaseController;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,12 +42,35 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
     /**
      * 更新菜单
      *
-     * @param entity {@link BasAuthMenu SysAuthMenu}
+     * @param entity {@link BasAuthMenu BasAuthMenu}
      */
     @OperationLog("@-更新菜单")
     @PostMapping("/auth/menu")
     public void updateAuthMenu(@RequestBody BasAuthMenu entity) {
         service.updateRoleMenu(entity);
+    }
+
+    /**
+     * 获取菜单
+     *
+     * @param id id
+     * @return 菜单列表
+     */
+    @OperationLog("@-获取组织")
+    @GetMapping("/auth/org/{id}")
+    public List<String> authOrg(@PathVariable Long id) {
+        return service.getRoleOrg(id);
+    }
+
+    /**
+     * 更新菜单
+     *
+     * @param entity {@link BasAuthOrg BasAuthOrg}
+     */
+    @OperationLog("@-更新组织")
+    @PostMapping("/auth/org")
+    public void updateAuthOrg(@RequestBody BasAuthOrg entity) {
+        service.updateRoleOrg(entity);
     }
 
     /**
@@ -69,5 +94,15 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
     @PostMapping("/user")
     public void updateUser(@RequestBody BasUserRole entity) {
         service.updateUserRole(entity);
+    }
+
+    /**
+     * 获取角色列表
+     * @return List<BasRole>
+     */
+    @OperationLog("@-角色列表")
+    @GetMapping("/select")
+    public List<Select<Long>> select(){
+        return service.select();
     }
 }

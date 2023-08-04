@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.web;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
  * @author haoran
  * @version v1.0
  */
+@Getter
 public enum ResultCode {
     /**
      * 基础响应码
@@ -61,21 +63,5 @@ public enum ResultCode {
         this.tips = tips;
         this.err = err;
         this.status = status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getTips() {
-        return tips;
-    }
-
-    public String getErr() {
-        return err;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
     }
 }

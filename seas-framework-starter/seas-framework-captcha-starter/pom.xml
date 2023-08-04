@@ -5,18 +5,13 @@
     <parent>
         <artifactId>seas-framework-starter</artifactId>
         <groupId>com.izhimu</groupId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>seas-framework-captcha-starter</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.izhimu</groupId>
-            <artifactId>seas-framework-captcha</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-cache-starter</artifactId>

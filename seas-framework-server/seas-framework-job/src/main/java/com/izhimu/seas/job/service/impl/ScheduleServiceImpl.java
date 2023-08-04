@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassLoaderUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.core.job.AbstractJob;
 import com.izhimu.seas.job.service.ScheduleService;

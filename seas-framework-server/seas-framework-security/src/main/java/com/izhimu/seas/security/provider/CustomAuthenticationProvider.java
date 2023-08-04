@@ -47,7 +47,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("账号或密码错误");
         }
         // 状态校验
-        if (!userDetails.isEnabled()) {
+        if (!userDetails.isAccountNonLocked() || !userDetails.isEnabled()) {
             throw new DisabledException("账号被禁用");
         }
         userDetails.setIsSuper(supers.contains(userDetails.getUserAccount()));

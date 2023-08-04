@@ -17,7 +17,7 @@ public class ScanConfig implements ApplicationRunner {
     public static final String DEF_SCAN_PATH = "com.izhimu";
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         new ScanServer(DEF_SCAN_PATH).run();
     }
 }

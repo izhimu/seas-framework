@@ -1,9 +1,13 @@
 package com.izhimu.seas.base.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * 组织权限实体
@@ -24,4 +28,10 @@ public class BasAuthOrg extends IdEntity {
      * 角色ID
      */
     private Long roleId;
+    /**
+     * 组织列表
+     */
+    @ViewIgnore
+    @TableField(exist = false)
+    private List<Long> orgIds;
 }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>seas-framework</artifactId>
         <groupId>com.izhimu</groupId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -34,32 +34,6 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- Seas Component -->
-            <dependency>
-                <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-cache</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-captcha</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.izhimu</groupId>
-                <artifactId>seas-framework-data</artifactId>
-                <version>${project.version}</version>
             </dependency>
             <!-- Seas Starter -->
             <dependency>

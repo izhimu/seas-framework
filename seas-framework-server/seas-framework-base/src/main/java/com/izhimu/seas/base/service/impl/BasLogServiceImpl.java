@@ -7,7 +7,7 @@ import com.izhimu.seas.base.config.LogConfig;
 import com.izhimu.seas.base.entity.BasLog;
 import com.izhimu.seas.base.mapper.BasLogMapper;
 import com.izhimu.seas.base.service.BasLogService;
-import com.izhimu.seas.common.utils.TimeUtil;
+import com.izhimu.seas.core.utils.TimeUtil;
 import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;

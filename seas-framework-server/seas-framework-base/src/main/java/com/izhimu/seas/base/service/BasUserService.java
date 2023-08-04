@@ -65,4 +65,11 @@ public interface BasUserService extends IBaseService<BasUser> {
      * @return User
      */
     User getCurrentUser();
+
+    /**
+     * 当前用户信息
+     *
+     * @return User
+     */
+    BasUser current();
 }

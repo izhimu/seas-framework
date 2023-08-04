@@ -17,6 +17,7 @@ public interface JobTimerService extends IBaseService<JobTimer> {
      *
      * @return boolean
      */
+    @SuppressWarnings("SameReturnValue")
     boolean initSchedule();
 
     /**

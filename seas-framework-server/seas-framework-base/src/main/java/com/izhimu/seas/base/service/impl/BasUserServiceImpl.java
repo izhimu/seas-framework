@@ -1,16 +1,15 @@
 package com.izhimu.seas.base.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.izhimu.seas.base.entity.BasAccount;
-import com.izhimu.seas.base.entity.BasUser;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.izhimu.seas.base.entity.*;
 import com.izhimu.seas.base.mapper.BasUserMapper;
-import com.izhimu.seas.base.service.BasAccountService;
-import com.izhimu.seas.base.service.BasUserService;
+import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.EncryptService;
+import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.SecurityUtil;
-import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
@@ -42,6 +41,18 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     private BasAccountService accountService;
 
     @Resource
+    private BasUserRoleService userRoleService;
+
+    @Resource
+    private BasUserOrgService userOrgService;
+
+    @Resource
+    private BasRoleService roleService;
+
+    @Resource
+    private BasOrgService orgService;
+
+    @Resource
     private EncryptService<EncryptKey, String> encryptService;
 
     @Resource
@@ -51,10 +62,42 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     private LoginHolder loginHolder;
 
     @Override
+    public Page<BasUser> page(Page<BasUser> page, Object param) {
+        Page<BasUser> result = super.page(page, param);
+        for (BasUser record : result.getRecords()) {
+            List<BasUserOrg> list = userOrgService.lambdaQuery()
+                    .select(BasUserOrg::getOrgId)
+                    .eq(BasUserOrg::getUserId, record.getId())
+                    .list();
+            if (!list.isEmpty()) {
+                record.setOrgId(list.get(0).getOrgId());
+                BasOrg org = orgService.getById(record.getOrgId());
+                record.setOrgName(org.getOrgName());
+            }
+        }
+        return result;
+    }
+
+    @Override
     public BasUser get(Long id) {
         BasUser user = this.getById(id);
         List<BasAccount> accountVOList = accountService.getByUserId(id);
         user.setAccounts(accountVOList);
+        List<Long> roleList = userRoleService.lambdaQuery()
+                .select(BasUserRole::getRoleId)
+                .eq(BasUserRole::getUserId, id)
+                .list()
+                .stream()
+                .map(BasUserRole::getRoleId)
+                .toList();
+        user.setRoleIds(roleList);
+        List<BasUserOrg> orgList = userOrgService.lambdaQuery()
+                .select(BasUserOrg::getOrgId)
+                .eq(BasUserOrg::getUserId, id)
+                .list();
+        if (!orgList.isEmpty()) {
+            user.setOrgId(orgList.get(0).getOrgId());
+        }
         return user;
     }
 
@@ -70,6 +113,8 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         List<BasAccount> accountList = new ArrayList<>();
         basUser.getAccounts().forEach(newSysAccountConsumer(basUser, key, accountList));
         accountService.saveBatch(accountList);
+        updateUserRole(basUser);
+        updateUserOrg(basUser);
     }
 
     @Override
@@ -84,7 +129,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         // 获取密钥
         AtomicReference<String> key = new AtomicReference<>();
         basUser.getAccounts().stream()
-                .filter(v -> StringUtils.isNotBlank(v.getPasswordKey()))
+                .filter(v -> StrUtil.isNotBlank(v.getPasswordKey()))
                 .findFirst()
                 .ifPresent(v -> key.set(v.getPasswordKey()));
         // 删除的账号
@@ -104,17 +149,22 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                 .filter(v -> Objects.isNull(v.getId()))
                 .forEach(newSysAccountConsumer(basUser, key, saveAccountList));
         accountService.saveBatch(saveAccountList);
-        // 修改的账号
+        // 修改密码的账号
         List<BasAccount> updateAccountList = new ArrayList<>();
         basUser.getAccounts().stream()
-                .filter(v -> Objects.nonNull(v.getId()) && StringUtils.isNotBlank(v.getUserCertificate()))
+                .filter(v -> Objects.nonNull(v.getId()))
                 .forEach(v -> {
                     BasAccount basAccount = new BasAccount();
                     basAccount.setId(v.getId());
-                    basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
+                    if (StrUtil.isNotBlank(v.getUserCertificate())) {
+                        basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
+                    }
+                    basAccount.setStatus(basUser.getStatus());
                     updateAccountList.add(basAccount);
                 });
         accountService.updateBatchById(updateAccountList);
+        updateUserRole(basUser);
+        updateUserOrg(basUser);
     }
 
     @Override
@@ -122,6 +172,12 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         this.removeById(id);
         accountService.lambdaUpdate()
                 .eq(BasAccount::getUserId, id)
+                .remove();
+        userRoleService.lambdaUpdate()
+                .eq(BasUserRole::getUserId, id)
+                .remove();
+        userOrgService.lambdaUpdate()
+                .eq(BasUserOrg::getUserId, id)
                 .remove();
     }
 
@@ -156,7 +212,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
             basAccount.setUserAccount(v.getUserAccount());
             basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
             basAccount.setTypeCode(0);
-            basAccount.setStatus(0);
+            basAccount.setStatus(user.getStatus());
             accountList.add(basAccount);
         };
     }
@@ -164,6 +220,42 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     @Override
     public User getCurrentUser() {
         return SecurityUtil.contextUser();
+    }
+
+    @Override
+    public BasUser current() {
+        User user = getCurrentUser();
+        BasUser basUser = this.getById(user.getId());
+        basUser.setAccount(user.getUserAccount());
+        List<Long> roleIds = userRoleService.lambdaQuery()
+                .select(BasUserRole::getRoleId)
+                .eq(BasUserRole::getUserId, user.getId())
+                .list()
+                .stream()
+                .map(BasUserRole::getRoleId)
+                .toList();
+        if (!roleIds.isEmpty()) {
+            List<String> roleNames = roleService.lambdaQuery()
+                    .select(BasRole::getRoleName)
+                    .in(BasRole::getId, roleIds)
+                    .list()
+                    .stream()
+                    .map(BasRole::getRoleName)
+                    .distinct()
+                    .toList();
+            basUser.setRoleNames(roleNames);
+        }
+        List<BasUserOrg> orgList = userOrgService.lambdaQuery()
+                .select(BasUserOrg::getOrgId)
+                .eq(BasUserOrg::getUserId, user.getId())
+                .list();
+        if (!orgList.isEmpty()) {
+            BasOrg org = orgService.getById(orgList.get(0).getOrgId());
+            if (Objects.nonNull(org)) {
+                basUser.setOrgName(org.getOrgName());
+            }
+        }
+        return basUser;
     }
 
     @Override
@@ -186,5 +278,34 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         user.setNickName(basUser.getUserName());
         user.setLogin(loginHolder.get(false));
         return user;
+    }
+
+    private void updateUserRole(BasUser user) {
+        userRoleService.lambdaUpdate()
+                .eq(BasUserRole::getUserId, user.getId())
+                .remove();
+        if (Objects.nonNull(user.getRoleIds())) {
+            List<BasUserRole> userRoleList = user.getRoleIds().stream()
+                    .map(v -> {
+                        BasUserRole data = new BasUserRole();
+                        data.setUserId(user.getId());
+                        data.setRoleId(v);
+                        return data;
+                    })
+                    .toList();
+            userRoleService.saveBatch(userRoleList);
+        }
+    }
+
+    private void updateUserOrg(BasUser user) {
+        userOrgService.lambdaUpdate()
+                .eq(BasUserOrg::getUserId, user.getId())
+                .remove();
+        if (Objects.nonNull(user.getOrgId())) {
+            BasUserOrg userOrg = new BasUserOrg();
+            userOrg.setUserId(user.getId());
+            userOrg.setOrgId(user.getOrgId());
+            userOrgService.save(userOrg);
+        }
     }
 }

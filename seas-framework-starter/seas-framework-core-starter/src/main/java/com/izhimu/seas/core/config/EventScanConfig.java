@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 @Configuration
 public class EventScanConfig implements ApplicationRunner {
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         ScanHandlerHolder.add(new EventListenerScanHandler());
     }
 }

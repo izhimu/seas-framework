@@ -2,7 +2,7 @@ package com.izhimu.seas.core.aspect;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.entity.User;

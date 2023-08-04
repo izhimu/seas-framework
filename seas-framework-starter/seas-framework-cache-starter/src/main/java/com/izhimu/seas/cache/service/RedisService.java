@@ -136,6 +136,7 @@ public class RedisService {
      * @param key 键
      * @return true存在|false不存在
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasKey(String key) {
         try {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.hasKey(key));

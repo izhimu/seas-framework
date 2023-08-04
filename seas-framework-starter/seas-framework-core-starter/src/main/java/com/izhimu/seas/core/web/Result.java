@@ -2,7 +2,8 @@ package com.izhimu.seas.core.web;
 
 import cn.hutool.core.util.IdUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
  * @author haoran
  * @version v1.0
  */
+@Getter
 @SuppressWarnings("unused")
 public class Result<T> implements Serializable {
 
@@ -55,26 +57,6 @@ public class Result<T> implements Serializable {
         this.err = err;
         this.data = data;
         this.resultCode = resultCode;
-    }
-
-    public String getTrackId() {
-        return trackId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getTips() {
-        return tips;
-    }
-
-    public String getErr() {
-        return err;
-    }
-
-    public T getData() {
-        return data;
     }
 
     @Override

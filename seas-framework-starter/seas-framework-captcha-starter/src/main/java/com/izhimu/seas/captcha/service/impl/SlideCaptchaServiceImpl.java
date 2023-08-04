@@ -3,6 +3,7 @@ package com.izhimu.seas.captcha.service.impl;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.cache.service.RedisService;
@@ -11,10 +12,9 @@ import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.model.Point;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.captcha.util.ImageUtils;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -85,7 +85,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         // 解密
         String pointJson = captcha.getPointJson();
         pointJson = encryptService.decrypt(token, pointJson);
-        if (!StringUtils.hasText(pointJson)) {
+        if (StrUtil.isBlank(pointJson)) {
             return captcha;
         }
         Point checkPoint = JsonUtil.toObject(pointJson, Point.class);

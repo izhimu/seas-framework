@@ -147,20 +147,18 @@ public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> 
 
     @Override
     public boolean delFile(Long id) {
-        this.lambdaUpdate()
+        return this.lambdaUpdate()
                 .eq(StoFile::getId, id)
                 .set(StoFile::getDelTag, 1)
                 .update();
-        return true;
     }
 
     @Override
     public boolean delFiles(Long bindId) {
-        this.lambdaUpdate()
+        return this.lambdaUpdate()
                 .eq(StoFile::getBindId, bindId)
                 .set(StoFile::getDelTag, 1)
                 .update();
-        return true;
     }
 
     /**

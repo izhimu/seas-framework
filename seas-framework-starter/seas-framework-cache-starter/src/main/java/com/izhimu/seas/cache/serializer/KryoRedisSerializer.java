@@ -1,6 +1,6 @@
 package com.izhimu.seas.cache.serializer;
 
-import com.izhimu.seas.common.utils.KryoUtil;
+import com.izhimu.seas.core.utils.KryoUtil;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 

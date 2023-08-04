@@ -1,9 +1,3 @@
-/*
- *Copyright © 2018 anji-plus
- *安吉加加信息技术有限公司
- *http://www.anji-plus.com
- *All rights reserved.
- */
 package com.izhimu.seas.security.controller;
 
 import com.izhimu.seas.captcha.model.Captcha;

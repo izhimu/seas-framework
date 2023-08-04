@@ -64,7 +64,7 @@ public class BasUser extends BaseEntity {
     private Long faceSmall;
     /**
      * 状态
-     * 0.正常 1.禁用
+     * 0.正常 1.锁定 2.密码过期
      */
     @Search(type = SearchType.EQUALS)
     private Integer status;
@@ -78,6 +78,31 @@ public class BasUser extends BaseEntity {
     @TableId
     @OrderBy
     private Long id;
+    /**
+     * 部门
+     */
+    @TableField(exist = false)
+    private Long orgId;
+    /**
+     * 部门
+     */
+    @TableField(exist = false)
+    private String orgName;
+    /**
+     * 角色ID
+     */
+    @TableField(exist = false)
+    private List<Long> roleIds;
+    /**
+     * 角色名称
+     */
+    @TableField(exist = false)
+    private List<String> roleNames;
+    /**
+     * 当前登录账号
+     */
+    @TableField(exist = false)
+    private String account;
 
     @SuppressWarnings("unused")
     public Integer getStatus() {

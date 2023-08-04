@@ -4,7 +4,7 @@ import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
-import com.izhimu.seas.common.utils.JsonUtil;
+import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
