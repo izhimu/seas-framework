@@ -149,7 +149,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                 .filter(v -> Objects.isNull(v.getId()))
                 .forEach(newSysAccountConsumer(basUser, key, saveAccountList));
         accountService.saveBatch(saveAccountList);
-        // 修改密码的账号
+        // 修改的账号
         List<BasAccount> updateAccountList = new ArrayList<>();
         basUser.getAccounts().stream()
                 .filter(v -> Objects.nonNull(v.getId()))
@@ -159,7 +159,11 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                     if (StrUtil.isNotBlank(v.getUserCertificate())) {
                         basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
                     }
-                    basAccount.setStatus(basUser.getStatus());
+                    if (basUser.getStatus() == 1) {
+                        basAccount.setStatus(1);
+                    } else {
+                        basAccount.setStatus(v.getStatus());
+                    }
                     updateAccountList.add(basAccount);
                 });
         accountService.updateBatchById(updateAccountList);

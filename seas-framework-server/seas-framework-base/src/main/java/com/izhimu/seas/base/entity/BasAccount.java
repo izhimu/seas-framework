@@ -38,7 +38,7 @@ public class BasAccount extends BaseEntity {
     private Integer typeCode;
     /**
      * 状态
-     * 0、正常 1、过期 2、锁定 3、密码过期
+     * 0、正常 1、锁定 2、密码过期
      */
     private Integer status;
     /**
