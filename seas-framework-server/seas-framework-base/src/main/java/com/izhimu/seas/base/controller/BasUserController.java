@@ -89,7 +89,7 @@ public class BasUserController {
     @OperationLog("用户管理-列表")
     @GetMapping("/list")
     public List<BasUser> list() {
-        return service.getUserList();
+        return service.findUserList();
     }
 
     /**

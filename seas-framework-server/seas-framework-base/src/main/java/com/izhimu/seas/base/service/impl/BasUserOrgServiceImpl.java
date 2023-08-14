@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.izhimu.seas.base.entity.BasUserOrg;
 import com.izhimu.seas.base.mapper.BasUserOrgMapper;
 import com.izhimu.seas.base.service.BasUserOrgService;
+import com.izhimu.seas.core.entity.DataPermission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户组织中间服务层实现
@@ -16,4 +20,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasUserOrgServiceImpl extends ServiceImpl<BasUserOrgMapper, BasUserOrg> implements BasUserOrgService {
+    @Override
+    public Long getOrgId(Long userId) {
+        return this.lambdaQuery()
+                .select(BasUserOrg::getOrgId)
+                .eq(BasUserOrg::getUserId, userId)
+                .list()
+                .stream()
+                .map(BasUserOrg::getOrgId)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public boolean removeByUserId(Serializable userId) {
+        return this.lambdaUpdate()
+                .eq(BasUserOrg::getUserId, userId)
+                .remove();
+    }
 }

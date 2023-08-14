@@ -4,11 +4,15 @@ import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.mapper.BasAccountMapper;
 import com.izhimu.seas.base.service.BasAccountService;
 import com.izhimu.seas.core.entity.Select;
+import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 用户账号服务层实现
@@ -21,10 +25,20 @@ import java.util.List;
 public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, BasAccount> implements BasAccountService {
 
     @Override
-    public List<BasAccount> getByUserId(Long userId) {
+    public List<BasAccount> findByUserId(Long userId) {
         return this.lambdaQuery()
                 .eq(BasAccount::getUserId, userId)
                 .list();
+    }
+
+    @Override
+    public BasAccount getByAccount(String account) {
+        return this.lambdaQuery()
+                .eq(BasAccount::getUserAccount, account)
+                .list()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -36,5 +50,32 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
                 .stream()
                 .map(v -> new Select<>(v.getUserAccount(), String.valueOf(v.getId())))
                 .toList();
+    }
+
+    @Override
+    public Map<Long, String> findAccountMap(Collection<Long> ids) {
+        return this.lambdaQuery()
+                .select(BasAccount::getId, BasAccount::getUserAccount)
+                .in(BasAccount::getId, ids)
+                .list()
+                .stream()
+                .collect(Collectors.toMap(BaseEntity::getId, BasAccount::getUserAccount));
+    }
+
+    @Override
+    public boolean removeByUserId(Long userId) {
+        return this.lambdaUpdate()
+                .eq(BasAccount::getUserId, userId)
+                .remove();
+    }
+
+    @Override
+    public boolean removeByUserIdAndNotInId(Long userId, List<Long> ids) {
+        List<BasAccount> delIdList = this.lambdaQuery()
+                .select(BasAccount::getId)
+                .eq(BasAccount::getUserId, userId)
+                .notIn(BasAccount::getId, ids)
+                .list();
+        return this.removeBatchByIds(delIdList);
     }
 }

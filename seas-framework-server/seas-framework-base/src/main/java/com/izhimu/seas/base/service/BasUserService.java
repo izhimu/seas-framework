@@ -5,7 +5,9 @@ import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务层接口
@@ -41,7 +43,7 @@ public interface BasUserService extends IBaseService<BasUser> {
      *
      * @return List<SysUser>
      */
-    List<BasUser> getUserList();
+    List<BasUser> findUserList();
 
     /**
      * 模糊查询用户信息
@@ -72,4 +74,12 @@ public interface BasUserService extends IBaseService<BasUser> {
      * @return User
      */
     BasUser current();
+
+    /**
+     * 根据ID集合查询用户名映射
+     *
+     * @param ids ID集合
+     * @return 用户名映射
+     */
+    Map<Long, String> findUsernameMap(Collection<Long> ids);
 }

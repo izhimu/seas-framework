@@ -26,12 +26,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final SecurityService securityService;
 
-    private final List<String> supers;
-
-    public CustomAuthenticationProvider(PasswordEncoder passwordEncoder, SecurityService securityService, List<String> supers) {
+    public CustomAuthenticationProvider(PasswordEncoder passwordEncoder, SecurityService securityService) {
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
-        this.supers = supers;
     }
 
     @Override
@@ -50,7 +47,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!userDetails.isAccountNonLocked() || !userDetails.isEnabled()) {
             throw new DisabledException("账号被禁用");
         }
-        userDetails.setIsSuper(supers.contains(userDetails.getUserAccount()));
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
                 userDetails,

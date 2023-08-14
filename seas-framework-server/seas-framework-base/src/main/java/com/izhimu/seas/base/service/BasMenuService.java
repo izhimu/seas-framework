@@ -4,6 +4,8 @@ import cn.hutool.core.lang.tree.Tree;
 import com.izhimu.seas.base.entity.BasMenu;
 import com.izhimu.seas.data.service.IBaseService;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,4 +30,12 @@ public interface BasMenuService extends IBaseService<BasMenu> {
      * @return 权限菜单列表
      */
     List<BasMenu> auth();
+
+    /**
+     * 根据ID集合查询菜单编码集合
+     *
+     * @param ids ID集合
+     * @return 菜单编码集合
+     */
+    List<String> findMenuCodeByIds(Collection<Long> ids);
 }

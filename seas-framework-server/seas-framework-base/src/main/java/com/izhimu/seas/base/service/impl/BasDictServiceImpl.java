@@ -43,11 +43,13 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
 
     @Override
     public List<Select<String>> select(String dictCode) {
-        Optional<BasDict> sysDict = this.lambdaQuery()
+        Optional<BasDict> dictOpt = this.lambdaQuery()
                 .select(BasDict::getId)
                 .eq(BasDict::getDictCode, dictCode)
-                .oneOpt();
-        return sysDict.map(dict -> this.lambdaQuery()
+                .list()
+                .stream()
+                .findFirst();
+        return dictOpt.map(dict -> this.lambdaQuery()
                 .select(BasDict::getDictName, BasDict::getDictCode)
                 .eq(BasDict::getParentId, dict.getId())
                 .orderByAsc(BasDict::getSort)
@@ -59,17 +61,20 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
 
     @Override
     public BasDict getDictByCode(String dictType, String dictCode) {
-        Optional<BasDict> parentDictOptional = this.lambdaQuery()
+        List<BasDict> list = this.lambdaQuery()
                 .select(BasDict::getId)
                 .eq(BasDict::getDictCode, dictType)
-                .oneOpt();
-        if (parentDictOptional.isEmpty()) {
+                .list();
+        if (list.isEmpty()){
             return null;
         }
-        BasDict parentDict = parentDictOptional.get();
+        BasDict parentDict = list.get(0);
         return this.lambdaQuery()
                 .eq(BasDict::getParentId, parentDict.getId())
                 .eq(BasDict::getDictCode, dictCode)
-                .one();
+                .list()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 }

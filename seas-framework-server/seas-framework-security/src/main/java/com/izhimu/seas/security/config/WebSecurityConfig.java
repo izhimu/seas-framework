@@ -75,7 +75,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider(passwordEncoder(), securityService, securityConfig.getSupers());
+        return new CustomAuthenticationProvider(passwordEncoder(), securityService);
     }
 
     @Bean

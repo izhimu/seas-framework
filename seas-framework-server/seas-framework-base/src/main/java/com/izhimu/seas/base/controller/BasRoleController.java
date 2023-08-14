@@ -4,12 +4,16 @@ import com.izhimu.seas.base.entity.BasAuthMenu;
 import com.izhimu.seas.base.entity.BasAuthOrg;
 import com.izhimu.seas.base.entity.BasRole;
 import com.izhimu.seas.base.entity.BasUserRole;
+import com.izhimu.seas.base.service.BasAuthMenuService;
+import com.izhimu.seas.base.service.BasAuthOrgService;
 import com.izhimu.seas.base.service.BasRoleService;
+import com.izhimu.seas.base.service.BasUserRoleService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.controller.AbsBaseController;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,6 +25,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/bas/role")
 public class BasRoleController extends AbsBaseController<BasRoleService, BasRole> {
+
+    @Resource
+    private BasAuthMenuService authMenuService;
+    @Resource
+    private BasAuthOrgService authOrgService;
+    @Resource
+    private BasUserRoleService userRoleService;
 
     @Override
     public String logPrefix() {
@@ -35,8 +46,8 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      */
     @OperationLog("@-获取菜单")
     @GetMapping("/auth/menu/{id}")
-    public List<String> authMenu(@PathVariable Long id) {
-        return service.getRoleMenu(id);
+    public List<Long> authMenu(@PathVariable Long id) {
+        return authMenuService.findMenuIdByRoleId(id);
     }
 
     /**
@@ -58,8 +69,8 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      */
     @OperationLog("@-获取组织")
     @GetMapping("/auth/org/{id}")
-    public List<String> authOrg(@PathVariable Long id) {
-        return service.getRoleOrg(id);
+    public List<Long> authOrg(@PathVariable Long id) {
+        return authOrgService.findOrgIdByRoleId(id);
     }
 
     /**
@@ -81,8 +92,8 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
      */
     @OperationLog("@-获取用户")
     @GetMapping("/user/{id}")
-    public List<String> user(@PathVariable Long id) {
-        return service.getUserRole(id);
+    public List<Long> user(@PathVariable Long id) {
+        return userRoleService.findUserIdByRoleId(id);
     }
 
     /**
@@ -98,11 +109,12 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
 
     /**
      * 获取角色列表
+     *
      * @return List<BasRole>
      */
     @OperationLog("@-角色列表")
     @GetMapping("/select")
-    public List<Select<Long>> select(){
+    public List<Select<Long>> select() {
         return service.select();
     }
 }

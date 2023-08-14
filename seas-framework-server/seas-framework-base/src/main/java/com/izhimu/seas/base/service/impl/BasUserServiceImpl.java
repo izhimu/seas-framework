@@ -7,12 +7,17 @@ import com.izhimu.seas.base.mapper.BasUserMapper;
 import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.EncryptService;
+import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.SecurityUtil;
+import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,12 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * 用户服务层实现
@@ -39,39 +44,31 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
 
     @Resource
     private BasAccountService accountService;
-
     @Resource
     private BasUserRoleService userRoleService;
-
     @Resource
     private BasUserOrgService userOrgService;
-
     @Resource
     private BasRoleService roleService;
-
     @Resource
     private BasOrgService orgService;
-
     @Resource
     private EncryptService<EncryptKey, String> encryptService;
-
     @Resource
     private BCryptPasswordEncoder passwordEncoder;
-
     @Resource
     private LoginHolder loginHolder;
+    @Resource
+    private SecurityConfig securityConfig;
 
     @Override
     public Page<BasUser> page(Page<BasUser> page, Object param) {
         Page<BasUser> result = super.page(page, param);
         for (BasUser record : result.getRecords()) {
-            List<BasUserOrg> list = userOrgService.lambdaQuery()
-                    .select(BasUserOrg::getOrgId)
-                    .eq(BasUserOrg::getUserId, record.getId())
-                    .list();
-            if (!list.isEmpty()) {
-                record.setOrgId(list.get(0).getOrgId());
-                BasOrg org = orgService.getById(record.getOrgId());
+            Long orgId = userOrgService.getOrgId(record.getId());
+            if (Objects.nonNull(orgId)) {
+                BasOrg org = orgService.getById(orgId);
+                record.setOrgId(orgId);
                 record.setOrgName(org.getOrgName());
             }
         }
@@ -81,23 +78,9 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     @Override
     public BasUser get(Long id) {
         BasUser user = this.getById(id);
-        List<BasAccount> accountVOList = accountService.getByUserId(id);
-        user.setAccounts(accountVOList);
-        List<Long> roleList = userRoleService.lambdaQuery()
-                .select(BasUserRole::getRoleId)
-                .eq(BasUserRole::getUserId, id)
-                .list()
-                .stream()
-                .map(BasUserRole::getRoleId)
-                .toList();
-        user.setRoleIds(roleList);
-        List<BasUserOrg> orgList = userOrgService.lambdaQuery()
-                .select(BasUserOrg::getOrgId)
-                .eq(BasUserOrg::getUserId, id)
-                .list();
-        if (!orgList.isEmpty()) {
-            user.setOrgId(orgList.get(0).getOrgId());
-        }
+        user.setAccounts(accountService.findByUserId(id));
+        user.setRoleIds(userRoleService.findRoleIdByUserId(id));
+        user.setOrgId(userOrgService.getOrgId(id));
         return user;
     }
 
@@ -121,52 +104,43 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     public void updateUser(BasUser basUser) {
         this.updateById(basUser);
         if (basUser.getAccounts().isEmpty()) {
-            accountService.lambdaUpdate()
-                    .eq(BasAccount::getUserId, basUser.getId())
-                    .remove();
-            return;
+            accountService.removeByUserId(basUser.getId());
+        } else {
+            // 获取密钥
+            AtomicReference<String> key = new AtomicReference<>();
+            basUser.getAccounts().stream()
+                    .filter(v -> StrUtil.isNotBlank(v.getPasswordKey()))
+                    .findFirst()
+                    .ifPresent(v -> key.set(v.getPasswordKey()));
+            // 删除的账号
+            List<Long> accountIdList = basUser.getAccounts().stream()
+                    .map(BasAccount::getId).toList();
+            accountService.removeByUserIdAndNotInId(basUser.getId(), accountIdList);
+            // 新增的账号
+            List<BasAccount> saveAccountList = new ArrayList<>();
+            basUser.getAccounts().stream()
+                    .filter(v -> Objects.isNull(v.getId()))
+                    .forEach(newSysAccountConsumer(basUser, key, saveAccountList));
+            accountService.saveBatch(saveAccountList);
+            // 修改的账号
+            List<BasAccount> updateAccountList = new ArrayList<>();
+            basUser.getAccounts().stream()
+                    .filter(v -> Objects.nonNull(v.getId()))
+                    .forEach(v -> {
+                        BasAccount basAccount = new BasAccount();
+                        basAccount.setId(v.getId());
+                        if (StrUtil.isNotBlank(v.getUserCertificate())) {
+                            basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
+                        }
+                        if (basUser.getStatus() == 1) {
+                            basAccount.setStatus(1);
+                        } else {
+                            basAccount.setStatus(v.getStatus());
+                        }
+                        updateAccountList.add(basAccount);
+                    });
+            accountService.updateBatchById(updateAccountList);
         }
-        // 获取密钥
-        AtomicReference<String> key = new AtomicReference<>();
-        basUser.getAccounts().stream()
-                .filter(v -> StrUtil.isNotBlank(v.getPasswordKey()))
-                .findFirst()
-                .ifPresent(v -> key.set(v.getPasswordKey()));
-        // 删除的账号
-        List<Long> accountIdList = basUser.getAccounts().stream()
-                .map(BasAccount::getId).toList();
-        List<BasAccount> delIdList = accountService.lambdaQuery()
-                .select(BasAccount::getId)
-                .eq(BasAccount::getUserId, basUser.getId())
-                .list()
-                .stream()
-                .filter(v -> !accountIdList.contains(v.getId()))
-                .toList();
-        accountService.removeBatchByIds(delIdList);
-        // 新增的账号
-        List<BasAccount> saveAccountList = new ArrayList<>();
-        basUser.getAccounts().stream()
-                .filter(v -> Objects.isNull(v.getId()))
-                .forEach(newSysAccountConsumer(basUser, key, saveAccountList));
-        accountService.saveBatch(saveAccountList);
-        // 修改的账号
-        List<BasAccount> updateAccountList = new ArrayList<>();
-        basUser.getAccounts().stream()
-                .filter(v -> Objects.nonNull(v.getId()))
-                .forEach(v -> {
-                    BasAccount basAccount = new BasAccount();
-                    basAccount.setId(v.getId());
-                    if (StrUtil.isNotBlank(v.getUserCertificate())) {
-                        basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
-                    }
-                    if (basUser.getStatus() == 1) {
-                        basAccount.setStatus(1);
-                    } else {
-                        basAccount.setStatus(v.getStatus());
-                    }
-                    updateAccountList.add(basAccount);
-                });
-        accountService.updateBatchById(updateAccountList);
         updateUserRole(basUser);
         updateUserOrg(basUser);
     }
@@ -174,19 +148,13 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     @Override
     public void delUser(Long id) {
         this.removeById(id);
-        accountService.lambdaUpdate()
-                .eq(BasAccount::getUserId, id)
-                .remove();
-        userRoleService.lambdaUpdate()
-                .eq(BasUserRole::getUserId, id)
-                .remove();
-        userOrgService.lambdaUpdate()
-                .eq(BasUserOrg::getUserId, id)
-                .remove();
+        accountService.removeByUserId(id);
+        userRoleService.removeByUserId(id);
+        userOrgService.removeByUserId(id);
     }
 
     @Override
-    public List<BasUser> getUserList() {
+    public List<BasUser> findUserList() {
         return this.list();
     }
 
@@ -231,30 +199,13 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         User user = getCurrentUser();
         BasUser basUser = this.getById(user.getId());
         basUser.setAccount(user.getUserAccount());
-        List<Long> roleIds = userRoleService.lambdaQuery()
-                .select(BasUserRole::getRoleId)
-                .eq(BasUserRole::getUserId, user.getId())
-                .list()
-                .stream()
-                .map(BasUserRole::getRoleId)
-                .toList();
+        List<Long> roleIds = userRoleService.findRoleIdByUserId(user.getId());
         if (!roleIds.isEmpty()) {
-            List<String> roleNames = roleService.lambdaQuery()
-                    .select(BasRole::getRoleName)
-                    .in(BasRole::getId, roleIds)
-                    .list()
-                    .stream()
-                    .map(BasRole::getRoleName)
-                    .distinct()
-                    .toList();
-            basUser.setRoleNames(roleNames);
+            basUser.setRoleNames(roleService.findNameById(roleIds));
         }
-        List<BasUserOrg> orgList = userOrgService.lambdaQuery()
-                .select(BasUserOrg::getOrgId)
-                .eq(BasUserOrg::getUserId, user.getId())
-                .list();
-        if (!orgList.isEmpty()) {
-            BasOrg org = orgService.getById(orgList.get(0).getOrgId());
+        Long orgId = userOrgService.getOrgId(user.getId());
+        if (Objects.nonNull(orgId)) {
+            BasOrg org = orgService.getById(orgId);
             if (Objects.nonNull(org)) {
                 basUser.setOrgName(org.getOrgName());
             }
@@ -263,15 +214,22 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     }
 
     @Override
+    public Map<Long, String> findUsernameMap(Collection<Long> ids) {
+        return this.lambdaQuery()
+                .select(BasUser::getId, BasUser::getUserName)
+                .in(BasUser::getId, ids)
+                .list()
+                .stream()
+                .collect(Collectors.toMap(BaseEntity::getId, BasUser::getUserName));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<BasAccount> sysAccount = accountService.lambdaQuery()
-                .eq(BasAccount::getUserAccount, username)
-                .oneOpt();
-        if (sysAccount.isEmpty()) {
+        BasAccount account = accountService.getByAccount(username);
+        if (Objects.isNull(account)) {
             return null;
         }
-        BasUser basUser = this.get(sysAccount.get().getUserId());
-        BasAccount account = sysAccount.get();
+        BasUser basUser = this.get(account.getUserId());
         User user = new User();
         user.setId(account.getUserId());
         user.setUserAccount(account.getUserAccount());
@@ -281,13 +239,19 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         user.setTypeCode(account.getTypeCode());
         user.setNickName(basUser.getUserName());
         user.setLogin(loginHolder.get(false));
+        user.setIsSuper(securityConfig.getSupers().contains(account.getUserAccount()));
+        user.setOrgId(userOrgService.getOrgId(account.getUserId()));
+        // 菜单权限
+        List<String> menuAuth = roleService.findMenuAuthByUserId(user);
+        // 数据权限
+        DataPermission dataPermission = roleService.getDataPermissionByUserId(user);
+        user.setMenuAuth(menuAuth);
+        user.setDataAuth(dataPermission);
         return user;
     }
 
     private void updateUserRole(BasUser user) {
-        userRoleService.lambdaUpdate()
-                .eq(BasUserRole::getUserId, user.getId())
-                .remove();
+        userRoleService.removeByUserId(user.getId());
         if (Objects.nonNull(user.getRoleIds())) {
             List<BasUserRole> userRoleList = user.getRoleIds().stream()
                     .map(v -> {
@@ -302,9 +266,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     }
 
     private void updateUserOrg(BasUser user) {
-        userOrgService.lambdaUpdate()
-                .eq(BasUserOrg::getUserId, user.getId())
-                .remove();
+        userOrgService.removeByUserId(user.getId());
         if (Objects.nonNull(user.getOrgId())) {
             BasUserOrg userOrg = new BasUserOrg();
             userOrg.setUserId(user.getId());

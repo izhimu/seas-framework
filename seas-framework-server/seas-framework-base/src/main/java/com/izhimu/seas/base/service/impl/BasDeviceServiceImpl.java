@@ -7,6 +7,8 @@ import com.izhimu.seas.base.service.BasDeviceService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 用户设备服务层实现
  *
@@ -16,4 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasDeviceServiceImpl extends ServiceImpl<BasDeviceMapper, BasDevice> implements BasDeviceService {
+    @Override
+    public List<BasDevice> findByCode(String deviceCode) {
+        return this.lambdaQuery()
+                .eq(BasDevice::getDeviceCode, deviceCode)
+                .list();
+    }
 }

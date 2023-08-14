@@ -4,15 +4,17 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.config.LogConfig;
-import com.izhimu.seas.base.entity.*;
+import com.izhimu.seas.base.entity.BasAccount;
+import com.izhimu.seas.base.entity.BasAccountLog;
+import com.izhimu.seas.base.entity.BasDevice;
+import com.izhimu.seas.base.entity.BasUser;
 import com.izhimu.seas.base.mapper.BasAccountLogMapper;
 import com.izhimu.seas.base.service.BasAccountLogService;
 import com.izhimu.seas.base.service.BasAccountService;
 import com.izhimu.seas.base.service.BasDeviceService;
 import com.izhimu.seas.base.service.BasUserService;
-import com.izhimu.seas.base.utils.IpUtil;
 import com.izhimu.seas.core.entity.Login;
-import com.izhimu.seas.data.entity.BaseEntity;
+import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
@@ -51,15 +53,11 @@ public class BasAccountLogServiceImpl extends BaseServiceImpl<BasAccountLogMappe
     @Async
     @Override
     public void saveLog(Login loginDTO, int status) {
-        BasAccount account = accountService.lambdaQuery()
-                .eq(BasAccount::getUserAccount, loginDTO.getAccount())
-                .one();
+        BasAccount account = accountService.getByAccount(loginDTO.getAccount());
         if (Objects.isNull(account)) {
             return;
         }
-        List<BasDevice> list = deviceService.lambdaQuery()
-                .eq(BasDevice::getDeviceCode, loginDTO.getDeviceId())
-                .list();
+        List<BasDevice> list = deviceService.findByCode(loginDTO.getDeviceId());
         BasDevice device = list.isEmpty() ? null : list.get(0);
         boolean newDevice = Objects.isNull(device);
         if (newDevice) {
@@ -104,28 +102,8 @@ public class BasAccountLogServiceImpl extends BaseServiceImpl<BasAccountLogMappe
         Set<Long> userIds = result.getRecords().stream()
                 .map(BasAccountLog::getUserId)
                 .collect(Collectors.toSet());
-        Map<Long, String> accountMap;
-        Map<Long, String> userMap;
-        if (accountIds.isEmpty()) {
-            accountMap = Collections.emptyMap();
-        } else {
-            accountMap = accountService.lambdaQuery()
-                    .select(BasAccount::getId, BasAccount::getUserAccount)
-                    .in(BasAccount::getId, accountIds)
-                    .list()
-                    .stream()
-                    .collect(Collectors.toMap(BaseEntity::getId, BasAccount::getUserAccount));
-        }
-        if (userIds.isEmpty()) {
-            userMap = Collections.emptyMap();
-        } else {
-            userMap = userService.lambdaQuery()
-                    .select(BasUser::getId, BasUser::getUserName)
-                    .in(BasUser::getId, userIds)
-                    .list()
-                    .stream()
-                    .collect(Collectors.toMap(BaseEntity::getId, BasUser::getUserName));
-        }
+        Map<Long, String> accountMap = accountIds.isEmpty() ? Collections.emptyMap() : accountService.findAccountMap(accountIds);
+        Map<Long, String> userMap = userIds.isEmpty() ? Collections.emptyMap() : userService.findUsernameMap(userIds);
         result.getRecords().forEach(item -> {
             item.setAccount(accountMap.getOrDefault(item.getAccountId(), ""));
             item.setUserName(userMap.getOrDefault(item.getUserId(), ""));

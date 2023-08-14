@@ -21,7 +21,7 @@ import java.util.Optional;
 public class BasConfServiceImpl extends BaseServiceImpl<BasConfMapper, BasConf> implements BasConfService {
 
     @Override
-    public String get(String key) {
+    public String getValueByKey(String key) {
         Optional<BasConf> basConfOpt = this.lambdaQuery().eq(BasConf::getConfKey, key).oneOpt();
         return basConfOpt.map(BasConf::getConfValue).orElse(null);
     }

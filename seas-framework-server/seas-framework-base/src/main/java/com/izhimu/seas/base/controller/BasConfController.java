@@ -26,7 +26,7 @@ public class BasConfController extends AbsBaseController<BasConfService, BasConf
     @OperationLog("@-获取配置")
     @GetMapping("/get")
     public String get(String key) {
-        return service.get(key);
+        return service.getValueByKey(key);
     }
 
     @OperationLog("@-Key是否可用")

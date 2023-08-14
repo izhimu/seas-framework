@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 组织架构服务层实现
@@ -84,5 +86,16 @@ public class BasOrgServiceImpl extends BaseServiceImpl<BasOrgMapper, BasOrg> imp
                 });
 
 
+    }
+
+    @Override
+    public Set<Long> findSubOrgId(String code) {
+        return this.lambdaQuery()
+                .select(BasOrg::getId)
+                .likeRight(BasOrg::getOrgCode, code)
+                .list()
+                .stream()
+                .map(BasOrg::getId)
+                .collect(Collectors.toSet());
     }
 }

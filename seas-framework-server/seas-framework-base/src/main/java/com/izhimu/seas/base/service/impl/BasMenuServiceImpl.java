@@ -13,6 +13,7 @@ import com.izhimu.seas.base.service.BasUserRoleService;
 import com.izhimu.seas.base.service.BasUserService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,14 +31,9 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> implements BasMenuService {
 
+    @Lazy
     @Resource
     private BasUserService userService;
-
-    @Resource
-    private BasUserRoleService userRoleService;
-
-    @Resource
-    private BasAuthMenuService authMenuService;
 
     @Override
     public List<Tree<Long>> tree(BasMenu param) {
@@ -60,48 +56,25 @@ public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> 
         if (Boolean.TRUE.equals(user.getIsSuper())) {
             return this.lambdaQuery().orderByAsc(BasMenu::getSort).list();
         }
-        List<BasMenu> all = this.lambdaQuery().eq(BasMenu::getDisplay, 1).list();
-        Map<Long, BasMenu> allMap = all.stream().collect(Collectors.toMap(BasMenu::getId, v -> v));
-        Set<Long> roles = userRoleService.lambdaQuery()
-                .select(BasUserRole::getRoleId)
-                .eq(BasUserRole::getUserId, user.getId())
-                .list()
-                .stream()
-                .map(BasUserRole::getRoleId)
-                .collect(Collectors.toSet());
-        if (roles.isEmpty()) {
-            return List.of();
+        List<String> menuAuth = user.getMenuAuth();
+        if (menuAuth.isEmpty()) {
+            return Collections.emptyList();
         }
-        Set<Long> menus = authMenuService.lambdaQuery()
-                .select(BasAuthMenu::getMenuId)
-                .in(BasAuthMenu::getRoleId, roles)
-                .list()
-                .stream()
-                .map(BasAuthMenu::getMenuId)
-                .collect(Collectors.toSet());
-        if (menus.isEmpty()) {
-            return List.of();
-        }
-        Set<BasMenu> result = new HashSet<>();
-        menus.forEach(v -> {
-            result.add(allMap.get(v));
-            getAuthMenuIds(result, allMap, v);
-        });
-        return result.stream().sorted(Comparator.comparing(BasMenu::getSort)).collect(Collectors.toList());
+        return this.lambdaQuery()
+                .in(BasMenu::getMenuCode, menuAuth)
+                .orderByAsc(BasMenu::getSort)
+                .list();
     }
 
-    /**
-     * 获取权限菜单
-     *
-     * @param menuIds 权限菜单
-     * @param all     所有菜单
-     * @param id      权限ID
-     */
-    private void getAuthMenuIds(Set<BasMenu> menuIds, Map<Long, BasMenu> all, Long id) {
-        if (all.containsKey(id)) {
-            BasMenu basMenu = all.get(id);
-            menuIds.add(basMenu);
-            getAuthMenuIds(menuIds, all, basMenu.getParentId());
-        }
+    @Override
+    public List<String> findMenuCodeByIds(Collection<Long> ids) {
+        return this.lambdaQuery()
+                .select(BasMenu::getMenuCode)
+                .orderByAsc(BasMenu::getSort)
+                .in(BasMenu::getId, ids)
+                .list()
+                .stream()
+                .map(BasMenu::getMenuCode)
+                .toList();
     }
 }

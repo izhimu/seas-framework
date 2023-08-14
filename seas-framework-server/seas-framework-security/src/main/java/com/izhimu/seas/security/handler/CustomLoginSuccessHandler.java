@@ -37,6 +37,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         Login loginDTO = loginHolder.get(true);
         try {
             createToken(httpServletRequest, httpServletResponse, authentication);
+            sessionHandle(authentication);
             // 清除错误次数
             String key = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(loginDTO.getAccount());
             RedisHelper.getInstance().del(key);
@@ -67,5 +68,20 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         login.setUserName(userDetails.getNickName());
         Result<Object> result = Result.ok(login);
         ServletUtil.write(response, result.toString(), MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    /**
+     * session信息处理
+     *
+     * @param authentication Authentication
+     */
+    private void sessionHandle(Authentication authentication) {
+        User userDetails = (User) authentication.getPrincipal();
+        userDetails.setUserCertificate(null);
+        Login login = userDetails.getLogin();
+        login.setPassword(null);
+        login.setPasswordKey(null);
+        login.setVerifyCode(null);
+        login.setVerifyCodeKey(null);
     }
 }

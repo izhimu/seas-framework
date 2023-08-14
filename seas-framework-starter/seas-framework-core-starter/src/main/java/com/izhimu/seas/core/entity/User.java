@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +54,18 @@ public class User implements UserDetails {
      * 登录信息
      */
     private Login login;
+    /**
+     * 所属组织ID
+     */
+    private Long orgId;
+    /**
+     * 菜单权限列表
+     */
+    private List<String> menuAuth;
+    /**
+     * 数据权限列表
+     */
+    private DataPermission dataAuth;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

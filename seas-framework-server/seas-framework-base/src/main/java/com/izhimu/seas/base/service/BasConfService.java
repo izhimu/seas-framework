@@ -12,12 +12,12 @@ import com.izhimu.seas.data.service.IBaseService;
 public interface BasConfService extends IBaseService<BasConf> {
 
     /**
-     * 获取
+     * 根据Key获取配置值
      *
      * @param key key
      * @return value
      */
-    String get(String key);
+    String getValueByKey(String key);
 
     /**
      * key是否可用
