@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.izhimu.seas.base.entity.BasUserOrg;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 用户组织中间服务层接口

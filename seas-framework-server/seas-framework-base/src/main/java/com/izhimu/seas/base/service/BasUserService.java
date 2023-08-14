@@ -1,8 +1,8 @@
 package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.entity.BasUser;
-import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.entity.Select;
+import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.Collection;

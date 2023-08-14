@@ -34,6 +34,7 @@ public class BasAuthMenuServiceImpl extends ServiceImpl<BasAuthMenuMapper, BasAu
         return this.lambdaQuery()
                 .select(BasAuthMenu::getMenuId)
                 .eq(BasAuthMenu::getRoleId, roleId)
+                .eq(BasAuthMenu::getIsChecked, 1)
                 .list()
                 .stream()
                 .map(BasAuthMenu::getMenuId)

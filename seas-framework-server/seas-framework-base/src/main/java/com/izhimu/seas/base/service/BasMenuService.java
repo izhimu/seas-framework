@@ -4,7 +4,6 @@ import cn.hutool.core.lang.tree.Tree;
 import com.izhimu.seas.base.entity.BasMenu;
 import com.izhimu.seas.data.service.IBaseService;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 

@@ -28,6 +28,10 @@ public class BasAuthMenu extends IdEntity {
      * 角色ID
      */
     private Long roleId;
+    /**
+     * 选中的，0否，1是
+     */
+    private Integer isChecked;
     // DTO
     /**
      * 菜单列表
@@ -35,4 +39,10 @@ public class BasAuthMenu extends IdEntity {
     @ViewIgnore
     @TableField(exist = false)
     private List<Long> menuIds;
+    /**
+     * 父菜单列表
+     */
+    @ViewIgnore
+    @TableField(exist = false)
+    private List<Long> menuPIds;
 }

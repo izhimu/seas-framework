@@ -2,8 +2,8 @@ package com.izhimu.seas.healthy.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.system.oshi.OshiUtil;
-import com.izhimu.seas.healthy.service.OsService;
 import com.izhimu.seas.healthy.entity.*;
+import com.izhimu.seas.healthy.service.OsService;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;

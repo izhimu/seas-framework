@@ -3,13 +3,9 @@ package com.izhimu.seas.base.service.impl;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
-import com.izhimu.seas.base.entity.BasAuthMenu;
 import com.izhimu.seas.base.entity.BasMenu;
-import com.izhimu.seas.base.entity.BasUserRole;
 import com.izhimu.seas.base.mapper.BasMenuMapper;
-import com.izhimu.seas.base.service.BasAuthMenuService;
 import com.izhimu.seas.base.service.BasMenuService;
-import com.izhimu.seas.base.service.BasUserRoleService;
 import com.izhimu.seas.base.service.BasUserService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
@@ -18,8 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 菜单服务层实现
@@ -72,6 +69,7 @@ public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> 
                 .select(BasMenu::getMenuCode)
                 .orderByAsc(BasMenu::getSort)
                 .in(BasMenu::getId, ids)
+                .isNotNull(BasMenu::getMenuCode)
                 .list()
                 .stream()
                 .map(BasMenu::getMenuCode)

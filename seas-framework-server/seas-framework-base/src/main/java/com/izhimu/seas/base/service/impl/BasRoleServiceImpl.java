@@ -45,9 +45,19 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                     BasAuthMenu authMenu = new BasAuthMenu();
                     authMenu.setRoleId(entity.getRoleId());
                     authMenu.setMenuId(v);
+                    authMenu.setIsChecked(1);
                     return authMenu;
                 }).collect(Collectors.toList());
         authMenuService.saveBatch(authMenuList);
+        List<BasAuthMenu> parentAuthMenuList = entity.getMenuPIds().stream()
+                .map(v -> {
+                    BasAuthMenu authMenu = new BasAuthMenu();
+                    authMenu.setRoleId(entity.getRoleId());
+                    authMenu.setMenuId(v);
+                    authMenu.setIsChecked(0);
+                    return authMenu;
+                }).collect(Collectors.toList());
+        authMenuService.saveBatch(parentAuthMenuList);
     }
 
     @Override
@@ -100,7 +110,6 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
     @Override
     public DataPermission getDataPermissionByUserId(User user) {
         Set<Long> roleIds = userRoleService.findRoleIdByUserIdDistinct(user.getId());
-        ;
         if (CollUtil.isEmpty(roleIds)) {
             return new DataPermission();
         }

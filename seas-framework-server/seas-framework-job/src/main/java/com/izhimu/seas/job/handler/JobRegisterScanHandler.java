@@ -1,7 +1,7 @@
 package com.izhimu.seas.job.handler;
 
-import com.izhimu.seas.core.scan.IScanHandler;
 import com.izhimu.seas.core.annotation.JobRegister;
+import com.izhimu.seas.core.scan.IScanHandler;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.service.JobTimerService;
 import lombok.extern.slf4j.Slf4j;
