@@ -1,7 +1,5 @@
 package com.izhimu.seas.job.service.impl;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassLoaderUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -12,13 +10,16 @@ import com.izhimu.seas.job.service.ScheduleService;
 import com.izhimu.seas.job.trigger.OnlyTrigger;
 import com.izhimu.seas.job.trigger.RangeCronTrigger;
 import com.izhimu.seas.job.trigger.RangePeriodicTrigger;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ScheduleServiceImpl implements ScheduleService {
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static final Map<String, ScheduledFuture<?>> TASK_MAP = new ConcurrentHashMap<>();
 
@@ -118,8 +121,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (type == 0) {
             return new RangeCronTrigger(timer.getKey(), expression, timer.getStartTime(), timer.getEndTime());
         } else if (type == 1) {
-            DateTime date = DateUtil.parse(expression, "yyyy-MM-dd HH:mm:ss");
-            return new OnlyTrigger(timer.getKey(), date);
+            LocalDateTime parse = LocalDateTime.parse(expression, DateTimeFormatter.ofPattern(DATE_FORMAT));
+            return new OnlyTrigger(timer.getKey(), parse.atZone(ZoneId.systemDefault()).toInstant());
         } else if (type == 2) {
             TimeUnit timeUnit = null;
             long time = 0;

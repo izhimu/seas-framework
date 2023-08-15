@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.BasLog;
 import com.izhimu.seas.base.service.BasLogService;
 import com.izhimu.seas.core.annotation.OperationLog;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 操作日志控制层

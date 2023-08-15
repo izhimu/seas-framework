@@ -5,11 +5,11 @@ import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.mapper.JobTimerMapper;
 import com.izhimu.seas.job.service.JobTimerService;
 import com.izhimu.seas.job.service.ScheduleService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;

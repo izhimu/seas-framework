@@ -2,10 +2,11 @@ package com.izhimu.seas.job.trigger;
 
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.job.event.JobEvent;
+import jakarta.annotation.Nonnull;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -15,17 +16,17 @@ import java.util.Objects;
 public class OnlyTrigger implements Trigger {
 
     private final String key;
-    private final Date next;
+    private final Instant next;
 
-    public OnlyTrigger(String key, Date next) {
+    public OnlyTrigger(String key, Instant next) {
         this.key = key;
         this.next = next;
     }
 
     @Override
-    public Date nextExecutionTime(TriggerContext triggerContext) {
-        Date date = triggerContext.lastActualExecutionTime();
-        if (Objects.nonNull(date)) {
+    public Instant nextExecution(@Nonnull TriggerContext triggerContext) {
+        Instant instant = triggerContext.lastActualExecution();
+        if (Objects.nonNull(instant)) {
             EventManager.trigger(JobEvent.E_JOB_FINISH, key);
             return null;
         }

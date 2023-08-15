@@ -1,23 +1,22 @@
 package com.izhimu.seas.core.aspect;
 
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.extra.servlet.ServletUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.utils.JsonUtil;
-import com.izhimu.seas.core.utils.SecurityUtil;
+import com.izhimu.seas.core.utils.WebUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -63,15 +62,16 @@ public class OperationLogAspect {
             if (Objects.nonNull(request)) {
                 data.setRequestUrl(request.getRequestURI());
                 data.setMethod(request.getMethod());
-                data.setIp(ServletUtil.getClientIP(request));
+                data.setIp(WebUtil.getClientIP(request));
             }
             if (Objects.nonNull(response)) {
                 data.setStatus(String.valueOf(response.getStatus()));
             }
-            User user = SecurityUtil.contextUser();
+            // TODO 新的方式获取
+            User user = null;
             if (Objects.nonNull(user)) {
                 data.setUserId(user.getId());
-                data.setAccount(user.getUsername());
+                data.setAccount(user.getUserAccount());
                 data.setUserName(user.getNickName());
             }
             Method logPrefix = ReflectUtil.getMethodByName(target.getClass(), "logPrefix");

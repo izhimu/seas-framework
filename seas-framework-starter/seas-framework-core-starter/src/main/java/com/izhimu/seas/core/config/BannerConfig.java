@@ -22,9 +22,9 @@ public class BannerConfig implements ApplicationRunner {
                 "__________________ ________\n" +
                 "__  ___/  _ \\  __ `/_  ___/\n" +
                 "_(__  )/  __/ /_/ /_(__  ) \n" +
-                "/____/ \\___/\\__,_/ /____/  \n\n--> " +
+                "/____/ \\___/\\__,_/ /____/  \n\n 🐋 " +
                 setting.getStr("name", "Version", "seas-project") + " | v" +
                 setting.getStr("ver", "Version", "0.0.0") + " | " +
-                setting.getStr("time", "Version", "") + "\n");
+                setting.getStr("time", "Version", "") + " \n");
     }
 }

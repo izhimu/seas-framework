@@ -10,10 +10,10 @@ import com.izhimu.seas.base.service.BasLogService;
 import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.utils.TimeUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;

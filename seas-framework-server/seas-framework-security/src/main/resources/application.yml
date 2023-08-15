@@ -10,11 +10,11 @@ spring:
   web:
     resources:
       add-mappings: false
-  redis:
-    host: inner.izhimu.cn
-    port: 6379
-    database: 0
-    password: 123456
+  data:
+    redis:
+      host: 192.168.31.201
+      port: 6379
+      database: 0
 seas:
   security:
     supers:
@@ -23,4 +23,5 @@ seas:
     err-time: 300
     err-num: 5
     encrypt-mode: SM2
+    token-time: 1800
 

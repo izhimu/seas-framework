@@ -13,17 +13,17 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>2.7.12</spring.boot.version>
-        <hutool.version>5.8.19</hutool.version>
-        <mybatis.plus.version>3.5.2</mybatis.plus.version>
+        <spring.boot.version>3.1.2</spring.boot.version>
+        <hutool.version>5.8.21</hutool.version>
+        <mybatis.plus.version>3.5.3.2</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
-        <minio.version>8.5.3</minio.version>
+        <minio.version>8.5.4</minio.version>
         <compress.version>1.23.0</compress.version>
         <okhttp.version>4.11.0</okhttp.version>
-        <oshi.version>6.4.3</oshi.version>
+        <oshi.version>6.4.4</oshi.version>
         <reflections.version>0.10.2</reflections.version>
-        <bcprov.version>1.73</bcprov.version>
-        <fastjson.version>2.0.32</fastjson.version>
+        <bcprov.version>1.76</bcprov.version>
+        <satoken.version>1.35.0.RC</satoken.version>
     </properties>
 
     <dependencyManagement>
@@ -132,6 +132,11 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bcprov.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${satoken.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

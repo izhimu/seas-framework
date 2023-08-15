@@ -3,12 +3,11 @@ package com.izhimu.seas.security.controller;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.core.annotation.OperationLog;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 验证码控制层

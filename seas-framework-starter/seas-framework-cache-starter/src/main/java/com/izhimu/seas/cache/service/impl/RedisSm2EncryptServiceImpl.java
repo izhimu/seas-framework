@@ -11,12 +11,12 @@ import com.izhimu.seas.cache.enums.EncryptType;
 import com.izhimu.seas.cache.exception.EncryptException;
 import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.cache.service.RedisService;
+import jakarta.annotation.Resource;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.time.Instant;
 
 

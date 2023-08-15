@@ -9,11 +9,11 @@ import com.izhimu.seas.base.service.BasMenuService;
 import com.izhimu.seas.base.service.BasUserService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;

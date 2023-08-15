@@ -8,10 +8,10 @@ import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;

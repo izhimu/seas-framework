@@ -16,12 +16,12 @@ import com.izhimu.seas.base.service.BasUserService;
 import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;

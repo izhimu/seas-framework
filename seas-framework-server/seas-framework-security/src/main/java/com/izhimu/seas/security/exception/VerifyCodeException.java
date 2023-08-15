@@ -1,7 +1,5 @@
 package com.izhimu.seas.security.exception;
 
-import org.springframework.security.core.AuthenticationException;
-
 /**
  * 验证码异常
  *
@@ -9,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-public class VerifyCodeException extends AuthenticationException {
+public class VerifyCodeException extends RuntimeException {
 
     public VerifyCodeException(String msg, Throwable t) {
         super(msg, t);

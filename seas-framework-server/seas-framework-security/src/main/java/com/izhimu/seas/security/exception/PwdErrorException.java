@@ -1,7 +1,5 @@
 package com.izhimu.seas.security.exception;
 
-import org.springframework.security.core.AuthenticationException;
-
 /**
  * 密码错误异常
  *
@@ -9,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-public class PwdErrorException extends AuthenticationException {
+public class PwdErrorException extends RuntimeException {
 
     public PwdErrorException(String msg, Throwable t) {
         super(msg, t);

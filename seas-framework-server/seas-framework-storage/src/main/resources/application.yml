@@ -14,13 +14,14 @@ spring:
     multipart:
       max-file-size: 1GB
       max-request-size: 10GB
-  redis:
-    host: 192.168.8.16
-    port: 6379
-    database: 0
+  data:
+    redis:
+      host: 192.168.31.201
+      port: 6379
+      database: 0
   datasource:
     name: dataSource
-    url: jdbc:postgresql://inner.izhimu.cn:5432/seas_db
+    url: jdbc:postgresql://192.168.31.200:5432/seas_db
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
@@ -35,7 +36,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 seas:
   minio:
-    end-point: http://minio.inner.izhimu.cn
+    end-point: http://192.168.31.201:9000
     access-key: minioadmin
     secret-key: minioadmin
     bucket: seas

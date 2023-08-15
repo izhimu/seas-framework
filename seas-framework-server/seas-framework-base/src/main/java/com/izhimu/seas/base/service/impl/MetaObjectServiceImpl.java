@@ -1,11 +1,7 @@
 package com.izhimu.seas.base.service.impl;
 
-import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.utils.SecurityUtil;
 import com.izhimu.seas.data.service.IMetaObjectService;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * 自动填充服务接口
@@ -18,6 +14,7 @@ public class MetaObjectServiceImpl implements IMetaObjectService {
 
     @Override
     public Long getUserId() {
-        return Optional.ofNullable(SecurityUtil.contextUser()).map(User::getId).orElse(null);
+        // TODO 新的方式获取
+        return null;
     }
 }

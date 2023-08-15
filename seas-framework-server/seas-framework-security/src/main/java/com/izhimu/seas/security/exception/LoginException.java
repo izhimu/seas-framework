@@ -1,7 +1,6 @@
 package com.izhimu.seas.security.exception;
 
 import com.izhimu.seas.core.web.ResultCode;
-import org.springframework.security.core.AuthenticationException;
 
 /**
  * 登录异常
@@ -10,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-public class LoginException extends AuthenticationException {
+public class LoginException extends RuntimeException {
 
     public final ResultCode resultCode;
 

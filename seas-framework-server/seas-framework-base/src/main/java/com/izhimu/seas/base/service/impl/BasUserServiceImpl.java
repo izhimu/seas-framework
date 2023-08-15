@@ -1,6 +1,7 @@
 package com.izhimu.seas.base.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.*;
 import com.izhimu.seas.base.mapper.BasUserMapper;
@@ -10,19 +11,16 @@ import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.utils.SecurityUtil;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import jakarta.annotation.Resource;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -34,6 +32,7 @@ import java.util.stream.Collectors;
  * @author haoran
  * @version v1.0
  */
+@Primary
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> implements BasUserService, SecurityService {
@@ -50,8 +49,6 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     private BasOrgService orgService;
     @Resource
     private EncryptService<EncryptKey, String> encryptService;
-    @Resource
-    private BCryptPasswordEncoder passwordEncoder;
     @Resource
     private LoginHolder loginHolder;
     @Resource
@@ -126,7 +123,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                         BasAccount basAccount = new BasAccount();
                         basAccount.setId(v.getId());
                         if (StrUtil.isNotBlank(v.getUserCertificate())) {
-                            basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
+                            basAccount.setUserCertificate(BCrypt.hashpw(encryptService.decrypt(key.get(), v.getUserCertificate())));
                         }
                         if (basUser.getStatus() == 1) {
                             basAccount.setStatus(1);
@@ -178,7 +175,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
             BasAccount basAccount = new BasAccount();
             basAccount.setUserId(user.getId());
             basAccount.setUserAccount(v.getUserAccount());
-            basAccount.setUserCertificate(passwordEncoder.encode(encryptService.decrypt(key.get(), v.getUserCertificate())));
+            basAccount.setUserCertificate(BCrypt.hashpw(encryptService.decrypt(key.get(), v.getUserCertificate())));
             basAccount.setTypeCode(0);
             basAccount.setStatus(user.getStatus());
             accountList.add(basAccount);
@@ -187,7 +184,10 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
 
     @Override
     public User getCurrentUser() {
-        return SecurityUtil.contextUser();
+        // TODO 新的方式获取
+        User user = new User();
+        user.setIsSuper(true);
+        return user;
     }
 
     @Override
@@ -220,7 +220,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         BasAccount account = accountService.getByAccount(username);
         if (Objects.isNull(account)) {
             return null;

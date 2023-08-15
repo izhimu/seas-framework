@@ -2,6 +2,7 @@ package com.izhimu.seas.core.utils;
 
 import cn.hutool.http.HttpUtil;
 import lombok.Data;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 import java.util.Map;
@@ -13,14 +14,12 @@ import java.util.Objects;
  * @author haoran
  * @version v1.0
  */
+@UtilityClass
 public class IpUtil {
 
     private static final String API_URL = "https://opendata.baidu.com/api.php?query=${ip}&resource_id=6006&oe=utf8";
     private static final String LOCATION = "location";
     private static final String ZERO = "0";
-
-    private IpUtil() {
-    }
 
     /**
      * 根据IP地址获取地理位置

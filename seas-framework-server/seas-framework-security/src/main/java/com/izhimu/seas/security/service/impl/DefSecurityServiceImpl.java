@@ -2,15 +2,13 @@ package com.izhimu.seas.security.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 import static com.izhimu.seas.security.constant.SecurityConstant.DEF_USER;
 
@@ -21,6 +19,7 @@ import static com.izhimu.seas.security.constant.SecurityConstant.DEF_USER;
  * @version v1.0
  */
 @Slf4j
+@Service
 public class DefSecurityServiceImpl implements SecurityService {
 
     private final String DEF_PWD;
@@ -31,17 +30,14 @@ public class DefSecurityServiceImpl implements SecurityService {
     }
 
     @Resource
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Resource
     private LoginHolder loginHolder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         User user = new User();
         user.setId(IdUtil.getSnowflakeNextId());
         user.setUserAccount(DEF_USER);
-        user.setUserCertificate(passwordEncoder.encode(DEF_PWD));
+        user.setUserCertificate(BCrypt.hashpw(DEF_PWD));
         user.setLogicDel(0);
         user.setStatus(0);
         user.setTypeCode(0);

@@ -4,11 +4,11 @@ import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.service.BasAccountService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

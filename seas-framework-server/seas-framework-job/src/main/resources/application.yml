@@ -14,14 +14,14 @@ spring:
     multipart:
       max-file-size: 1GB
       max-request-size: 10GB
-  redis:
-    host: inner.izhimu.cn
-    port: 6379
-    database: 0
-    password: 123456
+  data:
+    redis:
+      host: 192.168.31.201
+      port: 6379
+      database: 0
   datasource:
     name: dataSource
-    url: jdbc:postgresql://inner.izhimu.cn:5432/seas_db
+    url: jdbc:postgresql://192.168.31.200:5432/seas_db
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver

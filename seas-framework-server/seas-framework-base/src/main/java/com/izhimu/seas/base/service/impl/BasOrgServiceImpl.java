@@ -15,10 +15,10 @@ import com.izhimu.seas.base.service.BasDictService;
 import com.izhimu.seas.base.service.BasOrgService;
 import com.izhimu.seas.base.service.BasUserOrgService;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;

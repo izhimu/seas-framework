@@ -1,12 +1,9 @@
 package com.izhimu.seas.core.entity;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户信息
@@ -15,7 +12,7 @@ import java.util.Objects;
  * @version v1.0
  */
 @Data
-public class User implements UserDetails {
+public class User implements Serializable {
     /**
      * ID
      */
@@ -65,39 +62,4 @@ public class User implements UserDetails {
      * 数据权限列表
      */
     private DataPermission dataAuth;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return this.userCertificate;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.userAccount;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !Objects.equals(1, this.status);
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return !Objects.equals(2, this.status);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return Objects.equals(0, this.logicDel);
-    }
 }

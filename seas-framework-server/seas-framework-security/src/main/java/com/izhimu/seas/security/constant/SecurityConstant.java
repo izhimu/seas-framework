@@ -11,20 +11,12 @@ public class SecurityConstant {
     private SecurityConstant() {
     }
 
+    public static final String TOKEN_NAME = "X-Auth-Token";
+
     /**
      * 默认用户
      */
     public static final String DEF_USER = "admin";
-
-    /**
-     * 登录请求地址
-     */
-    public static final String URL_LOGIN = "/login";
-
-    /**
-     * 登出请求地址
-     */
-    public static final String URL_LOGOUT = "/logout";
 
     /**
      * 秘钥超时时间

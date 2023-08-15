@@ -19,6 +19,10 @@ import java.util.List;
 public class SecurityConfig {
 
     /**
+     * token有效期（秒）
+     */
+    private Long tokenTime = 1800L;
+    /**
      * 错误重试时间（秒）
      */
     private Long errTime = 300L;

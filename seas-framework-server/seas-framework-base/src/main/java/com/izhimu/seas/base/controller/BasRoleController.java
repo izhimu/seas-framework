@@ -11,9 +11,9 @@ import com.izhimu.seas.base.service.BasUserRoleService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.controller.AbsBaseController;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**

@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.izhimu.seas.core.entity.User;
 
 /**
  * 安全服务接口
@@ -8,5 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @author haoran
  * @version v1.0
  */
-public interface SecurityService extends UserDetailsService {
+public interface SecurityService {
+
+    User loadUserByUsername(String username);
 }

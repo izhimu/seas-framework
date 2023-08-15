@@ -13,10 +13,10 @@ import com.izhimu.seas.captcha.model.Point;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.captcha.util.ImageUtils;
 import com.izhimu.seas.core.utils.JsonUtil;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
