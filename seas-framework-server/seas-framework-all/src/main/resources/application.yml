@@ -45,6 +45,7 @@ seas:
       - root
     err-time: 300
     err-num: 5
+    token-time: 1800
   minio:
     end-point: http://192.168.31.201:9001
     access-key: minioadmin

@@ -64,4 +64,12 @@ public interface BasAccountService extends IBaseService<BasAccount> {
      * @return boolean
      */
     boolean removeByUserIdAndNotInId(Long userId, List<Long> ids);
+
+    /**
+     * 检查账号是否可用
+     *
+     * @param account 账号信息
+     * @return true可用
+     */
+    boolean checkAccount(BasAccount account);
 }

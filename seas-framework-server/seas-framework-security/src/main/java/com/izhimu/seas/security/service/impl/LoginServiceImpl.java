@@ -3,8 +3,8 @@ package com.izhimu.seas.security.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.cache.entity.EncryptKey;
-import com.izhimu.seas.cache.helper.RedisHelper;
 import com.izhimu.seas.cache.service.EncryptService;
+import com.izhimu.seas.cache.service.RedisService;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.core.entity.Login;
@@ -15,8 +15,7 @@ import com.izhimu.seas.core.utils.WebUtil;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
-import com.izhimu.seas.security.exception.LoginException;
-import com.izhimu.seas.security.exception.PwdErrorException;
+import com.izhimu.seas.security.exception.SecurityException;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.LoginService;
 import com.izhimu.seas.security.service.SecurityService;
@@ -27,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.izhimu.seas.security.constant.SecurityConstant.SESSION_KEY;
 
 /**
  * 登录服务接口实现
@@ -45,6 +46,8 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private SecurityService securityService;
     @Resource
+    private RedisService redisService;
+    @Resource
     private LoginHolder loginHolder;
     @Resource
     private SecurityConfig securityConfig;
@@ -54,7 +57,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Login login(Login dto) {
         if (Objects.isNull(dto)) {
-            throw new LoginException(ResultCode.LOGIN_ERROR, "登录信息异常");
+            throw new SecurityException(ResultCode.LOGIN_ERROR, "登录信息异常");
         }
         dto.setIp(WebUtil.getClientIP(request));
         loginHolder.set(dto);
@@ -64,25 +67,29 @@ public class LoginServiceImpl implements LoginService {
         captcha.setToken(dto.getVerifyCodeKey());
         captcha.setCaptchaVerification(dto.getVerifyCode());
         if (!captchaService.verification(captcha)) {
-            throw new LoginException(ResultCode.LOGIN_VERIFICATION_ERROR, "安全验证未通过");
+            throw new SecurityException(ResultCode.LOGIN_VERIFICATION_ERROR);
         }
 
         // 校验密码错误次数
         String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(dto.getAccount());
-        int errNum = Optional.ofNullable(RedisHelper.getInstance().get(errKey, Integer.class)).orElse(0);
+        int errNum = Optional.ofNullable(redisService.get(errKey, Integer.class)).orElse(0);
         if (errNum >= securityConfig.getErrNum()) {
-            throw new LoginException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR, "用户名或密码错误次数超限");
+            throw new SecurityException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR);
         }
 
         // 核对密码
         User user = securityService.loadUserByUsername(dto.getAccount());
+        if (Objects.isNull(user)) {
+            throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
+        }
         try {
             dto.setPassword(encryptService.decrypt(dto.getPasswordKey(), dto.getPassword()));
         } catch (Exception e) {
-            throw new PwdErrorException("账号或密码错误");
+            throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }
         if (!BCrypt.checkpw(dto.getPassword(), user.getUserCertificate())) {
-            throw new PwdErrorException("账号或密码错误");
+            redisService.set(errKey, ++errNum, securityConfig.getErrTime());
+            throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }
 
         try {
@@ -90,8 +97,7 @@ public class LoginServiceImpl implements LoginService {
             Login token = createToken(user);
             sessionHandle(user);
             // 清除错误次数
-            String key = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(dto.getAccount());
-            RedisHelper.getInstance().del(key);
+            redisService.del(errKey);
             dto.setStatus(0);
             EventManager.trigger(CoreEvent.E_LOGIN, dto);
             return token;
@@ -99,7 +105,7 @@ public class LoginServiceImpl implements LoginService {
             StpUtil.logout(user.getId());
             log.error("", e);
         }
-        throw new LoginException(ResultCode.LOGIN_ERROR, "登录失败");
+        throw new SecurityException(ResultCode.LOGIN_ERROR);
     }
 
     @Override
@@ -135,5 +141,6 @@ public class LoginServiceImpl implements LoginService {
         login.setPasswordKey(null);
         login.setVerifyCode(null);
         login.setVerifyCodeKey(null);
+        StpUtil.getSession().set(SESSION_KEY, user);
     }
 }

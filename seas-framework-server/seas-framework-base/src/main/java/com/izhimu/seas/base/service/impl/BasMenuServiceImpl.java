@@ -9,6 +9,7 @@ import com.izhimu.seas.base.service.BasMenuService;
 import com.izhimu.seas.base.service.BasUserService;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import com.izhimu.seas.security.util.SecurityUtil;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> 
 
     @Override
     public List<BasMenu> auth() {
-        User user = userService.getCurrentUser();
+        User user = SecurityUtil.getUser();
         if (Boolean.TRUE.equals(user.getIsSuper())) {
             return this.lambdaQuery().orderByAsc(BasMenu::getSort).list();
         }

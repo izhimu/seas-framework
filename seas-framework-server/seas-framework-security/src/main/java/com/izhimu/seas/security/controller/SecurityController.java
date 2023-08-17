@@ -37,12 +37,21 @@ public class SecurityController {
         return encryptService.createEncryptKey(SecurityConstant.ENCRYPT_EXPIRE).toView();
     }
 
+    /**
+     * 登录
+     *
+     * @param dto Login
+     * @return Login
+     */
     @OperationLog(value = "安全控制-登录", enable = false)
     @PostMapping("/login")
     public Login login(@RequestBody Login dto) {
         return loginService.login(dto);
     }
 
+    /**
+     * 退出
+     */
     @OperationLog(value = "安全控制-退出", enable = false)
     @PostMapping("/logout")
     public void logout() {

@@ -16,6 +16,7 @@ import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
+import com.izhimu.seas.security.util.SecurityUtil;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -87,7 +88,10 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         AtomicReference<String> key = new AtomicReference<>();
         basUser.getAccounts().stream().findFirst().ifPresent(item -> key.set(item.getPasswordKey()));
         List<BasAccount> accountList = new ArrayList<>();
-        basUser.getAccounts().forEach(newSysAccountConsumer(basUser, key, accountList));
+        basUser.getAccounts()
+                .stream()
+                .filter(v -> Objects.nonNull(v.getUserAccount()))
+                .forEach(newSysAccountConsumer(basUser, key, accountList));
         accountService.saveBatch(accountList);
         updateUserRole(basUser);
         updateUserOrg(basUser);
@@ -107,12 +111,14 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                     .ifPresent(v -> key.set(v.getPasswordKey()));
             // 删除的账号
             List<Long> accountIdList = basUser.getAccounts().stream()
-                    .map(BasAccount::getId).toList();
+                    .map(BasAccount::getId)
+                    .filter(Objects::nonNull)
+                    .toList();
             accountService.removeByUserIdAndNotInId(basUser.getId(), accountIdList);
             // 新增的账号
             List<BasAccount> saveAccountList = new ArrayList<>();
             basUser.getAccounts().stream()
-                    .filter(v -> Objects.isNull(v.getId()))
+                    .filter(v -> Objects.isNull(v.getId()) && Objects.nonNull(v.getUserAccount()))
                     .forEach(newSysAccountConsumer(basUser, key, saveAccountList));
             accountService.saveBatch(saveAccountList);
             // 修改的账号
@@ -183,16 +189,8 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     }
 
     @Override
-    public User getCurrentUser() {
-        // TODO 新的方式获取
-        User user = new User();
-        user.setIsSuper(true);
-        return user;
-    }
-
-    @Override
-    public BasUser current() {
-        User user = getCurrentUser();
+    public BasUser getCurrentUser() {
+        User user = SecurityUtil.getUser();
         BasUser basUser = this.getById(user.getId());
         basUser.setAccount(user.getUserAccount());
         List<Long> roleIds = userRoleService.findRoleIdByUserId(user.getId());

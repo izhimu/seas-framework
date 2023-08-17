@@ -2,7 +2,6 @@ package com.izhimu.seas.base.service;
 
 import com.izhimu.seas.base.entity.BasUser;
 import com.izhimu.seas.core.entity.Select;
-import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.service.IBaseService;
 
 import java.util.Collection;
@@ -66,14 +65,7 @@ public interface BasUserService extends IBaseService<BasUser> {
      *
      * @return User
      */
-    User getCurrentUser();
-
-    /**
-     * 当前用户信息
-     *
-     * @return User
-     */
-    BasUser current();
+    BasUser getCurrentUser();
 
     /**
      * 根据ID集合查询用户名映射

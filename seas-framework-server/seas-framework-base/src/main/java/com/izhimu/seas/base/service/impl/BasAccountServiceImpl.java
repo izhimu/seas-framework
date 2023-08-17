@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -74,8 +75,16 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
         List<BasAccount> delIdList = this.lambdaQuery()
                 .select(BasAccount::getId)
                 .eq(BasAccount::getUserId, userId)
-                .notIn(BasAccount::getId, ids)
+                .notIn(!ids.isEmpty(), BasAccount::getId, ids)
                 .list();
         return this.removeBatchByIds(delIdList);
+    }
+
+    @Override
+    public boolean checkAccount(BasAccount account) {
+        return !this.lambdaQuery()
+                .ne(Objects.nonNull(account.getId()), BasAccount::getId, account.getId())
+                .eq(BasAccount::getUserAccount, account.getUserAccount())
+                .exists();
     }
 }

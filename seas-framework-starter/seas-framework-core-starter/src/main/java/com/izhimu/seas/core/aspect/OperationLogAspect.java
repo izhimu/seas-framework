@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.aspect;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Log;
@@ -67,8 +68,7 @@ public class OperationLogAspect {
             if (Objects.nonNull(response)) {
                 data.setStatus(String.valueOf(response.getStatus()));
             }
-            // TODO 新的方式获取
-            User user = null;
+            User user = StpUtil.getSession().getModel("user", User.class);
             if (Objects.nonNull(user)) {
                 data.setUserId(user.getId());
                 data.setAccount(user.getUserAccount());

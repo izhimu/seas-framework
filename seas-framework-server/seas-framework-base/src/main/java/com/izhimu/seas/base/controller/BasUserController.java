@@ -112,6 +112,6 @@ public class BasUserController {
     @OperationLog("用户管理-当前用户")
     @GetMapping("/current")
     public BasUser current() {
-        return service.current();
+        return service.getCurrentUser();
     }
 }

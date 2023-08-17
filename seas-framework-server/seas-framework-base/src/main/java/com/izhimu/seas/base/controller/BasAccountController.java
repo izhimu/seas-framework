@@ -5,9 +5,7 @@ import com.izhimu.seas.base.service.BasAccountService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +43,17 @@ public class BasAccountController {
     @GetMapping("/like")
     public List<Select<String>> like(String search) {
         return service.likeAccount(search);
+    }
+
+    /**
+     * 校验账号是否可用
+     *
+     * @param account BasAccount
+     * @return true可用
+     */
+    @OperationLog("用户账号-校验可用")
+    @PostMapping("/check")
+    public boolean checkAccount(@RequestBody BasAccount account) {
+        return service.checkAccount(account);
     }
 }

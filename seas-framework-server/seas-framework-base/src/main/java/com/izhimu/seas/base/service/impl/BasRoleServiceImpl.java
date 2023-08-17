@@ -40,50 +40,62 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
     @Override
     public void updateRoleMenu(BasAuthMenu entity) {
         authMenuService.removeByRoleId(entity.getRoleId());
-        List<BasAuthMenu> authMenuList = entity.getMenuIds().stream()
-                .map(v -> {
-                    BasAuthMenu authMenu = new BasAuthMenu();
-                    authMenu.setRoleId(entity.getRoleId());
-                    authMenu.setMenuId(v);
-                    authMenu.setIsChecked(1);
-                    return authMenu;
-                }).collect(Collectors.toList());
-        authMenuService.saveBatch(authMenuList);
-        List<BasAuthMenu> parentAuthMenuList = entity.getMenuPIds().stream()
-                .map(v -> {
-                    BasAuthMenu authMenu = new BasAuthMenu();
-                    authMenu.setRoleId(entity.getRoleId());
-                    authMenu.setMenuId(v);
-                    authMenu.setIsChecked(0);
-                    return authMenu;
-                }).collect(Collectors.toList());
-        authMenuService.saveBatch(parentAuthMenuList);
+        List<Long> menuIds = entity.getMenuIds();
+        if (Objects.nonNull(menuIds)) {
+            List<BasAuthMenu> authMenuList = menuIds.stream()
+                    .map(v -> {
+                        BasAuthMenu authMenu = new BasAuthMenu();
+                        authMenu.setRoleId(entity.getRoleId());
+                        authMenu.setMenuId(v);
+                        authMenu.setIsChecked(1);
+                        return authMenu;
+                    }).collect(Collectors.toList());
+            authMenuService.saveBatch(authMenuList);
+        }
+        List<Long> menuPIds = entity.getMenuPIds();
+        if (Objects.nonNull(menuPIds)) {
+            List<BasAuthMenu> parentAuthMenuList = menuPIds.stream()
+                    .map(v -> {
+                        BasAuthMenu authMenu = new BasAuthMenu();
+                        authMenu.setRoleId(entity.getRoleId());
+                        authMenu.setMenuId(v);
+                        authMenu.setIsChecked(0);
+                        return authMenu;
+                    }).collect(Collectors.toList());
+            authMenuService.saveBatch(parentAuthMenuList);
+        }
     }
 
     @Override
     public void updateRoleOrg(BasAuthOrg entity) {
         authOrgService.removeByRoleId(entity.getRoleId());
-        List<BasAuthOrg> authOrgList = entity.getOrgIds().stream()
-                .map(v -> {
-                    BasAuthOrg authOrg = new BasAuthOrg();
-                    authOrg.setRoleId(entity.getRoleId());
-                    authOrg.setOrgId(v);
-                    return authOrg;
-                }).collect(Collectors.toList());
-        authOrgService.saveBatch(authOrgList);
+        List<Long> orgIds = entity.getOrgIds();
+        if (Objects.nonNull(orgIds)) {
+            List<BasAuthOrg> authOrgList = orgIds.stream()
+                    .map(v -> {
+                        BasAuthOrg authOrg = new BasAuthOrg();
+                        authOrg.setRoleId(entity.getRoleId());
+                        authOrg.setOrgId(v);
+                        return authOrg;
+                    }).collect(Collectors.toList());
+            authOrgService.saveBatch(authOrgList);
+        }
     }
 
     @Override
     public void updateUserRole(BasUserRole entity) {
         userRoleService.removeByRoleId(entity.getRoleId());
-        List<BasUserRole> userRoleList = entity.getUserIds().stream()
-                .map(v -> {
-                    BasUserRole userRole = new BasUserRole();
-                    userRole.setRoleId(entity.getRoleId());
-                    userRole.setUserId(v);
-                    return userRole;
-                }).collect(Collectors.toList());
-        userRoleService.saveBatch(userRoleList);
+        List<Long> userIds = entity.getUserIds();
+        if (Objects.nonNull(userIds)) {
+            List<BasUserRole> userRoleList = userIds.stream()
+                    .map(v -> {
+                        BasUserRole userRole = new BasUserRole();
+                        userRole.setRoleId(entity.getRoleId());
+                        userRole.setUserId(v);
+                        return userRole;
+                    }).collect(Collectors.toList());
+            userRoleService.saveBatch(userRoleList);
+        }
     }
 
     @Override
