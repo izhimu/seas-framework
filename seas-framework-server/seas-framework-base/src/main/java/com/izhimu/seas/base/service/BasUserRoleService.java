@@ -40,6 +40,14 @@ public interface BasUserRoleService extends IService<BasUserRole> {
     List<Long> findUserIdByRoleId(Long roleId);
 
     /**
+     * 根据角色ID查询用户ID集合
+     *
+     * @param roleId 角色ID
+     * @return 用户ID集合
+     */
+    Set<Long> findUserIdByRoleIdDistinct(Long roleId);
+
+    /**
      * 根据用户ID查询角色ID集合
      *
      * @param userId 用户ID

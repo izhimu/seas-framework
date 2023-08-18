@@ -40,4 +40,12 @@ public interface BasAuthMenuService extends IService<BasAuthMenu> {
      * @return 角色ID集合
      */
     Set<Long> findMenuIdByRoleIdDistinct(Collection<Long> roleIds);
+
+    /**
+     * 根据菜单ID集合查询角色ID集合
+     *
+     * @param menuId 菜单ID
+     * @return 角色ID集合
+     */
+    Set<Long> findRoleIdByMenuIdDistinct(Long menuId);
 }

@@ -1,5 +1,7 @@
 package com.izhimu.seas.data.wrapper;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -7,7 +9,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.izhimu.seas.core.entity.DataPermission;
+import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.enums.SearchType;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +88,26 @@ public class ParamWrapper<T> {
         }
         orders.forEach(v -> orderByField.put(v.getColumn(), v.isAsc()));
         orderByField.forEach((k, v) -> wrapper.orderBy(true, v, k));
+        return this;
+    }
+
+    /**
+     * 开启数据权限包装
+     *
+     * @return 查询包装器
+     */
+    public ParamWrapper<T> permissions() {
+        Permission config = getDataPermission();
+        if (Objects.isNull(config)) {
+            return this;
+        }
+        User user = StpUtil.getSession().getModel(SaSession.USER, User.class);
+        DataPermission dataPermission = user.getDataAuth();
+        if (Objects.equals(1, dataPermission.simpleType())) {
+            wrapper.in(config.orgField(), dataPermission.getAuthList());
+        } else if (Objects.equals(2, dataPermission.simpleType())) {
+            wrapper.in(config.userField(), dataPermission.getAuthList());
+        }
         return this;
     }
 
@@ -174,6 +199,15 @@ public class ParamWrapper<T> {
             case LE -> wrapper.le(name, value);
             default -> {
             }
+        }
+    }
+
+    private Permission getDataPermission() {
+        try {
+            return entity.getClass().getAnnotation(Permission.class);
+        } catch (Exception e) {
+            log.error("", e);
+            return null;
         }
     }
 }

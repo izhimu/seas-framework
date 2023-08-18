@@ -1,5 +1,6 @@
 package com.izhimu.seas.security.service.impl;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.cache.entity.EncryptKey;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.izhimu.seas.security.constant.SecurityConstant.SESSION_KEY;
 
 /**
  * 登录服务接口实现
@@ -70,18 +70,27 @@ public class LoginServiceImpl implements LoginService {
             throw new SecurityException(ResultCode.LOGIN_VERIFICATION_ERROR);
         }
 
-        // 校验密码错误次数
-        String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(dto.getAccount());
-        int errNum = Optional.ofNullable(redisService.get(errKey, Integer.class)).orElse(0);
-        if (errNum >= securityConfig.getErrNum()) {
-            throw new SecurityException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR);
-        }
-
-        // 核对密码
         User user = securityService.loadUserByUsername(dto.getAccount());
         if (Objects.isNull(user)) {
             throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }
+        // 校验账号状态
+        if (Objects.equals(1, user.getStatus())) {
+            dto.setStatus(4);
+            EventManager.trigger(CoreEvent.E_LOGIN, dto);
+            throw new SecurityException(ResultCode.LOGIN_DISABLED);
+        }
+
+        // 校验密码错误次数
+        String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(dto.getAccount());
+        int errNum = Optional.ofNullable(redisService.get(errKey, Integer.class)).orElse(0);
+        if (errNum >= securityConfig.getErrNum()) {
+            dto.setStatus(3);
+            EventManager.trigger(CoreEvent.E_LOGIN, dto);
+            throw new SecurityException(ResultCode.LOGIN_PASSWORD_FREQUENCY_ERROR);
+        }
+
+        // 核对密码
         try {
             dto.setPassword(encryptService.decrypt(dto.getPasswordKey(), dto.getPassword()));
         } catch (Exception e) {
@@ -89,6 +98,8 @@ public class LoginServiceImpl implements LoginService {
         }
         if (!BCrypt.checkpw(dto.getPassword(), user.getUserCertificate())) {
             redisService.set(errKey, ++errNum, securityConfig.getErrTime());
+            dto.setStatus(2);
+            EventManager.trigger(CoreEvent.E_LOGIN, dto);
             throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }
 
@@ -105,13 +116,18 @@ public class LoginServiceImpl implements LoginService {
             StpUtil.logout(user.getId());
             log.error("", e);
         }
+        dto.setStatus(5);
+        EventManager.trigger(CoreEvent.E_LOGIN, dto);
         throw new SecurityException(ResultCode.LOGIN_ERROR);
     }
 
     @Override
     public void logout() {
+        User user = StpUtil.getSession().getModel(SaSession.USER, User.class);
+        Login login = user.getLogin();
+        login.setStatus(1);
+        EventManager.trigger(CoreEvent.E_LOGOUT, login);
         StpUtil.logout();
-        EventManager.trigger(CoreEvent.E_LOGIN);
     }
 
     /**
@@ -141,6 +157,6 @@ public class LoginServiceImpl implements LoginService {
         login.setPasswordKey(null);
         login.setVerifyCode(null);
         login.setVerifyCodeKey(null);
-        StpUtil.getSession().set(SESSION_KEY, user);
+        StpUtil.getSession().set(SaSession.USER, user);
     }
 }

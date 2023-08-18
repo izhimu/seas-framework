@@ -38,4 +38,12 @@ public interface BasAuthOrgService extends IService<BasAuthOrg> {
      * @return 组织ID集合
      */
     Set<Long> findOrgIdByRoleIdDistinct(Long roleId);
+
+    /**
+     * 根据组织ID查询角色ID集合
+     *
+     * @param orgId 组织ID
+     * @return 角色ID集合
+     */
+    Set<Long> findRoleIdByOrgIdDistinct(Long orgId);
 }

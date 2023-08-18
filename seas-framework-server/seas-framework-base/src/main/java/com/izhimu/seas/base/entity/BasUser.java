@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.izhimu.seas.data.annotation.OrderBy;
+import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.enums.SearchType;
@@ -23,6 +24,7 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_BAS_USER")
+@Permission
 public class BasUser extends BaseEntity {
 
     /**
@@ -68,6 +70,10 @@ public class BasUser extends BaseEntity {
      */
     @Search(type = SearchType.EQUALS)
     private Integer status;
+    /**
+     * 部门ID
+     */
+    private Long orgId;
     // View
     /**
      * 账号
@@ -78,11 +84,6 @@ public class BasUser extends BaseEntity {
     @TableId
     @OrderBy
     private Long id;
-    /**
-     * 部门
-     */
-    @TableField(exist = false)
-    private Long orgId;
     /**
      * 部门
      */

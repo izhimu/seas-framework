@@ -26,7 +26,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends IdEntit
 
     @Override
     public Page<T> page(Page<T> page, Object param) {
-        return this.paramQuery().param(param).orderBy().wrapper().page(page);
+        return this.paramQuery().param(param).orderBy().permissions().wrapper().page(page);
     }
 
     @Override

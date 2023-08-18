@@ -27,8 +27,8 @@ public class LogListener implements IEventListener {
 
     @Override
     public boolean onEvent(Object data) {
-        if (data instanceof Log) {
-            service.saveLog((Log) data);
+        if (data instanceof Log logInfo) {
+            service.saveLog(logInfo);
             return true;
         }
         return false;

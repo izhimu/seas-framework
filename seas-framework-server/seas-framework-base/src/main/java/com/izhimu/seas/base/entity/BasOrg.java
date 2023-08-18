@@ -2,6 +2,7 @@ package com.izhimu.seas.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.enums.SearchType;
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("SEAS_BAS_ORG")
+@Permission(orgField = "id")
 public class BasOrg extends BaseEntity {
 
     /**

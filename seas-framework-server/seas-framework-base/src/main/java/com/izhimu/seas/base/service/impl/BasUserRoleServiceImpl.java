@@ -48,6 +48,17 @@ public class BasUserRoleServiceImpl extends ServiceImpl<BasUserRoleMapper, BasUs
     }
 
     @Override
+    public Set<Long> findUserIdByRoleIdDistinct(Long roleId) {
+        return this.lambdaQuery()
+                .select(BasUserRole::getUserId)
+                .eq(BasUserRole::getRoleId, roleId)
+                .list()
+                .stream()
+                .map(BasUserRole::getUserId)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public List<Long> findRoleIdByUserId(Long userId) {
         return this.lambdaQuery()
                 .select(BasUserRole::getRoleId)

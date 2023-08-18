@@ -6,15 +6,16 @@ import cn.hutool.core.lang.tree.TreeUtil;
 import com.izhimu.seas.base.entity.BasMenu;
 import com.izhimu.seas.base.mapper.BasMenuMapper;
 import com.izhimu.seas.base.service.BasMenuService;
-import com.izhimu.seas.base.service.BasUserService;
+import com.izhimu.seas.core.entity.RefreshSession;
 import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.util.SecurityUtil;
-import jakarta.annotation.Resource;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -29,9 +30,19 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class BasMenuServiceImpl extends BaseServiceImpl<BasMenuMapper, BasMenu> implements BasMenuService {
 
-    @Lazy
-    @Resource
-    private BasUserService userService;
+    @Override
+    public boolean updateById(BasMenu entity) {
+        boolean b = super.updateById(entity);
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.menu(entity.getId()));
+        return b;
+    }
+
+    @Override
+    public boolean removeById(Serializable id) {
+        boolean b = super.removeById(id);
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.menu(id));
+        return b;
+    }
 
     @Override
     public List<Tree<Long>> tree(BasMenu param) {

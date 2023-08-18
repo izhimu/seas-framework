@@ -22,3 +22,12 @@ ALTER TABLE "public"."seas_bas_auth_menu"
 COMMENT ON COLUMN "public"."seas_bas_auth_menu"."role_id" IS '角色ID';
 
 COMMENT ON COLUMN "public"."seas_bas_auth_menu"."is_checked" IS '选中的，0否，1是';
+
+DROP TABLE IF EXISTS "public"."seas_bas_user_org";
+
+ALTER TABLE "public"."seas_bas_user"
+    ADD COLUMN "org_id" int8;
+
+COMMENT ON COLUMN "public"."seas_bas_user"."org_id" IS '组织ID';
+
+

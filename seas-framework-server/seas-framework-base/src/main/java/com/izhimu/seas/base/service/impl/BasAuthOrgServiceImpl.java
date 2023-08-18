@@ -49,4 +49,15 @@ public class BasAuthOrgServiceImpl extends ServiceImpl<BasAuthOrgMapper, BasAuth
                 .map(BasAuthOrg::getOrgId)
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public Set<Long> findRoleIdByOrgIdDistinct(Long orgId) {
+        return this.lambdaQuery()
+                .select(BasAuthOrg::getRoleId)
+                .eq(BasAuthOrg::getOrgId, orgId)
+                .list()
+                .stream()
+                .map(BasAuthOrg::getRoleId)
+                .collect(Collectors.toSet());
+    }
 }

@@ -9,6 +9,8 @@ import com.izhimu.seas.core.event.IEvent;
 import com.izhimu.seas.core.event.IEventListener;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * 登录日志监听器
  *
@@ -35,8 +37,8 @@ public class LoginLogListener implements IEventListener {
     }
 
     @Override
-    public IEvent getEvent() {
-        return CoreEvent.E_LOGIN;
+    public List<IEvent> getEvents() {
+        return List.of(CoreEvent.E_LOGIN, CoreEvent.E_LOGOUT);
     }
 
     @Override

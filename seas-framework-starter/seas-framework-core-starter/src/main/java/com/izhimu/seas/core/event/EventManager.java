@@ -1,10 +1,10 @@
 package com.izhimu.seas.core.event;
 
-import cn.hutool.core.util.ReflectUtil;
+import cn.dev33.satoken.stp.StpUtil;
+import com.izhimu.seas.core.holder.LoginIdHolder;
 import com.izhimu.seas.core.utils.KryoUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -99,14 +99,23 @@ public class EventManager {
         }
         List<IEventListener> listeners = EVENT_LISTENER_MAP.get(key);
         Map<Boolean, List<IEventListener>> asyncMap = listeners.stream().collect(Collectors.groupingBy(IEventListener::async));
+        Object loginId = null;
+        try {
+            loginId = StpUtil.getSession().getLoginId();
+        } catch (Exception ignored) {
+        }
+        Object finalLoginId = loginId;
         asyncMap.forEach((k, ls) -> {
             if (k) {
                 EVENT_POOL.submit(() -> ls.parallelStream().forEach(v -> {
                     log.info("触发[{}]并行事件监听器 => {}", key, v.getClass().getSimpleName());
                     try {
+                        LoginIdHolder.set(finalLoginId);
                         v.onEvent(null);
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error : {}", v.getClass().getSimpleName(), e.getMessage());
+                        log.error("事件监听器 => {} | error: ", v.getClass().getSimpleName(), e);
+                    } finally {
+                        LoginIdHolder.remove();
                     }
                 }));
             } else {
@@ -118,7 +127,7 @@ public class EventManager {
                     try {
                         flag = listener.onEvent(null);
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error : {}", listener.getClass().getSimpleName(), e.getMessage());
+                        log.error("事件监听器 => {} | error: ", listener.getClass().getSimpleName(), e);
                     }
                 }
             }
@@ -142,29 +151,29 @@ public class EventManager {
      * @param data 数据
      */
     public static void trigger(String key, Object data) {
-        Method getTrackId = ReflectUtil.getMethodByName(data.getClass(), "getTrackId");
-        String trackId;
-        try {
-            trackId = Objects.nonNull(getTrackId) ? (String) getTrackId.invoke(data) : "";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            trackId = "";
-        }
         if (!EVENT_LISTENER_MAP.containsKey(key)) {
-            log.warn("<{}> [{}]事件未注册 => {}", trackId, key, data);
+            log.warn("[{}]事件未注册 => {}", key, data);
             return;
         }
         List<IEventListener> listeners = EVENT_LISTENER_MAP.get(key);
         Map<Boolean, List<IEventListener>> asyncMap = listeners.stream().collect(Collectors.groupingBy(IEventListener::async));
-        String finalTrackId = trackId;
+        Object loginId = null;
+        try {
+            loginId = StpUtil.getSession().getLoginId();
+        } catch (Exception ignored) {
+        }
+        Object finalLoginId = loginId;
         asyncMap.forEach((k, ls) -> {
             if (k) {
                 EVENT_POOL.submit(() -> ls.parallelStream().forEach(v -> {
-                    log.info("<{}> 触发[{}]并行事件监听器 => {} | {}", finalTrackId, key, v.getClass().getSimpleName(), data);
+                    log.info("触发[{}]并行事件监听器 => {} | {}", key, v.getClass().getSimpleName(), data);
                     try {
+                        LoginIdHolder.set(finalLoginId);
                         v.onEvent(v.copy(data));
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error : {}", v.getClass().getSimpleName(), e.getMessage());
+                        log.error("事件监听器 => {} | error: ", v.getClass().getSimpleName(), e);
+                    } finally {
+                        LoginIdHolder.remove();
                     }
                 }));
             } else {
@@ -172,11 +181,11 @@ public class EventManager {
                 boolean flag = true;
                 while (flag && iterator.hasNext()) {
                     IEventListener listener = iterator.next();
-                    log.info("<{}> 触发[{}]串行事件监听器 => {} | {}", finalTrackId, key, listener.getClass().getSimpleName(), data);
+                    log.info("触发[{}]串行事件监听器 => {} | {}", key, listener.getClass().getSimpleName(), data);
                     try {
                         flag = listener.onEvent(KryoUtil.deserialize(KryoUtil.serialize(data)));
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error : {}", listener.getClass().getSimpleName(), e.getMessage());
+                        log.error("事件监听器 => {} | error: ", listener.getClass().getSimpleName(), e);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.aspect;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
@@ -68,7 +69,7 @@ public class OperationLogAspect {
             if (Objects.nonNull(response)) {
                 data.setStatus(String.valueOf(response.getStatus()));
             }
-            User user = StpUtil.getSession().getModel("user", User.class);
+            User user = StpUtil.getSession().getModel(SaSession.USER, User.class);
             if (Objects.nonNull(user)) {
                 data.setUserId(user.getId());
                 data.setAccount(user.getUserAccount());

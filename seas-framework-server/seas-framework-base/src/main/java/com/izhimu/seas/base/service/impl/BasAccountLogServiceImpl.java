@@ -18,7 +18,6 @@ import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +49,6 @@ public class BasAccountLogServiceImpl extends BaseServiceImpl<BasAccountLogMappe
     @Resource
     private LogConfig config;
 
-    @Async
     @Override
     public void saveLog(Login loginDTO, int status) {
         BasAccount account = accountService.getByAccount(loginDTO.getAccount());

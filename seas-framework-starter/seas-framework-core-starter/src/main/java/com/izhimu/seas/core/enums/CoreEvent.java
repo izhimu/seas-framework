@@ -15,7 +15,15 @@ public enum CoreEvent implements IEvent {
      */
     E_LOGIN,
     /**
+     * 退出事件
+     */
+    E_LOGOUT,
+    /**
      * 日志记录
      */
-    E_LOG
+    E_LOG,
+    /**
+     * 刷新Session
+     */
+    E_SESSION_REFRESH
 }

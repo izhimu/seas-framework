@@ -33,4 +33,17 @@ public class DataPermission implements Serializable {
         dataPermission.setAuthList(Collections.singletonList(NO_PERMISSION));
         return dataPermission;
     }
+
+    /**
+     * 返回简单类型
+     *
+     * @return 0全部、1组织、2个人
+     */
+    public int simpleType() {
+        return switch (type) {
+            case 0 -> 0;
+            case 1, 2, 3 -> 1;
+            default -> 2;
+        };
+    }
 }

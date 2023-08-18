@@ -52,4 +52,14 @@ public class BasAuthMenuServiceImpl extends ServiceImpl<BasAuthMenuMapper, BasAu
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<Long> findRoleIdByMenuIdDistinct(Long menuId) {
+        return this.lambdaQuery()
+                .select(BasAuthMenu::getRoleId)
+                .eq(BasAuthMenu::getMenuId, menuId)
+                .list()
+                .stream()
+                .map(BasAuthMenu::getRoleId)
+                .collect(Collectors.toSet());
+    }
 }

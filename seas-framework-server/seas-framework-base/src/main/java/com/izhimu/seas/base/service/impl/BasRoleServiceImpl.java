@@ -5,8 +5,11 @@ import com.izhimu.seas.base.entity.*;
 import com.izhimu.seas.base.mapper.BasRoleMapper;
 import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.core.entity.DataPermission;
+import com.izhimu.seas.core.entity.RefreshSession;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -64,6 +67,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                     }).collect(Collectors.toList());
             authMenuService.saveBatch(parentAuthMenuList);
         }
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
     }
 
     @Override
@@ -80,6 +84,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                     }).collect(Collectors.toList());
             authOrgService.saveBatch(authOrgList);
         }
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
     }
 
     @Override
@@ -96,6 +101,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                     }).collect(Collectors.toList());
             userRoleService.saveBatch(userRoleList);
         }
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
     }
 
     @Override
@@ -149,6 +155,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
         userRoleService.removeByRoleId(id);
         authMenuService.removeByRoleId(id);
         authOrgService.removeByRoleId(id);
+        EventManager.trigger(CoreEvent.E_SESSION_REFRESH, id);
         return b;
     }
 
