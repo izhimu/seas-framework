@@ -24,6 +24,7 @@
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.76</bcprov.version>
         <satoken.version>1.35.0.RC</satoken.version>
+        <flowable.version>7.0.0.M2</flowable.version>
     </properties>
 
     <dependencyManagement>
@@ -152,6 +153,12 @@
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-redis</artifactId>
                 <version>${satoken.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter</artifactId>
+                <version>${flowable.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
