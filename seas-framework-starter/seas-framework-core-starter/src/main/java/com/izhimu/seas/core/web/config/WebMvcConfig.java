@@ -47,7 +47,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(@Nonnull InterceptorRegistry registry) {
-        interceptorList.forEach(interceptor-> registry.addInterceptor(interceptor)
+        interceptorList.forEach(interceptor -> registry.addInterceptor(interceptor)
                 .addPathPatterns(interceptor.addPath())
                 .excludePathPatterns(interceptor.excludePath()));
     }

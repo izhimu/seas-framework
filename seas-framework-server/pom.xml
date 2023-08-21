@@ -18,6 +18,7 @@
         <module>seas-framework-job</module>
         <module>seas-framework-security</module>
         <module>seas-framework-storage</module>
+        <module>seas-framework-workflow</module>
     </modules>
 
     <profiles>
