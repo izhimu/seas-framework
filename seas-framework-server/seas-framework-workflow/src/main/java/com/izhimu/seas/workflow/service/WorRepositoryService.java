@@ -1,6 +1,6 @@
 package com.izhimu.seas.workflow.service;
 
-import org.flowable.engine.RepositoryService;
+import org.camunda.bpm.engine.RepositoryService;
 
 /**
  * 流程资源接口

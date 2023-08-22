@@ -2,7 +2,7 @@ package com.izhimu.seas.workflow.service.impl;
 
 import com.izhimu.seas.workflow.service.WorRepositoryService;
 import jakarta.annotation.Resource;
-import org.flowable.engine.RepositoryService;
+import org.camunda.bpm.engine.RepositoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

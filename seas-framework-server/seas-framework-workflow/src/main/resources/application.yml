@@ -30,3 +30,7 @@ mybatis-plus:
       logic-delete-field: LOGIC_DEL
       logic-delete-value: 1
       logic-not-delete-value: 0
+camunda:
+  bpm:
+    filter:
+      create: All tasks

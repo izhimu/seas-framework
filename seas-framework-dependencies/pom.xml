@@ -24,7 +24,7 @@
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.76</bcprov.version>
         <satoken.version>1.35.0.RC</satoken.version>
-        <flowable.version>7.0.0.M2</flowable.version>
+        <camunda.version>7.20.0-alpha4</camunda.version>
     </properties>
 
     <dependencyManagement>
@@ -156,9 +156,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.flowable</groupId>
-                <artifactId>flowable-spring-boot-starter</artifactId>
-                <version>${flowable.version}</version>
+                <groupId>org.camunda.bpm.springboot</groupId>
+                <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+                <version>${camunda.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
