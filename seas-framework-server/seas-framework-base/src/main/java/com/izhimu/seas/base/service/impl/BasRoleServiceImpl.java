@@ -127,6 +127,12 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
 
     @Override
     public DataPermission getDataPermissionByUserId(User user) {
+        if (Boolean.TRUE.equals(user.getIsSuper())) {
+            DataPermission permission = new DataPermission();
+            permission.setType(0);
+            permission.setAuthList(Collections.emptyList());
+            return permission;
+        }
         Set<Long> roleIds = userRoleService.findRoleIdByUserIdDistinct(user.getId());
         if (CollUtil.isEmpty(roleIds)) {
             return new DataPermission();
