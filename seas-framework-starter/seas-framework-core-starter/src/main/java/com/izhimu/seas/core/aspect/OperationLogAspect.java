@@ -69,7 +69,12 @@ public class OperationLogAspect {
             if (Objects.nonNull(response)) {
                 data.setStatus(String.valueOf(response.getStatus()));
             }
-            User user = StpUtil.getSession().getModel(SaSession.USER, User.class);
+            User user = null;
+            try {
+                user = StpUtil.getSession().getModel(SaSession.USER, User.class);
+            } catch (Exception ignored) {
+
+            }
             if (Objects.nonNull(user)) {
                 data.setUserId(user.getId());
                 data.setAccount(user.getUserAccount());
