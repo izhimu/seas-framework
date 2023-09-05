@@ -1,3 +1,19 @@
+ALTER TABLE "public"."seas_sys_account" RENAME TO "seas_bas_account";
+ALTER TABLE "public"."seas_sys_account_log" RENAME TO "seas_bas_account_log";
+ALTER TABLE "public"."seas_sys_auth_menu" RENAME TO "seas_bas_auth_menu";
+ALTER TABLE "public"."seas_sys_auth_org" RENAME TO "seas_bas_auth_org";
+ALTER TABLE "public"."seas_sys_device" RENAME TO "seas_bas_device";
+ALTER TABLE "public"."seas_sys_dict" RENAME TO "seas_bas_dict";
+ALTER TABLE "public"."seas_sys_log" RENAME TO "seas_bas_log";
+ALTER TABLE "public"."seas_sys_menu" RENAME TO "seas_bas_menu";
+ALTER TABLE "public"."seas_sys_org" RENAME TO "seas_bas_org";
+ALTER TABLE "public"."seas_sys_role" RENAME TO "seas_bas_role";
+ALTER TABLE "public"."seas_sys_user" RENAME TO "seas_bas_user";
+ALTER TABLE "public"."seas_sys_user_location" RENAME TO "seas_bas_user_location";
+ALTER TABLE "public"."seas_sys_user_org" RENAME TO "seas_bas_user_org";
+ALTER TABLE "public"."seas_sys_user_role" RENAME TO "seas_bas_user_role";
+ALTER TABLE "public"."seas_sys_file" RENAME TO "seas_sto_file";
+
 ALTER TABLE "public"."seas_bas_role"
     ADD COLUMN "enable" int2,
   ADD COLUMN "sort" int4,

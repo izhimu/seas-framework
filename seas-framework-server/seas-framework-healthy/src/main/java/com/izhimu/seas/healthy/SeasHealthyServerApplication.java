@@ -16,5 +16,4 @@ public class SeasHealthyServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(SeasHealthyServerApplication.class, args);
     }
-
 }
