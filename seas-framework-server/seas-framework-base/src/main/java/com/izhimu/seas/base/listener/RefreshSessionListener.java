@@ -60,7 +60,7 @@ public class RefreshSessionListener implements IEventListener {
         User user = SecurityUtil.getUser(id);
         if (Objects.nonNull(user)) {
             Login login = user.getLogin();
-            User newUser = securityService.loadUserByUsername(login.getAccount());
+            User newUser = securityService.loadUser(login);
             newUser.setUserCertificate(null);
             newUser.setLogin(login);
             SecurityUtil.setUser(id, newUser);

@@ -3,11 +3,10 @@ package com.izhimu.seas.security.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.BCrypt;
+import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.utils.LogUtil;
-import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +31,8 @@ public class DefSecurityServiceImpl implements SecurityService {
         log.info(LogUtil.format("SecurityService", "Use def user", Map.of("User", DEF_USER, "Password", DEF_PWD)));
     }
 
-    @Resource
-    private LoginHolder loginHolder;
-
     @Override
-    public User loadUserByUsername(String username) {
+    public User loadUser(Login login) {
         User user = new User();
         user.setId(IdUtil.getSnowflakeNextId());
         user.setUserAccount(DEF_USER);
@@ -45,7 +41,7 @@ public class DefSecurityServiceImpl implements SecurityService {
         user.setStatus(0);
         user.setTypeCode(0);
         user.setNickName(DEF_USER);
-        user.setLogin(loginHolder.get(false));
+        user.setLogin(login);
         return user;
     }
 }

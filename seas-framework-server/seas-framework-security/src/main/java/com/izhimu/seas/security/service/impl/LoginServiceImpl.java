@@ -18,7 +18,6 @@ import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.exception.SecurityException;
-import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.LoginService;
 import com.izhimu.seas.security.service.SecurityService;
 import jakarta.annotation.Resource;
@@ -49,8 +48,6 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private RedisService redisService;
     @Resource
-    private LoginHolder loginHolder;
-    @Resource
     private SecurityConfig securityConfig;
     @Resource
     private HttpServletRequest request;
@@ -61,7 +58,6 @@ public class LoginServiceImpl implements LoginService {
             throw new SecurityException(ResultCode.LOGIN_ERROR, "登录信息异常");
         }
         dto.setIp(WebUtil.getClientIP(request));
-        loginHolder.set(dto);
 
         // 验证码错误
         Captcha captcha = new Captcha();
@@ -71,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
             throw new SecurityException(ResultCode.LOGIN_VERIFICATION_ERROR);
         }
 
-        User user = securityService.loadUserByUsername(dto.getAccount());
+        User user = securityService.loadUser(dto);
         if (Objects.isNull(user)) {
             throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }

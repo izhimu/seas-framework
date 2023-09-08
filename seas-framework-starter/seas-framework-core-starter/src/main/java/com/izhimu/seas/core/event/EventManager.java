@@ -96,7 +96,7 @@ public class EventManager {
                     }
                     try {
                         LoginIdHolder.set(finalLoginId);
-                        listener.onEvent(null);
+                        listener.onEvent(data);
                     } catch (Exception e) {
                         log.error(LogUtil.format("EventManager", key, "Error"), e);
                     } finally {
@@ -115,7 +115,7 @@ public class EventManager {
                         log.info(LogUtil.format("EventManager", key, "Trigger Sync Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
                     }
                     try {
-                        flag = listener.onEvent(null);
+                        flag = listener.onEvent(data);
                     } catch (Exception e) {
                         log.error(LogUtil.format("EventManager", key, "Error"), e);
                     }

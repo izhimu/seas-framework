@@ -12,16 +12,12 @@ import com.izhimu.seas.base.mapper.BasUserMapper;
 import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.EncryptService;
-import com.izhimu.seas.core.entity.DataPermission;
-import com.izhimu.seas.core.entity.RefreshSession;
-import com.izhimu.seas.core.entity.Select;
-import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.entity.*;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.config.SecurityConfig;
-import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
 import com.izhimu.seas.security.util.SecurityUtil;
 import jakarta.annotation.Resource;
@@ -57,8 +53,6 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     private BasOrgService orgService;
     @Resource
     private EncryptService<EncryptKey, String> encryptService;
-    @Resource
-    private LoginHolder loginHolder;
     @Resource
     private SecurityConfig securityConfig;
 
@@ -238,8 +232,8 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     }
 
     @Override
-    public User loadUserByUsername(String username) {
-        BasAccount account = accountService.getByAccount(username);
+    public User loadUser(Login login) {
+        BasAccount account = accountService.getByAccount(login.getAccount());
         if (Objects.isNull(account)) {
             return null;
         }
@@ -253,7 +247,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         user.setTypeCode(account.getTypeCode());
         user.setNickName(basUser.getUserName());
         user.setOrgId(basUser.getOrgId());
-        user.setLogin(loginHolder.get(false));
+        user.setLogin(login);
         user.setIsSuper(securityConfig.getSupers().contains(account.getUserAccount()));
         // 菜单权限
         List<String> menuAuth = roleService.findMenuAuthByUserId(user);

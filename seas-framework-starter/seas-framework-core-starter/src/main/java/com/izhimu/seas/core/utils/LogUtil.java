@@ -27,7 +27,7 @@ public class LogUtil {
     public static String format(String name, String tag, String msg, Map<String, Object> param) {
         String log = "(Seas) ".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(name, ' ', 16), 16)).concat(" ");
         if (Objects.nonNull(tag)) {
-            log = log.concat("<").concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("> ");
+            log = log.concat("[").concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("] ");
         }
         if (Objects.nonNull(msg)) {
             log = log.concat(msg).concat(" ");

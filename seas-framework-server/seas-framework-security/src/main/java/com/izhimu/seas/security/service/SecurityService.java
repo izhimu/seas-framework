@@ -1,5 +1,6 @@
 package com.izhimu.seas.security.service;
 
+import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
 
 /**
@@ -10,5 +11,5 @@ import com.izhimu.seas.core.entity.User;
  */
 public interface SecurityService {
 
-    User loadUserByUsername(String username);
+    User loadUser(Login login);
 }
