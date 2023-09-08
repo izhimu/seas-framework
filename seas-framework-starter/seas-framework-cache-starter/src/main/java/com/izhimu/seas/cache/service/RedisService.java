@@ -1,6 +1,7 @@
 package com.izhimu.seas.cache.service;
 
 import cn.hutool.core.convert.Convert;
+import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -17,10 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisService {
 
-    public static final String REDIS_SERVICE_SET = "RedisService.set:";
-    public static final String REDIS_SERVICE_HASH_CACHE_SET = "RedisService.HashCache.set:";
-    public static final String REDIS_SERVICE_LIST_CACHE_GET = "RedisService.ListCache.get:";
-    public static final String REDIS_SERVICE_LIST_CACHE_SET = "RedisService.ListCache.set:";
+    public static final String ERROR = LogUtil.format("RedisService", "Error");
     /**
      * Spring提供的RedisTemplate
      */
@@ -88,7 +86,7 @@ public class RedisService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, TimeUnit.SECONDS));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error("RedisService.expire:", e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -109,7 +107,7 @@ public class RedisService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, timeUnit));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error("RedisService.expire:", e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -125,7 +123,7 @@ public class RedisService {
             Optional<Long> optional = Optional.ofNullable(redisTemplate.getExpire(key, TimeUnit.SECONDS));
             return optional.orElse(-1L);
         } catch (Exception e) {
-            log.error("RedisService.getExpire:", e);
+            log.error(ERROR, e);
             return -1L;
         }
     }
@@ -142,7 +140,7 @@ public class RedisService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.hasKey(key));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error("RedisService.hasKey:", e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -166,7 +164,7 @@ public class RedisService {
             }
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error("RedisService.del:", e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -182,7 +180,7 @@ public class RedisService {
         try {
             return redisTemplate.opsForValue().get(key);
         } catch (Exception e) {
-            log.error("RedisService.get:", e);
+            log.error(ERROR, e);
             return null;
         }
     }
@@ -197,7 +195,7 @@ public class RedisService {
         try {
             return getObject(redisTemplate.opsForValue().get(key), clazz);
         } catch (Exception e) {
-            log.error("RedisService.get:", e);
+            log.error(ERROR, e);
             return null;
         }
     }
@@ -214,7 +212,7 @@ public class RedisService {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            log.error(REDIS_SERVICE_SET, e);
+            log.error(ERROR, e);
             return false;
         }
 
@@ -233,7 +231,7 @@ public class RedisService {
             set(key, value, time, TimeUnit.SECONDS);
             return true;
         } catch (Exception e) {
-            log.error(REDIS_SERVICE_SET, e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -255,7 +253,7 @@ public class RedisService {
             redisTemplate.opsForValue().set(key, value, time, timeUnit);
             return true;
         } catch (Exception e) {
-            log.error(REDIS_SERVICE_SET, e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -271,7 +269,7 @@ public class RedisService {
         try {
             return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, value));
         } catch (Exception e) {
-            log.error(REDIS_SERVICE_SET, e);
+            log.error(ERROR, e);
             return false;
         }
     }
@@ -301,7 +299,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForHash().get(key, item);
             } catch (Exception e) {
-                log.error("RedisService.HashCache.get:", e);
+                log.error(ERROR, e);
                 return null;
             }
         }
@@ -317,7 +315,7 @@ public class RedisService {
             try {
                 return getObject(redisTemplate.opsForHash().get(key, item), clazz);
             } catch (Exception e) {
-                log.error("RedisService.HashCache.get:", e);
+                log.error(ERROR, e);
                 return null;
             }
         }
@@ -332,7 +330,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForHash().entries(key);
             } catch (Exception e) {
-                log.error("RedisService.HashCache.getValues:", e);
+                log.error(ERROR, e);
                 return Collections.emptyMap();
             }
         }
@@ -347,7 +345,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForHash().values(key);
             } catch (Exception e) {
-                log.error("RedisService.HashCache.getValues:", e);
+                log.error(ERROR, e);
                 return Collections.emptyList();
             }
         }
@@ -364,7 +362,7 @@ public class RedisService {
                 redisTemplate.opsForHash().putAll(key, map);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -386,7 +384,7 @@ public class RedisService {
                 expire(key, time);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -409,7 +407,7 @@ public class RedisService {
                 expire(key, time, timeUnit);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -427,7 +425,7 @@ public class RedisService {
                 redisTemplate.opsForHash().put(key, item, value);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -447,7 +445,7 @@ public class RedisService {
                 expire(key, time);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -471,7 +469,7 @@ public class RedisService {
                 expire(key, time, timeUnit);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_HASH_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -487,7 +485,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForHash().delete(key, item) > 0;
             } catch (Exception e) {
-                log.error("RedisService.HashCache.del:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -503,7 +501,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForHash().hasKey(key, item);
             } catch (Exception e) {
-                log.error("RedisService.HashCache.hasKey:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -521,7 +519,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForSet().members(key);
             } catch (Exception e) {
-                log.error("RedisService.SetCache.get:", e);
+                log.error(ERROR, e);
                 return Collections.emptySet();
             }
         }
@@ -536,7 +534,7 @@ public class RedisService {
             try {
                 return Convert.toSet(clazz, redisTemplate.opsForSet().members(key));
             } catch (Exception e) {
-                log.error("RedisService.SetCache.get:", e);
+                log.error(ERROR, e);
                 return Collections.emptySet();
             }
         }
@@ -553,7 +551,7 @@ public class RedisService {
                 Optional<Boolean> optional = Optional.ofNullable(redisTemplate.opsForSet().isMember(key, value));
                 return optional.orElse(false);
             } catch (Exception e) {
-                log.error("RedisService.SetCache.hasKey:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -570,7 +568,7 @@ public class RedisService {
                 Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForSet().add(key, values));
                 return optional.orElse(-1L) > 0;
             } catch (Exception e) {
-                log.error("RedisService.SetCache.set:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -592,7 +590,7 @@ public class RedisService {
                 expire(key, time);
                 return optional.orElse(-1L) > 0;
             } catch (Exception e) {
-                log.error("RedisService.SetCache.set:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -607,7 +605,7 @@ public class RedisService {
             try {
                 return Optional.ofNullable(redisTemplate.opsForSet().size(key)).orElse(0L);
             } catch (Exception e) {
-                log.error("RedisService.SetCache.size:", e);
+                log.error(ERROR, e);
                 return 0;
             }
         }
@@ -624,7 +622,7 @@ public class RedisService {
                 Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForSet().remove(key, values));
                 return optional.orElse(-1L) > 0;
             } catch (Exception e) {
-                log.error("RedisService.SetCache.del:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -642,7 +640,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForList().range(key, 0, -1);
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_GET, e);
+                log.error(ERROR, e);
                 return Collections.emptyList();
             }
         }
@@ -659,7 +657,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForList().range(key, start, end);
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_GET, e);
+                log.error(ERROR, e);
                 return Collections.emptyList();
             }
         }
@@ -675,7 +673,7 @@ public class RedisService {
             try {
                 return redisTemplate.opsForList().index(key, index);
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_GET, e);
+                log.error(ERROR, e);
                 return null;
             }
         }
@@ -691,7 +689,7 @@ public class RedisService {
             try {
                 return getObject(redisTemplate.opsForList().index(key, index), clazz);
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_GET, e);
+                log.error(ERROR, e);
                 return null;
             }
         }
@@ -706,7 +704,7 @@ public class RedisService {
             try {
                 return Optional.ofNullable(redisTemplate.opsForList().size(key)).orElse(0L);
             } catch (Exception e) {
-                log.error("RedisService.ListCache.size:", e);
+                log.error(ERROR, e);
                 return 0;
             }
         }
@@ -723,7 +721,7 @@ public class RedisService {
                 redisTemplate.opsForList().rightPush(key, value);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -745,7 +743,7 @@ public class RedisService {
                 expire(key, time);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -768,7 +766,7 @@ public class RedisService {
                 expire(key, time, timeUnit);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -785,7 +783,7 @@ public class RedisService {
                 redisTemplate.opsForList().rightPushAll(key, value);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -807,7 +805,7 @@ public class RedisService {
                 expire(key, time);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -825,7 +823,7 @@ public class RedisService {
                 redisTemplate.opsForList().set(key, index, value);
                 return true;
             } catch (Exception e) {
-                log.error(REDIS_SERVICE_LIST_CACHE_SET, e);
+                log.error(ERROR, e);
                 return false;
             }
         }
@@ -843,7 +841,7 @@ public class RedisService {
                 Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForList().remove(key, count, value));
                 return optional.orElse(-1L) > 0;
             } catch (Exception e) {
-                log.error("RedisService.ListCache.del:", e);
+                log.error(ERROR, e);
                 return false;
             }
         }

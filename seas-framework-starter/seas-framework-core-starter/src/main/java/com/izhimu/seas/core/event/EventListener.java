@@ -14,9 +14,30 @@ import java.lang.annotation.*;
 public @interface EventListener {
 
     /**
+     * 监听的事件
+     *
+     * @return 事件
+     */
+    String[] value();
+
+    /**
      * 自动注册
      *
      * @return true|false
      */
     boolean autoRegister() default true;
+
+    /**
+     * 排序
+     *
+     * @return int
+     */
+    int order() default 0;
+
+    /**
+     * 异步
+     *
+     * @return boolean
+     */
+    boolean async() default false;
 }

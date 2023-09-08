@@ -5,6 +5,7 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.job.AbstractJob;
 import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.service.ScheduleService;
 import com.izhimu.seas.job.trigger.OnlyTrigger;
@@ -60,7 +61,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         ScheduledFuture<?> schedule = scheduler.schedule(job, trigger);
         TASK_MAP.put(timer.getKey(), schedule);
-        log.info("[{}]任务 => expression: {}, class: {} 加载完成", timer.getName(), timer.getExpression(), timer.getClassPath());
+        log.info(LogUtil.format("TimerJob", timer.getName(), "Added", Map.of("Expression", timer.getExpression(), "Class", timer.getClassPath())));
         return true;
     }
 

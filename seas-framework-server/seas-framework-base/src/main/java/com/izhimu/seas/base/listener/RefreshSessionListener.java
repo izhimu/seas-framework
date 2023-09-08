@@ -7,10 +7,9 @@ import com.izhimu.seas.base.service.BasUserRoleService;
 import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.RefreshSession;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.enums.CoreEvent;
 import com.izhimu.seas.core.enums.RefreshSessionType;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventListener;
-import com.izhimu.seas.core.event.IEvent;
 import com.izhimu.seas.core.event.IEventListener;
 import com.izhimu.seas.security.service.SecurityService;
 import com.izhimu.seas.security.util.SecurityUtil;
@@ -25,7 +24,7 @@ import java.util.Set;
  * @author haoran
  * @version v1.0
  */
-@EventListener
+@EventListener(value = CoreEvent.E_SESSION_REFRESH, async = true)
 public class RefreshSessionListener implements IEventListener {
 
     private final SecurityService securityService;
@@ -54,16 +53,6 @@ public class RefreshSessionListener implements IEventListener {
                 refreshByMenu(refresh.getId());
             }
         }
-        return true;
-    }
-
-    @Override
-    public IEvent getEvent() {
-        return CoreEvent.E_SESSION_REFRESH;
-    }
-
-    @Override
-    public boolean async() {
         return true;
     }
 

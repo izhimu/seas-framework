@@ -8,7 +8,7 @@ import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.RefreshSession;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import jakarta.annotation.Resource;

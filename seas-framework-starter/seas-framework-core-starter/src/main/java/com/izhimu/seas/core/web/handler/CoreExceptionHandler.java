@@ -2,6 +2,7 @@ package com.izhimu.seas.core.web.handler;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
 import lombok.extern.slf4j.Slf4j;
@@ -98,7 +99,7 @@ public class CoreExceptionHandler {
     @ResponseBody
     public ResponseEntity<Result<Object>> defaultErrorHandler(Exception e) {
         //500
-        log.error("", e);
+        log.error(LogUtil.format("ExceptionHandler", "Error"), e);
         return Result.error().buildResponseEntity();
     }
 }

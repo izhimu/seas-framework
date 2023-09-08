@@ -1,10 +1,12 @@
 package com.izhimu.seas.core.server;
 
 import cn.hutool.core.thread.ThreadUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -37,7 +39,7 @@ public class ServerManager {
      */
     public ServerManager add(IServer server) {
         serverList.add(server);
-        log.info("服务管理器加载 -> {}", server);
+        log.info(LogUtil.format("ServerManager", "Loading {}", server.getClass().getSimpleName()));
         return this;
     }
 
@@ -46,7 +48,7 @@ public class ServerManager {
      */
     public void start() {
         serverList.forEach(executorService::execute);
-        log.info("服务管理器启动服务 -> 服务数[{}]", serverList.size());
+        log.info(LogUtil.format("ServerManager", "Start", Map.of("Count", serverList.size())));
     }
 
     /**
@@ -55,6 +57,6 @@ public class ServerManager {
     public void stop() {
         serverList.forEach(IServer::shutdown);
         executorService.shutdown();
-        log.info("服务管理器停止服务 -> 服务数[{}]", serverList.size());
+        log.info(LogUtil.format("ServerManager", "Stop", Map.of("Count", serverList.size())));
     }
 }

@@ -49,7 +49,7 @@ public class KryoUtil {
             output.flush();
             bytes = byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            log.error("", e);
+            log.error(LogUtil.format("KryoUtil", "Error"), e);
         }
         return bytes;
     }
@@ -72,7 +72,7 @@ public class KryoUtil {
         ) {
             t = kryo.readClassAndObject(input);
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("KryoUtil", "Error"), e);
         }
         return t;
     }

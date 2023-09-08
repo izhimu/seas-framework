@@ -11,8 +11,9 @@ import com.izhimu.seas.captcha.config.CaptchaConfig;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.model.Point;
 import com.izhimu.seas.captcha.service.CaptchaService;
-import com.izhimu.seas.captcha.util.ImageUtils;
+import com.izhimu.seas.captcha.util.ImageUtil;
 import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,16 +52,16 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
     public Captcha get(Captcha captcha) {
         //原生图片
         String originalImageBase64 = loadImage(config.getOriginalPath(), config.getOriginalSize());
-        BufferedImage originalImage = ImageUtils.getBase64StrToImage(originalImageBase64);
+        BufferedImage originalImage = ImageUtil.getBase64StrToImage(originalImageBase64);
         if (Objects.isNull(originalImage)) {
-            log.error("底图初始化失败！");
+            log.error(LogUtil.format("SlideCaptchaService", "Original image init error"));
             return captcha;
         }
         //抠图图片
         String blockImageBase64 = loadImage(config.getBlockPath(), config.getBlockSize());
-        BufferedImage blockImage = ImageUtils.getBase64StrToImage(blockImageBase64);
+        BufferedImage blockImage = ImageUtil.getBase64StrToImage(blockImageBase64);
         if (Objects.isNull(blockImage)) {
-            log.error("滑动底图初始化失败！");
+            log.error(LogUtil.format("SlideCaptchaService", "Slide image init error"));
             return captcha;
         }
         Captcha newCaptcha = pictureTemplatesCut(originalImage, blockImage, blockImageBase64);
@@ -113,7 +114,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             redisService.del(CACHE_CAPTCHA_RECEIPT_KEY.concat(key));
             return true;
         } catch (Exception e) {
-            log.error("验证码坐标解析失败", e);
+            log.error(LogUtil.format("SlideCaptchaService", "Verification error"), e);
             return false;
         }
     }
@@ -161,7 +162,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                 while (true) {
                     String s = loadImage(config.getBlockPath(), config.getBlockSize());
                     if (!blockImageBase64.equals(s)) {
-                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtils.getBase64StrToImage(s)), position);
+                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtil.getBase64StrToImage(s)), position);
                         break;
                     }
                 }
@@ -170,7 +171,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                     String s = loadImage(config.getBlockPath(), config.getBlockSize());
                     if (!blockImageBase64.equals(s)) {
                         int randomInt = RandomUtil.randomInt(blockWidth, 100 - blockWidth);
-                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtils.getBase64StrToImage(s)), randomInt);
+                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtil.getBase64StrToImage(s)), randomInt);
                         break;
                     }
                 }
@@ -196,7 +197,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             captcha.setSecretKey(point.getPublicKey());
             return captcha;
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(LogUtil.format("SlideCaptchaService", "Cut image error"), e);
             return null;
         }
     }
@@ -245,7 +246,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         try (InputStream stream = ResourceUtil.getStream(path.concat(String.valueOf(i)).concat(".png"))) {
             return Base64.encode(stream);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(LogUtil.format("SlideCaptchaService", "Load image error"), e);
             return null;
         }
     }

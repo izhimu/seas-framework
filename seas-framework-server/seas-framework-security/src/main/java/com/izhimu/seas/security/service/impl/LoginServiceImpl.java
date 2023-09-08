@@ -10,8 +10,9 @@ import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.core.utils.WebUtil;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
@@ -114,7 +115,7 @@ public class LoginServiceImpl implements LoginService {
             return token;
         } catch (Exception e) {
             StpUtil.logout(user.getId());
-            log.error("", e);
+            log.error(LogUtil.format("LoginService", "Error"), e);
         }
         dto.setStatus(5);
         EventManager.trigger(CoreEvent.E_LOGIN, dto);

@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
@@ -149,7 +150,7 @@ public class ParamWrapper<T> {
                 }
             }
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("ParamWrapper", "Error"), e);
         }
     }
 
@@ -173,7 +174,7 @@ public class ParamWrapper<T> {
             }
             return map;
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("ParamWrapper", "Error"), e);
             return new HashMap<>(16);
         }
     }
@@ -206,7 +207,7 @@ public class ParamWrapper<T> {
         try {
             return entity.getClass().getAnnotation(Permission.class);
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("ParamWrapper", "Error"), e);
             return null;
         }
     }

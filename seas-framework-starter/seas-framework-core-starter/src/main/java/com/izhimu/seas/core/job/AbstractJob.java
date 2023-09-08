@@ -1,5 +1,8 @@
 package com.izhimu.seas.core.job;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
+import com.izhimu.seas.core.utils.LogUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,10 +30,9 @@ public abstract class AbstractJob implements Runnable {
 
     @Override
     public void run() {
-        log.info("执行任务[{}] => 开始 | 参数：{}", key, param);
-        start = System.currentTimeMillis();
+        log.info(LogUtil.format("Job", key, "Start", param));
+        TimeInterval timer = DateUtil.timer();
         run(param);
-        end = System.currentTimeMillis();
-        log.info("执行任务[{}] <= 结束 | 耗时：{}ms", key, end - start);
+        log.info(LogUtil.format("Job", key, "Done {}ms", param), timer.interval());
     }
 }

@@ -3,6 +3,7 @@ package com.izhimu.seas.cache.connector;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.TypeReference;
+import com.izhimu.seas.core.utils.LogUtil;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -25,11 +26,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 @Slf4j
 public class RedisConnector {
-
-    public static final String REDIS_SERVICE_SET = "RedisService.set:";
-    public static final String REDIS_SERVICE_HASH_CACHE_SET = "RedisService.HashCache.set:";
-    public static final String REDIS_SERVICE_LIST_CACHE_GET = "RedisService.ListCache.get:";
-    public static final String REDIS_SERVICE_LIST_CACHE_SET = "RedisService.ListCache.set:";
 
     /**
      * hash缓存
@@ -88,7 +84,7 @@ public class RedisConnector {
             RedisCommands<String, Object> sync = connect.sync();
             return consumer.apply(sync);
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("RedisConnector", "Error"), e);
             return null;
         }
     }

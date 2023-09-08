@@ -2,6 +2,7 @@ package com.izhimu.seas.storage.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.service.StoFileService;
 import jakarta.annotation.Resource;
@@ -96,7 +97,7 @@ public class StoFileController {
             }
             os.flush();
         } catch (IOException e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
         }
     }
 
@@ -119,7 +120,7 @@ public class StoFileController {
             }
             os.flush();
         } catch (IOException e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
         }
     }
 
@@ -138,7 +139,7 @@ public class StoFileController {
             try {
                 vos.add(service.putFile(wrapFile(file, v), v.getInputStream()));
             } catch (IOException e) {
-                log.error("", e);
+                log.error(LogUtil.format("FileStorage", "Error"), e);
             }
         });
         return vos;

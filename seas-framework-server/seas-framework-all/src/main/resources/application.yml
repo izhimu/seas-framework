@@ -27,7 +27,7 @@ spring:
     driver-class-name: org.postgresql.Driver
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: com.izhimu.seas.data.service.impl.LogImpl
   global-config:
     banner: false
     db-config:
@@ -37,6 +37,7 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+    com.izhimu: DEBUG
     oshi.util.platform.windows.WmiQueryHandler: ERROR
 seas:
   security:

@@ -1,5 +1,8 @@
 package com.izhimu.seas.job.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.mapper.JobTimerMapper;
@@ -77,7 +80,8 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
 
     @Override
     public boolean initSchedule() {
-        log.info("加载定时任务 => 开始");
+        log.info(LogUtil.format("TimerJob", "Loading"));
+        TimeInterval t = DateUtil.timer();
         List<JobTimer> list = this.lambdaQuery()
                 .eq(JobTimer::getStatus, 1)
                 .list();
@@ -90,7 +94,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
                         this.updateById(timer);
                     }
                 });
-        log.info("加载定时任务 <= 结束");
+        log.info(LogUtil.format("TimerJob", "Load Done {}ms"), t.interval());
         return true;
     }
 

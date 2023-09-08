@@ -25,7 +25,7 @@ public class JobRegisterScanHandler implements IScanHandler {
 
     @Override
     public String name() {
-        return "任务注册扫描处理";
+        return "JobRegister";
     }
 
     @Override
@@ -51,7 +51,7 @@ public class JobRegisterScanHandler implements IScanHandler {
                     timerService.updateById(timer);
                 }
             } catch (Exception e) {
-                log.error("EventListener Scan Error", e);
+                log.error("#ScanServer :JobRegister: Error ", e);
             }
         }
     }

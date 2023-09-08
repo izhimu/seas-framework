@@ -6,9 +6,10 @@ import cn.hutool.core.util.ReflectUtil;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.utils.JsonUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.core.utils.WebUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +51,7 @@ public class OperationLogAspect {
         try {
             params = JsonUtil.toJsonStr(args);
         } catch (Exception e) {
-            log.error("LogAspect Error", e);
+            log.error(LogUtil.format("OperationLog", "Error"), e);
             params = "";
         }
         Object target = pjp.getTarget();
@@ -94,7 +95,7 @@ public class OperationLogAspect {
             data.setResult(JsonUtil.toJsonStr(ret));
             EventManager.trigger(CoreEvent.E_LOG, data);
         } catch (Throwable e) {
-            log.error("LogAspect Error", e);
+            log.error(LogUtil.format("OperationLog", "Error"), e);
         }
         return ret;
     }

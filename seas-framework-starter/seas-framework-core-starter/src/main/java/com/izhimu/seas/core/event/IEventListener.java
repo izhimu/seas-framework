@@ -1,7 +1,5 @@
 package com.izhimu.seas.core.event;
 
-import java.util.List;
-
 /**
  * 事件监听器
  *
@@ -19,43 +17,6 @@ public interface IEventListener {
      * @return true|false
      */
     boolean onEvent(Object data);
-
-    /**
-     * 获取事件类型
-     *
-     * @return {@link IEvent Event}
-     */
-    default IEvent getEvent() {
-        return null;
-    }
-
-    /**
-     * 获取事件类型
-     *
-     * @return {@link IEvent Event}
-     */
-    default List<IEvent> getEvents() {
-        return null;
-    }
-
-
-    /**
-     * 获取排序
-     *
-     * @return 排序序号
-     */
-    default int getOrder() {
-        return 0;
-    }
-
-    /**
-     * 是否并行
-     *
-     * @return 异步true|同步false
-     */
-    default boolean async() {
-        return false;
-    }
 
     /**
      * 拷贝数据

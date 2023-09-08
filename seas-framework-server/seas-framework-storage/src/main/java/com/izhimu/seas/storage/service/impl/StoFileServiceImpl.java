@@ -6,6 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.storage.config.MinioConfig;
 import com.izhimu.seas.storage.entity.StoFile;
@@ -91,7 +92,7 @@ public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> 
                     .build());
             return new ByteArrayInputStream(object.readAllBytes());
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
             return null;
         }
     }
@@ -115,12 +116,12 @@ public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> 
             }
             archiver.finish();
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
         }
         try {
             return new FileInputStream(tempFile);
         } catch (FileNotFoundException e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
         }
         return null;
     }
@@ -139,7 +140,7 @@ public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> 
                     .build());
             this.save(file);
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("FileStorage", "Error"), e);
         }
         file.setFileUrl(minioConfig.getProxyHost().concat(BASE_URL).concat(String.valueOf(file.getId())));
         return file;
@@ -230,7 +231,7 @@ public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> 
             try {
                 file.setFileSize((long) is.available());
             } catch (IOException e) {
-                log.error("", e);
+                log.error(LogUtil.format("FileStorage", "Error"), e);
                 file.setFileSize(0L);
             }
         }

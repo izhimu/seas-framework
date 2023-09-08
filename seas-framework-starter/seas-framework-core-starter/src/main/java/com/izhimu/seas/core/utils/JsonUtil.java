@@ -87,7 +87,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error("JSON转换错误", e);
+            log.error(LogUtil.format("JsonUtil", "Error"), e);
             return null;
         }
     }
@@ -96,7 +96,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
-            log.error("JSON转换错误", e);
+            log.error(LogUtil.format("JsonUtil", "Error"), e);
             return null;
         }
     }
@@ -105,7 +105,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            log.error("JSON转换错误", e);
+            log.error(LogUtil.format("JsonUtil", "Error"), e);
             return null;
         }
     }
@@ -114,7 +114,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(is, clazz);
         } catch (IOException e) {
-            log.error("JSON转换错误", e);
+            log.error(LogUtil.format("JsonUtil", "Error"), e);
             return null;
         }
     }
@@ -123,7 +123,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(bytes, clazz);
         } catch (IOException e) {
-            log.error("JSON转换错误", e);
+            log.error(LogUtil.format("JsonUtil", "Error"), e);
             return null;
         }
     }
@@ -137,6 +137,6 @@ public class JsonUtil {
     }
 
     public static String removeEnd(String str, String end) {
-        return str.replace(end,"");
+        return str.replace(end, "");
     }
 }

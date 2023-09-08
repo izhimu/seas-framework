@@ -2,14 +2,13 @@ package com.izhimu.seas.core.event;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.izhimu.seas.core.holder.LoginIdHolder;
-import com.izhimu.seas.core.utils.KryoUtil;
+import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
 
 /**
  * 事件管理器
@@ -23,9 +22,15 @@ import java.util.stream.Collectors;
 public class EventManager {
 
     /**
-     * 事件监听器器Map
+     * 串行事件监听器器Map
      */
-    private static final Map<String, List<IEventListener>> EVENT_LISTENER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, List<EventListenerWrapper>> SYNC_EVENT_LISTENER_MAP = new ConcurrentHashMap<>();
+    /**
+     * 并行事件监听器器Map
+     */
+    private static final Map<String, List<EventListenerWrapper>> ASYNC_EVENT_LISTENER_MAP = new ConcurrentHashMap<>();
+
+    private static final Set<String> NO_LISTENER_EVENT = new HashSet<>();
 
     /**
      * 事件处理线程池
@@ -38,179 +43,106 @@ public class EventManager {
     /**
      * 注册事件监听器
      *
-     * @param listener 监听器 {@link IEventListener EventListener}
+     * @param wrapper 事件监听器包装
      */
-    public static void register(IEventListener listener) {
-        if (Objects.nonNull(listener.getEvent())) {
-            register(listener.getEvent(), listener);
-        }
-        if (Objects.nonNull(listener.getEvents())) {
-            listener.getEvents().forEach(v -> register(v, listener));
-        }
-    }
-
-    /**
-     * 注册事件监听器
-     *
-     * @param event    事件 {@link IEvent Event}
-     * @param listener 监听器 {@link IEventListener EventListener}
-     */
-    public static void register(IEvent event, IEventListener listener) {
-        String eventTag = event.toString();
-        if (!EVENT_LISTENER_MAP.containsKey(eventTag)) {
-            EVENT_LISTENER_MAP.put(eventTag, new CopyOnWriteArrayList<>());
-        }
-        List<IEventListener> filters = EVENT_LISTENER_MAP.get(eventTag);
-        if (filters.isEmpty() || !repeat(filters, listener)) {
-            filters.add(listener);
-        }
-        sort(filters);
-        log.info("加载[{}]事件监听器 => {}", event, listener.getClass().getSimpleName());
-    }
-
-    /**
-     * 取消事件注册
-     *
-     * @param key key {@link IEvent Event}
-     */
-    public static void unRegister(IEvent key) {
-        EVENT_LISTENER_MAP.remove(key.toString());
-        log.info("取消[{}]事件注册", key);
-    }
-
-    /**
-     * 触发无参事件
-     *
-     * @param key key {@link IEvent Event}
-     */
-    public static void trigger(IEvent key) {
-        trigger(key.toString());
-    }
-
-    /**
-     * 触发无参事件
-     *
-     * @param key key {@link IEvent Event}
-     */
-    public static void trigger(String key) {
-        if (!EVENT_LISTENER_MAP.containsKey(key)) {
-            log.warn("[{}]事件未注册", key);
-            return;
-        }
-        List<IEventListener> listeners = EVENT_LISTENER_MAP.get(key);
-        Map<Boolean, List<IEventListener>> asyncMap = listeners.stream().collect(Collectors.groupingBy(IEventListener::async));
-        Object loginId = null;
-        try {
-            loginId = StpUtil.getSession().getLoginId();
-        } catch (Exception ignored) {
-        }
-        Object finalLoginId = loginId;
-        asyncMap.forEach((k, ls) -> {
-            if (k) {
-                EVENT_POOL.submit(() -> ls.parallelStream().forEach(v -> {
-                    log.info("触发[{}]并行事件监听器 => {}", key, v.getClass().getSimpleName());
-                    try {
-                        LoginIdHolder.set(finalLoginId);
-                        v.onEvent(null);
-                    } catch (Exception e) {
-                        log.error("事件监听器 => {} | error: ", v.getClass().getSimpleName(), e);
-                    } finally {
-                        LoginIdHolder.remove();
-                    }
-                }));
-            } else {
-                Iterator<IEventListener> iterator = ls.iterator();
-                boolean flag = true;
-                while (flag && iterator.hasNext()) {
-                    IEventListener listener = iterator.next();
-                    log.info("触发[{}]串行事件监听器 => {}", key, listener.getClass().getSimpleName());
-                    try {
-                        flag = listener.onEvent(null);
-                    } catch (Exception e) {
-                        log.error("事件监听器 => {} | error: ", listener.getClass().getSimpleName(), e);
-                    }
-                }
+    public static void register(EventListenerWrapper wrapper) {
+        String[] events = wrapper.getEvents();
+        Map<String, List<EventListenerWrapper>> map = wrapper.isAsync() ? ASYNC_EVENT_LISTENER_MAP : SYNC_EVENT_LISTENER_MAP;
+        for (String event : events) {
+            if (!map.containsKey(event)) {
+                map.put(event, new CopyOnWriteArrayList<>());
             }
-        });
-    }
-
-    /**
-     * 触发事件
-     *
-     * @param key  {@link IEvent Event}
-     * @param data 数据
-     */
-    public static void trigger(IEvent key, Object data) {
-        trigger(key.toString(), data);
+            List<EventListenerWrapper> list = map.get(event);
+            list.add(wrapper);
+            sort(list);
+            log.info(LogUtil.format("EventManager", event, "Loading {}", Map.of("Async", wrapper.isAsync())), wrapper.getListener().getClass().getSimpleName());
+        }
     }
 
     /**
      * 触发事件
      *
      * @param key  key
-     * @param data 数据
+     * @param data data
      */
     public static void trigger(String key, Object data) {
-        if (!EVENT_LISTENER_MAP.containsKey(key)) {
-            log.warn("[{}]事件未注册 => {}", key, data);
+        if (NO_LISTENER_EVENT.contains(key)) {
             return;
         }
-        List<IEventListener> listeners = EVENT_LISTENER_MAP.get(key);
-        Map<Boolean, List<IEventListener>> asyncMap = listeners.stream().collect(Collectors.groupingBy(IEventListener::async));
-        Object loginId = null;
-        try {
-            loginId = StpUtil.getSession().getLoginId();
-        } catch (Exception ignored) {
+        boolean hasSync = SYNC_EVENT_LISTENER_MAP.containsKey(key);
+        boolean hasAsync = ASYNC_EVENT_LISTENER_MAP.containsKey(key);
+        if (!hasSync && !hasAsync) {
+            NO_LISTENER_EVENT.add(key);
+            log.warn(LogUtil.format("EventManager", key, "Not Found Listener"));
+            return;
+        }
+        Object loginId = LoginIdHolder.get();
+        if (Objects.isNull(loginId)) {
+            try {
+                loginId = StpUtil.getSession().getLoginId();
+            } catch (Exception ignored) {
+            }
         }
         Object finalLoginId = loginId;
-        asyncMap.forEach((k, ls) -> {
-            if (k) {
-                EVENT_POOL.submit(() -> ls.parallelStream().forEach(v -> {
-                    log.info("触发[{}]并行事件监听器 => {} | {}", key, v.getClass().getSimpleName(), data);
+        try {
+            LoginIdHolder.set(finalLoginId);
+            if (hasAsync) {
+                List<EventListenerWrapper> list = ASYNC_EVENT_LISTENER_MAP.get(key);
+                EVENT_POOL.submit(() -> list.parallelStream().map(EventListenerWrapper::getListener).forEach(listener -> {
+                    if (Objects.isNull(data)) {
+                        log.info(LogUtil.format("EventManager", key, "Trigger Async Listener {}"), listener.getClass().getSimpleName());
+                    } else {
+                        log.info(LogUtil.format("EventManager", key, "Trigger Async Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
+                    }
                     try {
                         LoginIdHolder.set(finalLoginId);
-                        v.onEvent(v.copy(data));
+                        listener.onEvent(null);
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error: ", v.getClass().getSimpleName(), e);
+                        log.error(LogUtil.format("EventManager", key, "Error"), e);
                     } finally {
                         LoginIdHolder.remove();
                     }
                 }));
-            } else {
-                Iterator<IEventListener> iterator = ls.iterator();
+            }
+            if (hasSync) {
+                Iterator<EventListenerWrapper> iterator = SYNC_EVENT_LISTENER_MAP.get(key).iterator();
                 boolean flag = true;
                 while (flag && iterator.hasNext()) {
-                    IEventListener listener = iterator.next();
-                    log.info("触发[{}]串行事件监听器 => {} | {}", key, listener.getClass().getSimpleName(), data);
+                    IEventListener listener = iterator.next().getListener();
+                    if (Objects.isNull(data)) {
+                        log.info(LogUtil.format("EventManager", key, "Trigger Sync Listener {}"), listener.getClass().getSimpleName());
+                    } else {
+                        log.info(LogUtil.format("EventManager", key, "Trigger Sync Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
+                    }
                     try {
-                        flag = listener.onEvent(KryoUtil.deserialize(KryoUtil.serialize(data)));
+                        flag = listener.onEvent(null);
                     } catch (Exception e) {
-                        log.error("事件监听器 => {} | error: ", listener.getClass().getSimpleName(), e);
+                        log.error(LogUtil.format("EventManager", key, "Error"), e);
                     }
                 }
             }
-        });
+        } catch (Exception e) {
+            log.error(LogUtil.format("EventManager", key, "Error"), e);
+        } finally {
+            LoginIdHolder.remove();
+        }
+    }
+
+    /**
+     * 触发无参事件
+     *
+     * @param key key
+     */
+    public static void trigger(String key) {
+        trigger(key, null);
     }
 
     /**
      * 排序
      *
-     * @param listeners 监听器链集合 {@link IEventListener EventListener}
+     * @param listeners 监听器链集合 {@link EventListenerWrapper EventListenerWrapper}
      */
-    private static void sort(List<IEventListener> listeners) {
-        listeners.sort(Comparator.comparing(IEventListener::getOrder));
-    }
-
-    /**
-     * 检查重复
-     *
-     * @param listeners 监听器链集合 {@link IEventListener EventListener}
-     * @param listener  待检查监听器 {@link IEventListener EventListener}
-     * @return true|false
-     */
-    private static boolean repeat(List<IEventListener> listeners, IEventListener listener) {
-        return listeners.stream()
-                .map(v -> v.getClass().getName())
-                .anyMatch(v -> v.equals(listener.getClass().getName()));
+    private static void sort(List<EventListenerWrapper> listeners) {
+        listeners.sort(Comparator.comparing(EventListenerWrapper::getOrder));
     }
 }

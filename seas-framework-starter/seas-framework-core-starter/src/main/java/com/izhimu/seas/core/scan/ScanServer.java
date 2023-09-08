@@ -1,6 +1,9 @@
 package com.izhimu.seas.core.scan;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import com.izhimu.seas.core.server.IServer;
+import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -25,16 +28,16 @@ public class ScanServer implements IServer {
 
     @Override
     public void run() {
-        log.info("开始包扫描 -> path:{}", path);
+        log.info(LogUtil.format("ScanServer", "Path {}"), path);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(path))
                 .addScanners(Scanners.TypesAnnotated);
         Reflections reflections = new Reflections(configurationBuilder);
+        TimeInterval timer = DateUtil.timer();
         ScanHandlerHolder.all().forEach(v -> {
-            log.info(v.name().concat(" 开始 -->"));
+            log.info(LogUtil.format("ScanServer", v.name(), "Scanning"));
             v.scan(reflections);
-            log.info(v.name().concat(" 结束 <--"));
+            log.info(LogUtil.format("ScanServer", v.name(), "Done {}ms"), timer.interval());
         });
-        log.info("包扫描结束 <-");
     }
 }

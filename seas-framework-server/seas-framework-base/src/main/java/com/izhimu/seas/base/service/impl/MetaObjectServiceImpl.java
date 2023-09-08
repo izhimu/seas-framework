@@ -2,6 +2,7 @@ package com.izhimu.seas.base.service.impl;
 
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.holder.LoginIdHolder;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.data.service.IMetaObjectService;
 import com.izhimu.seas.security.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class MetaObjectServiceImpl implements IMetaObjectService {
         try {
             user = Objects.isNull(loginId) ? SecurityUtil.getUser() : SecurityUtil.getUser(loginId);
         } catch (Exception e) {
-            log.error("", e);
+            log.error(LogUtil.format("MetaObjectService", "Error"), e);
         }
         if (Objects.isNull(user)) {
             return null;

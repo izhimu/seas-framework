@@ -4,11 +4,14 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.security.holder.LoginHolder;
 import com.izhimu.seas.security.service.SecurityService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 import static com.izhimu.seas.security.constant.SecurityConstant.DEF_USER;
 
@@ -26,7 +29,7 @@ public class DefSecurityServiceImpl implements SecurityService {
 
     public DefSecurityServiceImpl() {
         DEF_PWD = RandomUtil.randomString(16);
-        log.info("Use def user : {} - {}", DEF_USER, DEF_PWD);
+        log.info(LogUtil.format("SecurityService", "Use def user", Map.of("User", DEF_USER, "Password", DEF_PWD)));
     }
 
     @Resource

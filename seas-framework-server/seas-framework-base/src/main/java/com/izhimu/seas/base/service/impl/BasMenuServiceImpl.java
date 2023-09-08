@@ -8,7 +8,7 @@ import com.izhimu.seas.base.mapper.BasMenuMapper;
 import com.izhimu.seas.base.service.BasMenuService;
 import com.izhimu.seas.core.entity.RefreshSession;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.util.SecurityUtil;

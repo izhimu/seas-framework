@@ -2,7 +2,6 @@ package com.izhimu.seas.job.listener;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.core.event.EventListener;
-import com.izhimu.seas.core.event.IEvent;
 import com.izhimu.seas.core.event.IEventListener;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.event.JobEvent;
@@ -16,7 +15,7 @@ import java.util.Objects;
  * @author haoran
  * @version v1.0
  */
-@EventListener
+@EventListener(value = JobEvent.E_JOB_FINISH, async = true)
 public class JobFinishListener implements IEventListener {
 
     private final JobTimerService timerService;
@@ -34,15 +33,5 @@ public class JobFinishListener implements IEventListener {
                 .eq(JobTimer::getKey, data)
                 .set(JobTimer::getStatus, 2)
                 .update();
-    }
-
-    @Override
-    public IEvent getEvent() {
-        return JobEvent.E_JOB_FINISH;
-    }
-
-    @Override
-    public boolean async() {
-        return true;
     }
 }

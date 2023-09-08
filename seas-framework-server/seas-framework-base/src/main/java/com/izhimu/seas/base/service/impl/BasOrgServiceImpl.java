@@ -15,7 +15,7 @@ import com.izhimu.seas.base.service.BasDictService;
 import com.izhimu.seas.base.service.BasOrgService;
 import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.RefreshSession;
-import com.izhimu.seas.core.enums.CoreEvent;
+import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.core.utils.CodeUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
