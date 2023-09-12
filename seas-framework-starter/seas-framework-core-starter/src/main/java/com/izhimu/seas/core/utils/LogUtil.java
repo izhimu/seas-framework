@@ -25,17 +25,17 @@ public class LogUtil {
      * @return log
      */
     public static String format(String name, String tag, String msg, Map<String, Object> param) {
-        String log = "(Seas) ".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(name, ' ', 16), 16)).concat(" ");
+        String log = "* ".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(name, ' ', 16), 16)).concat(" ");
         if (Objects.nonNull(tag)) {
-            log = log.concat("[").concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("] ");
+            log = log.concat("⟨").concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("⟩ ");
         }
         if (Objects.nonNull(msg)) {
-            log = log.concat(msg).concat(" ");
+            log = log.concat(msg);
         }
         if (Objects.nonNull(param)) {
             String jsonStr = JsonUtil.toJsonStr(param);
             if (Objects.nonNull(jsonStr)) {
-                log = log.concat(jsonStr);
+                log = log.concat(" > ").concat(jsonStr);
             }
         }
         return log;
