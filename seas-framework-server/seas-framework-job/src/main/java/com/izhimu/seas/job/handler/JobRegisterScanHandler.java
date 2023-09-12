@@ -37,19 +37,17 @@ public class JobRegisterScanHandler implements IScanHandler {
                 List<JobTimer> list = timerService.lambdaQuery()
                         .eq(JobTimer::getKey, annotation.key())
                         .list();
-                boolean save = list.isEmpty();
-                JobTimer timer = save ? new JobTimer() : list.get(0);
-                timer.setStatus(annotation.enable() ? 1 : 0);
-                if (save) {
-                    timer.setName(annotation.name());
-                    timer.setKey(annotation.key());
-                    timer.setType(annotation.type().getType());
-                    timer.setExpression(annotation.expression());
-                    timer.setClassPath(aClass.getName());
-                    timerService.add(timer);
-                } else {
-                    timerService.updateById(timer);
+                if (!list.isEmpty()) {
+                    continue;
                 }
+                JobTimer timer = new JobTimer();
+                timer.setStatus(annotation.enable() ? 1 : 0);
+                timer.setName(annotation.name());
+                timer.setKey(annotation.key());
+                timer.setType(annotation.type().getType());
+                timer.setExpression(annotation.expression());
+                timer.setClassPath(aClass.getName());
+                timerService.add(timer);
             } catch (Exception e) {
                 log.error("#ScanServer :JobRegister: Error ", e);
             }
