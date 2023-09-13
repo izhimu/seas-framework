@@ -25,7 +25,7 @@ public class LogUtil {
      * @return log
      */
     public static String format(String name, String tag, String msg, Map<String, Object> param) {
-        String log = "* ".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(name, ' ', 16), 16)).concat(" ");
+        String log = "•".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(name, ' ', 16), 16)).concat(" ");
         if (Objects.nonNull(tag)) {
             log = log.concat("⟨").concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("⟩ ");
         }
@@ -35,7 +35,7 @@ public class LogUtil {
         if (Objects.nonNull(param)) {
             String jsonStr = JsonUtil.toJsonStr(param);
             if (Objects.nonNull(jsonStr)) {
-                log = log.concat(" > ").concat(jsonStr);
+                log = log.concat(" ").concat(jsonStr);
             }
         }
         return log;

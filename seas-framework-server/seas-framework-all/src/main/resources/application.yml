@@ -40,8 +40,8 @@ logging:
     com.izhimu: DEBUG
     oshi.util.platform.windows.WmiQueryHandler: ERROR
   pattern:
-    console: "%d %clr(${LOG_LEVEL_PATTERN:%3.-3p}) [%clr(%16.16t){magenta}] %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
-    file: "%d ${LOG_LEVEL_PATTERN:%3.-3p} [%16.16t] %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:%3.-3p}) [%clr(%16.16t){magenta}] %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+    file: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} ${LOG_LEVEL_PATTERN:%3.-3p} [%16.16t] %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
   file:
     path: ./logs
     name: ${logging.file.path}/seas.log
