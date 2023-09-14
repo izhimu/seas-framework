@@ -13,18 +13,18 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.1.2</spring.boot.version>
+        <spring.boot.version>3.1.3</spring.boot.version>
         <hutool.version>5.8.21</hutool.version>
         <mybatis.plus.version>3.5.3.2</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
-        <minio.version>8.5.4</minio.version>
-        <compress.version>1.23.0</compress.version>
+        <minio.version>8.5.5</minio.version>
+        <compress.version>1.24.0</compress.version>
         <okhttp.version>4.11.0</okhttp.version>
-        <oshi.version>6.4.4</oshi.version>
+        <oshi.version>6.4.5</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.76</bcprov.version>
         <satoken.version>1.35.0.RC</satoken.version>
-        <camunda.version>7.20.0-alpha4</camunda.version>
+        <camunda.version>7.20.0-alpha5</camunda.version>
     </properties>
 
     <dependencyManagement>
