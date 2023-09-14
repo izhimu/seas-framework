@@ -19,7 +19,6 @@
         <kryo.version>5.5.0</kryo.version>
         <minio.version>8.5.5</minio.version>
         <compress.version>1.24.0</compress.version>
-        <okhttp.version>4.11.0</okhttp.version>
         <oshi.version>6.4.5</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.76</bcprov.version>
@@ -91,11 +90,6 @@
 
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>${mybatis.plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
@@ -118,11 +112,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${compress.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
-                <version>${okhttp.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.oshi</groupId>
