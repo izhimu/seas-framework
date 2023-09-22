@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.1.3</spring.boot.version>
-        <hutool.version>5.8.21</hutool.version>
+        <spring.boot.version>3.1.4</spring.boot.version>
+        <hutool.version>5.8.22</hutool.version>
         <mybatis.plus.version>3.5.3.2</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
         <minio.version>8.5.5</minio.version>
@@ -24,6 +24,7 @@
         <bcprov.version>1.76</bcprov.version>
         <satoken.version>1.35.0.RC</satoken.version>
         <camunda.version>7.20.0-alpha5</camunda.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -143,11 +144,15 @@
                 <artifactId>sa-token-redis</artifactId>
                 <version>${satoken.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.camunda.bpm.springboot</groupId>
                 <artifactId>camunda-bpm-spring-boot-starter</artifactId>
                 <version>${camunda.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
