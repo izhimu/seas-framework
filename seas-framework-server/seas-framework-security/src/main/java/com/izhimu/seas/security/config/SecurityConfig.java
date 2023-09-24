@@ -34,4 +34,8 @@ public class SecurityConfig {
      * 超级管理员列表
      */
     private List<String> supers = new ArrayList<>();
+    /**
+     * 排除路径
+     */
+    private List<String> excludePath = new ArrayList<>();
 }
