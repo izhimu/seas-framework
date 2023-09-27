@@ -6,9 +6,7 @@ import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.*;
 
 /**
  * 事件管理器
@@ -35,7 +33,9 @@ public class EventManager {
     /**
      * 事件处理线程池
      */
-    private static final ForkJoinPool EVENT_POOL = new ForkJoinPool();
+    private static final ExecutorService EVENT_POOL = Executors.newThreadPerTaskExecutor(
+            Thread.ofVirtual().name("V#Event-", 1).factory()
+    );
 
     private EventManager() {
     }
