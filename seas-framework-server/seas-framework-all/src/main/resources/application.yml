@@ -49,6 +49,8 @@ logging:
     rollingpolicy:
       clean-history-on-start: true
 seas:
+  core:
+    virtual-thread: enable
   security:
     supers:
       - admin

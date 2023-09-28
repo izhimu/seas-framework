@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.embedded.undertow.UndertowDeploymentInfoCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,19 +16,20 @@ import java.util.concurrent.Executors;
  * @version v1.0
  */
 @Configuration
+@ConditionalOnProperty(prefix = "seas.core", name = "virtual-thread", havingValue = "enable", matchIfMissing = true)
 public class VirtualThreadConfig {
 
     @Bean
     public AsyncTaskExecutor applicationTaskExecutor() {
         return new TaskExecutorAdapter(Executors.newThreadPerTaskExecutor(
-                Thread.ofVirtual().name("V#Async-", 1).factory()
+                Thread.ofVirtual().name("Async-V#", 1).factory()
         ));
     }
 
     @Bean
     public UndertowDeploymentInfoCustomizer undertowDeploymentInfoCustomizer() {
         return deploymentInfo -> deploymentInfo.setExecutor(Executors.newThreadPerTaskExecutor(
-                Thread.ofVirtual().name("V#Undertow-", 1).factory()
+                Thread.ofVirtual().name("Undertow-V#", 1).factory()
         ));
     }
 }

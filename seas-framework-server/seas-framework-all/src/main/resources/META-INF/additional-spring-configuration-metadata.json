@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "seas.core.virtual-thread",
+      "type": "java.lang.String",
+      "description": "Description for seas.core.enable-virtual-thread."
+  }
+] }

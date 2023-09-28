@@ -34,7 +34,7 @@ public class EventManager {
      * 事件处理线程池
      */
     private static final ExecutorService EVENT_POOL = Executors.newThreadPerTaskExecutor(
-            Thread.ofVirtual().name("V#Event-", 1).factory()
+            Thread.ofVirtual().name("Event-V#", 1).factory()
     );
 
     private EventManager() {
