@@ -102,6 +102,32 @@ public class StoFileController {
     }
 
     /**
+     * 文件预览
+     *
+     * @param id ID
+     */
+    @OperationLog(value = "文件服务-文件预览", enable = false)
+    @GetMapping("/preview/{id}")
+    public void preview(@PathVariable Long id, HttpServletResponse response) throws FileNotFoundException {
+        StoFile stoFile = service.getFile(id);
+        if (Objects.isNull(stoFile)) {
+            throw new FileNotFoundException();
+        }
+        response.reset();
+        response.setContentType(stoFile.getContentType());
+        try (InputStream is = service.download(id); ServletOutputStream os = response.getOutputStream()) {
+            byte[] b = new byte[1024];
+            int len;
+            while ((len = is.read(b)) > 0) {
+                os.write(b, 0, len);
+            }
+            os.flush();
+        } catch (IOException e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+        }
+    }
+
+    /**
      * 批量下载文件
      *
      * @param bindId 绑定ID

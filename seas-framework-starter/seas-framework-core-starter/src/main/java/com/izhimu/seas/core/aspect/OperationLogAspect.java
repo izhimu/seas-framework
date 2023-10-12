@@ -45,6 +45,9 @@ public class OperationLogAspect {
 
     @Around(value = "@annotation(operationLog)")
     public Object logAround(ProceedingJoinPoint pjp, OperationLog operationLog) throws Throwable {
+        if (!operationLog.enable()) {
+            return pjp.proceed();
+        }
         long start = System.currentTimeMillis();
         Object[] args = pjp.getArgs();
         String params;
@@ -57,9 +60,6 @@ public class OperationLogAspect {
         Object target = pjp.getTarget();
         Object ret = pjp.proceed();
         long end = System.currentTimeMillis();
-        if (!operationLog.enable()) {
-            return ret;
-        }
         try {
             Log data = new Log();
             if (Objects.nonNull(request)) {
