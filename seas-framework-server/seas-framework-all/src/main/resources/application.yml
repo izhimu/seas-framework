@@ -16,12 +16,13 @@ spring:
       max-request-size: 10GB
   data:
     redis:
-      host: 192.168.31.201
+      host: 192.168.31.221
       port: 6379
       database: 0
+      password: 123456
   datasource:
     name: dataSource
-    url: jdbc:postgresql://192.168.31.200:5432/seas_db
+    url: jdbc:postgresql://192.168.31.221:5432/seas_db
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
@@ -44,7 +45,7 @@ logging:
     file: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} ${LOG_LEVEL_PATTERN:%3.-3p} |%12.12t| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
   file:
     path: ./logs
-    name: ${logging.file.path}/seas.log
+    name: ${logging.file.path}/server.log
   logback:
     rollingpolicy:
       clean-history-on-start: true
@@ -59,7 +60,7 @@ seas:
     err-num: 5
     token-time: 1800
   minio:
-    end-point: http://192.168.31.201:9001
+    end-point: http://192.168.31.221:9001
     access-key: minioadmin
     secret-key: minioadmin
     bucket: seas

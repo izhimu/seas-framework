@@ -46,6 +46,14 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>23.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/aspose-words-23.5-jdk17.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -70,7 +78,7 @@
                             <mainClass>com.izhimu.seas.storage.SeasStorageServerApplication</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>../conf/${project.artifactId}/</Class-Path>
+                            <Class-Path>../conf/${project.artifactId}/ ../lib/aspose-words-23.5-jdk17.jar</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
