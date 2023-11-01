@@ -1,10 +1,9 @@
 package com.izhimu.seas.storage.service.impl;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.extra.compress.CompressUtil;
-import cn.hutool.extra.compress.archiver.Archiver;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.storage.config.MinioConfig;
 import com.izhimu.seas.storage.entity.StoFile;
@@ -13,19 +12,26 @@ import com.izhimu.seas.storage.service.StoFileService;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.izhimu.seas.storage.service.impl.StoFileServiceImpl.BASE_URL;
 
 /**
  * 文件服务实现
@@ -87,18 +93,18 @@ public class MinioServerServiceImpl implements FileServerService {
         if (files.isEmpty()) {
             throw new FileNotFoundException();
         }
-        final File tempFile = FileUtil.createTempFile("", ".tmp", false);
-        try (Archiver archiver = CompressUtil.createArchiver(CharsetUtil.CHARSET_UTF_8, ArchiveStreamFactory.ZIP, tempFile)) {
+        try {
+            List<String> pathList = new ArrayList<>();
+            List<InputStream> inList = new ArrayList<>();
             for (StoFile file : files) {
                 GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
                         .bucket(minioConfig.getBucket())
                         .object(file.getFilePath())
                         .build());
-                File temp = new File(Files.createTempDirectory("") + File.separator + file.getFileName() + "." + file.getFileSuffix());
-                IoUtil.copy(new ByteArrayInputStream(object.readAllBytes()), new FileOutputStream(temp));
-                archiver.add(temp);
+                pathList.add(file.getFileName().concat(".").concat(file.getFileSuffix()));
+                inList.add(object);
             }
-            archiver.finish();
+            ZipUtil.zip(os, ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
         } catch (Exception e) {
             log.error(LogUtil.format("FileStorage", "Error"), e);
         }
@@ -110,6 +116,81 @@ public class MinioServerServiceImpl implements FileServerService {
         if (files.isEmpty()) {
             throw new FileNotFoundException();
         }
+        try {
+            List<String> pathList = new ArrayList<>();
+            List<InputStream> inList = new ArrayList<>();
+            for (StoFile file : files) {
+                GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
+                        .bucket(minioConfig.getBucket())
+                        .object(file.getFilePath())
+                        .build());
+                pathList.add(file.getFileName().concat(".").concat(file.getFileSuffix()));
+                inList.add(object);
+            }
+            String fileName = "合并下载_".concat(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))).concat(".zip");
+            response.setContentType("application/zip");
+            response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+            ZipUtil.zip(response.getOutputStream(), ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
+        } catch (Exception e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+        }
+    }
+
+    @Override
+    public void previewAsStream(Long id, OutputStream os) throws FileNotFoundException {
+        StoFile file = fileService.getFile(id);
+        if (Objects.isNull(file)) {
+            throw new FileNotFoundException();
+        }
+        try (GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
+                .bucket(minioConfig.getBucket())
+                .object(file.getFilePath())
+                .build());
+             os) {
+            IoUtil.copy(object, os);
+        } catch (Exception e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+        }
+    }
+
+    @Override
+    public void previewAsHttp(Long id, HttpServletResponse response) throws FileNotFoundException {
+        StoFile file = fileService.getFile(id);
+        if (Objects.isNull(file)) {
+            throw new FileNotFoundException();
+        }
+        try (GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
+                .bucket(minioConfig.getBucket())
+                .object(file.getFilePath())
+                .build());
+             ServletOutputStream output = response.getOutputStream()) {
+            String fileName = file.getFileName().concat(".").concat(file.getFileSuffix());
+            response.setContentType(file.getContentType());
+            response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+            IoUtil.copy(object, output);
+        } catch (Exception e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+        }
+    }
+
+    @Override
+    public StoFile upload(StoFile file, InputStream is) {
+        createFilePath(file);
+        createStorageType(file);
+        createFileSize(file, is);
+        try (is) {
+            minioClient().putObject(PutObjectArgs.builder()
+                    .bucket(minioConfig.getBucket())
+                    .object(file.getFilePath())
+                    .stream(is, is.available(), -1)
+                    .contentType(file.getContentType())
+                    .build());
+            fileService.save(file);
+        } catch (Exception e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+        }
+        file.setFileUrl(BASE_URL.concat(String.valueOf(file.getId())));
+        return file;
     }
 
     /**
@@ -126,4 +207,65 @@ public class MinioServerServiceImpl implements FileServerService {
         }
         return minioClient;
     }
+
+    /**
+     * 创建ID
+     *
+     * @param file SysFile
+     */
+    private void createId(StoFile file) {
+        if (Objects.isNull(file.getId())) {
+            file.setId(IdUtil.getSnowflakeNextId());
+        }
+    }
+
+    /**
+     * 生成文件路径
+     *
+     * @param file SysFile
+     */
+    private void createFilePath(StoFile file) {
+        createId(file);
+        if (Objects.isNull(file.getFilePath())) {
+            LocalDateTime now = LocalDateTime.now();
+            String str = now.getYear() +
+                    "/" +
+                    now.getMonthValue() +
+                    "/" +
+                    now.getDayOfMonth() +
+                    "/" +
+                    file.getId();
+            file.setFilePath(str);
+        }
+    }
+
+    /**
+     * 生成存储类型
+     *
+     * @param file SysFile
+     */
+    private void createStorageType(StoFile file) {
+        if (Objects.isNull(file.getStorageType())) {
+            String str = "MINIO:" + minioConfig.getBucket();
+            file.setStorageType(str);
+        }
+    }
+
+    /**
+     * 生成文件大小
+     *
+     * @param file SysFile
+     * @param is   InputStream
+     */
+    private void createFileSize(StoFile file, InputStream is) {
+        if (Objects.isNull(file.getFileSize())) {
+            try {
+                file.setFileSize((long) is.available());
+            } catch (IOException e) {
+                log.error(LogUtil.format("FileStorage", "Error"), e);
+                file.setFileSize(0L);
+            }
+        }
+    }
 }
+

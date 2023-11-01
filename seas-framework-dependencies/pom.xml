@@ -18,12 +18,12 @@
         <mybatis.plus.version>3.5.4</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
         <minio.version>8.5.6</minio.version>
-        <compress.version>1.24.0</compress.version>
         <oshi.version>6.4.6</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.76</bcprov.version>
         <satoken.version>1.37.0</satoken.version>
         <camunda.version>7.20.0</camunda.version>
+        <aspose.version>23.5</aspose.version>
     </properties>
 
     <dependencyManagement>
@@ -109,11 +109,6 @@
                 <version>${minio.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>${compress.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.github.oshi</groupId>
                 <artifactId>oshi-core</artifactId>
                 <version>${oshi.version}</version>
@@ -147,6 +142,11 @@
                 <groupId>org.camunda.bpm.springboot</groupId>
                 <artifactId>camunda-bpm-spring-boot-starter</artifactId>
                 <version>${camunda.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aspose</groupId>
+                <artifactId>aspose-words</artifactId>
+                <version>${aspose.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

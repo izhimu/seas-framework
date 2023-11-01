@@ -3,7 +3,6 @@ package com.izhimu.seas.storage.service;
 import com.izhimu.seas.data.service.IBaseService;
 import com.izhimu.seas.storage.entity.StoFile;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -37,31 +36,6 @@ public interface StoFileService extends IBaseService<StoFile> {
      * @return List<SysFile>
      */
     StoFile getFilesToCompression(Long bindId);
-
-    /**
-     * 下载文件
-     *
-     * @param id id
-     * @return InputStream
-     */
-    InputStream download(Long id);
-
-    /**
-     * 下载文件
-     *
-     * @param bindId 绑定ID
-     * @return InputStream
-     */
-    InputStream downloads(Long bindId);
-
-    /**
-     * 保存文件
-     *
-     * @param file SysFile
-     * @param is  InputStream
-     * @return SysFileDTO
-     */
-    StoFile putFile(StoFile file, InputStream is);
 
     /**
      * 删除文件
