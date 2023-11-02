@@ -1,11 +1,13 @@
 package com.izhimu.seas.storage.service;
 
+import com.izhimu.seas.storage.entity.FileInfo;
 import com.izhimu.seas.storage.entity.StoFile;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * 文件服务接口
@@ -55,19 +57,21 @@ public interface FileServerService {
      * 以流的形式预览文件
      *
      * @param id 文件ID
+     * @param type 预览类型
      * @param os 输出流
      * @throws FileNotFoundException 文件不存在异常
      */
-    void previewAsStream(Long id, OutputStream os) throws FileNotFoundException;
+    void previewAsStream(Long id, String type, OutputStream os, Map<String, Object> param) throws FileNotFoundException;
 
     /**
      * 作为HTTP预览
      *
      * @param id 文件ID
+     * @param type 预览类型
      * @param response HTTP响应对象
      * @throws FileNotFoundException 文件不存在异常
      */
-    void previewAsHttp(Long id, HttpServletResponse response) throws FileNotFoundException;
+    void previewAsHttp(Long id, String type, HttpServletResponse response, Map<String, Object> param) throws FileNotFoundException;
 
     /**
      * 上传文件
@@ -77,4 +81,13 @@ public interface FileServerService {
      * @return 上传后的文件对象
      */
     StoFile upload(StoFile file, InputStream is);
+
+    /**
+     * 获取文件信息
+     *
+     * @param id 文件ID
+     * @return 文件信息对象
+     * @throws FileNotFoundException 文件不存在异常
+     */
+    FileInfo getFileInfo(Long id) throws FileNotFoundException;
 }

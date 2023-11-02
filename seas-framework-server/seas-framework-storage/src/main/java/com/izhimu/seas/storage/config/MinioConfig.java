@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("seas.minio")
+@ConfigurationProperties("seas.storage.minio")
 public class MinioConfig {
 
     /**
@@ -31,8 +31,4 @@ public class MinioConfig {
      * 存储桶
      */
     private String bucket;
-    /**
-     * 代理地址
-     */
-    private String proxyHost;
 }

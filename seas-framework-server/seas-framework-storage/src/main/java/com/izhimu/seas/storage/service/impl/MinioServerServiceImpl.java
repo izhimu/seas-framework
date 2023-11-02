@@ -6,6 +6,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.storage.config.MinioConfig;
+import com.izhimu.seas.storage.convert.DefFileConvert;
+import com.izhimu.seas.storage.convert.IFileConvert;
+import com.izhimu.seas.storage.entity.FileInfo;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.service.FileServerService;
 import com.izhimu.seas.storage.service.StoFileService;
@@ -17,6 +20,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -29,8 +33,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import static com.izhimu.seas.storage.constant.PreviewConst.*;
 import static com.izhimu.seas.storage.service.impl.StoFileServiceImpl.BASE_URL;
 
 /**
@@ -41,6 +47,7 @@ import static com.izhimu.seas.storage.service.impl.StoFileServiceImpl.BASE_URL;
  */
 @Slf4j
 @Service
+@ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "minio", matchIfMissing = true)
 public class MinioServerServiceImpl implements FileServerService {
 
     private MinioClient minioClient;
@@ -137,7 +144,7 @@ public class MinioServerServiceImpl implements FileServerService {
     }
 
     @Override
-    public void previewAsStream(Long id, OutputStream os) throws FileNotFoundException {
+    public void previewAsStream(Long id, String type, OutputStream os, Map<String, Object> param) throws FileNotFoundException {
         StoFile file = fileService.getFile(id);
         if (Objects.isNull(file)) {
             throw new FileNotFoundException();
@@ -145,16 +152,23 @@ public class MinioServerServiceImpl implements FileServerService {
         try (GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
                 .bucket(minioConfig.getBucket())
                 .object(file.getFilePath())
-                .build());
-             os) {
-            IoUtil.copy(object, os);
+                .build()); os) {
+            if (Objects.equals("img", type)) {
+                Class<? extends IFileConvert> convertClass = PNG_CONVERT_MAP.getOrDefault(file.getContentType(), DefFileConvert.class);
+                IFileConvert convert = convertClass.getDeclaredConstructor().newInstance();
+                convert.convert(object, os, param);
+            } else if (Objects.equals("pdf", type)) {
+                Class<? extends IFileConvert> convertClass = PDF_CONVERT_MAP.getOrDefault(file.getContentType(), DefFileConvert.class);
+                IFileConvert convert = convertClass.getDeclaredConstructor().newInstance();
+                convert.convert(object, os, param);
+            }
         } catch (Exception e) {
             log.error(LogUtil.format("FileStorage", "Error"), e);
         }
     }
 
     @Override
-    public void previewAsHttp(Long id, HttpServletResponse response) throws FileNotFoundException {
+    public void previewAsHttp(Long id, String type, HttpServletResponse response, Map<String, Object> param) throws FileNotFoundException {
         StoFile file = fileService.getFile(id);
         if (Objects.isNull(file)) {
             throw new FileNotFoundException();
@@ -164,10 +178,17 @@ public class MinioServerServiceImpl implements FileServerService {
                 .object(file.getFilePath())
                 .build());
              ServletOutputStream output = response.getOutputStream()) {
-            String fileName = file.getFileName().concat(".").concat(file.getFileSuffix());
-            response.setContentType(file.getContentType());
-            response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
-            IoUtil.copy(object, output);
+            if (Objects.equals("img", type)) {
+                response.setContentType("application/png");
+                Class<? extends IFileConvert> convertClass = PNG_CONVERT_MAP.getOrDefault(file.getContentType(), DefFileConvert.class);
+                IFileConvert convert = convertClass.getDeclaredConstructor().newInstance();
+                convert.convert(object, output, param);
+            } else if (Objects.equals("pdf", type)) {
+                response.setContentType("application/pdf");
+                Class<? extends IFileConvert> convertClass = PDF_CONVERT_MAP.getOrDefault(file.getContentType(), DefFileConvert.class);
+                IFileConvert convert = convertClass.getDeclaredConstructor().newInstance();
+                convert.convert(object, output, param);
+            }
         } catch (Exception e) {
             log.error(LogUtil.format("FileStorage", "Error"), e);
         }
@@ -191,6 +212,33 @@ public class MinioServerServiceImpl implements FileServerService {
         }
         file.setFileUrl(BASE_URL.concat(String.valueOf(file.getId())));
         return file;
+    }
+
+    @Override
+    public FileInfo getFileInfo(Long id) throws FileNotFoundException {
+        StoFile file = fileService.getFile(id);
+        if (Objects.isNull(file)) {
+            throw new FileNotFoundException();
+        }
+        try (GetObjectResponse object = minioClient().getObject(GetObjectArgs.builder()
+                .bucket(minioConfig.getBucket())
+                .object(file.getFilePath())
+                .build())) {
+            Class<? extends IFileConvert> convertClass = PNG_CONVERT_MAP.getOrDefault(file.getContentType(), DefFileConvert.class);
+            IFileConvert convert = convertClass.getDeclaredConstructor().newInstance();
+            FileInfo fileInfo = convert.getFileInfo(object);
+            if (Objects.isNull(fileInfo)){
+                fileInfo = new FileInfo();
+            }
+            fileInfo.setName(file.getFileName());
+            fileInfo.setSuffix(file.getFileSuffix());
+            fileInfo.setSize(file.getFileSize());
+            fileInfo.setContentType(file.getContentType());
+            return fileInfo;
+        } catch (Exception e) {
+            log.error(LogUtil.format("FileStorage", "Error"), e);
+            return null;
+        }
     }
 
     /**
