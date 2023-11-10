@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  * @version v1.0
  */
 @Configuration
-@ConditionalOnProperty(prefix = "seas.core", name = "virtual-thread", havingValue = "enable", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "seas.core", name = "virtual-thread", havingValue = "enable")
 public class VirtualThreadConfig {
 
     @Bean

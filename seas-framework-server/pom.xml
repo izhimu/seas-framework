@@ -19,6 +19,7 @@
         <module>seas-framework-security</module>
         <module>seas-framework-storage</module>
         <module>seas-framework-workflow</module>
+        <module>seas-framework-generate</module>
     </modules>
 
     <profiles>
