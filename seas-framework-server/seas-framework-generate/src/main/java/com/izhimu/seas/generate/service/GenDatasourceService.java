@@ -1,6 +1,7 @@
 package com.izhimu.seas.generate.service;
 
 import com.izhimu.seas.data.service.IBaseService;
+import com.izhimu.seas.generate.db.exception.DbEngineException;
 import com.izhimu.seas.generate.entity.GenDatasource;
 
 /**
@@ -17,5 +18,5 @@ public interface GenDatasourceService extends IBaseService<GenDatasource> {
      * @param id Long
      * @return boolean
      */
-    boolean test(Long id);
+    boolean test(Long id) throws DbEngineException;
 }

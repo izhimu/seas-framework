@@ -1,14 +1,16 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.generate.db.exception.DbEngineException;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
  * @version v1.0
  */
 @Slf4j
-public abstract class AbstractDbEngine {
+public abstract class AbstractDbEngine implements AutoCloseable {
 
     /**
      * JDBC模板
@@ -32,7 +34,7 @@ public abstract class AbstractDbEngine {
      *
      * @return 是否连接
      */
-    public boolean testConnection() {
+    public boolean testConnection() throws DbEngineException {
         DataSource dataSource = jdbcTemplate.getDataSource();
         if (dataSource == null) {
             return false;
@@ -41,9 +43,18 @@ public abstract class AbstractDbEngine {
             return !conn.isClosed();
         } catch (SQLException e) {
             log.error(LogUtil.format("DbEngine", "test connection error"), e);
-            return false;
+            throw new DbEngineException(e.getMessage());
         }
     }
+
+    /**
+     * 校验数据库名
+     *
+     * @param name String
+     * @return boolean
+     * @throws DbEngineException DbEngineException
+     */
+    public abstract boolean testDatabase(String name) throws DbEngineException;
 
     /**
      * 查询库中所有表
@@ -99,5 +110,19 @@ public abstract class AbstractDbEngine {
                 map.put("IS_NULL", false);
             }
         });
+    }
+
+    @Override
+    public void close() {
+        if (ObjectUtil.isNull(jdbcTemplate)) {
+            return;
+        }
+        DataSource dataSource = jdbcTemplate.getDataSource();
+        if (ObjectUtil.isNull(dataSource)) {
+            return;
+        }
+        if (dataSource instanceof HikariDataSource hikariDataSource) {
+            hikariDataSource.close();
+        }
     }
 }

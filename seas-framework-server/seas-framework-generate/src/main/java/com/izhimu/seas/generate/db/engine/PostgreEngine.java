@@ -2,6 +2,7 @@ package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.generate.db.exception.DbEngineException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -21,6 +22,12 @@ public class PostgreEngine extends AbstractDbEngine {
 
     PostgreEngine(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public boolean testDatabase(String name) throws DbEngineException {
+        List<String> databaseList = mapToList(this.jdbcTemplate.queryForList("SELECT DATNAME FROM PG_DATABASE WHERE DATNAME = '" + name + "'"));
+        return !databaseList.isEmpty();
     }
 
     /**

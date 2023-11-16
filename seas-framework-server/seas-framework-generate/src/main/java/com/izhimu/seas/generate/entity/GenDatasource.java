@@ -48,5 +48,6 @@ public class GenDatasource extends IdEntity {
     /**
      * 数据库名称
      */
+    @Search
     private String dbName;
 }

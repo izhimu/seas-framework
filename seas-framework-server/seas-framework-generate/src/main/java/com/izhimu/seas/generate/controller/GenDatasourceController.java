@@ -2,10 +2,11 @@ package com.izhimu.seas.generate.controller;
 
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.data.controller.AbsBaseController;
+import com.izhimu.seas.generate.db.exception.DbEngineException;
 import com.izhimu.seas.generate.entity.GenDatasource;
 import com.izhimu.seas.generate.service.GenDatasourceService;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,8 @@ public class GenDatasourceController extends AbsBaseController<GenDatasourceServ
     }
 
     @OperationLog(value = "@-连接测试")
-    @GetMapping("/test/{id}")
-    public boolean test(@PathVariable Long id) {
+    @PostMapping("/test/{id}")
+    public boolean test(@PathVariable Long id) throws DbEngineException {
         return service.test(id);
     }
 }

@@ -2,9 +2,9 @@ package com.izhimu.seas.generate.db.engine;
 
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.generate.db.enums.DbType;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
  * 数据库引擎工厂类
@@ -28,11 +28,11 @@ public class DbEngineFactory {
      * @return 数据库引擎实例
      */
     public static AbstractDbEngine getEngine(String type, String url, String user, String pwd) {
-        DbType dbType= DbType.valueOf(type);
+        DbType dbType = DbType.valueOf(type);
 
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(dbType.getDriver());
-        dataSource.setUrl(url);
+        dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(pwd);
 
@@ -40,7 +40,7 @@ public class DbEngineFactory {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         try {
-            return dbType.getEngine().getDeclaredConstructor().newInstance(jdbcTemplate);
+            return dbType.getEngine().getDeclaredConstructor(JdbcTemplate.class).newInstance(jdbcTemplate);
         } catch (Exception e) {
             log.error(LogUtil.format("DbEngine", "get engine error"), e);
             return null;
