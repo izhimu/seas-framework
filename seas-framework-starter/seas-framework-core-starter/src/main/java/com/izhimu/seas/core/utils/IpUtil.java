@@ -4,8 +4,6 @@ import cn.hutool.http.HttpUtil;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -17,9 +15,9 @@ import java.util.Objects;
 @UtilityClass
 public class IpUtil {
 
-    private static final String API_URL = "https://opendata.baidu.com/api.php?query=${ip}&resource_id=6006&oe=utf8";
-    private static final String LOCATION = "location";
-    private static final String ZERO = "0";
+    private static final String API_URL = "https://api.mir6.com/api/ip?ip=${ip}&type=json";
+    private static final Integer SUCCESS = 200;
+    private static final String BLANK = " ";
 
     /**
      * 根据IP地址获取地理位置
@@ -33,22 +31,30 @@ public class IpUtil {
         if (Objects.isNull(resultObj)) {
             return "";
         }
-        if (!Objects.equals(ZERO, resultObj.getStatus())) {
+        if (!Objects.equals(SUCCESS, resultObj.getCode())) {
             return "";
         }
-        if (resultObj.getData().isEmpty()) {
-            return "本地局域网";
-        }
-        Map<String, Object> dataObj = resultObj.getData().get(0);
-        if (!dataObj.containsKey(LOCATION)) {
-            return "";
-        }
-        return (String) dataObj.get(LOCATION);
+        ResultData data = resultObj.getData();
+        return data.getCountry()
+                .concat(data.getProvince())
+                .concat(data.getCity())
+                .concat(BLANK)
+                .concat(data.getIsp())
+                .concat(data.getNet());
     }
 
     @Data
     static class Result {
-        private String status;
-        private List<Map<String, Object>> data;
+        private Integer code;
+        private ResultData data;
+    }
+
+    @Data
+    static class ResultData {
+        private String country;
+        private String province;
+        private String city;
+        private String isp;
+        private String net;
     }
 }
