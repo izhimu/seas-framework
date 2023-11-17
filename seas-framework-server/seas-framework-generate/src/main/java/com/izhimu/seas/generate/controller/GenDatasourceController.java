@@ -5,10 +5,9 @@ import com.izhimu.seas.data.controller.AbsBaseController;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
 import com.izhimu.seas.generate.entity.GenDatasource;
 import com.izhimu.seas.generate.service.GenDatasourceService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 数据源控制层
@@ -29,5 +28,17 @@ public class GenDatasourceController extends AbsBaseController<GenDatasourceServ
     @PostMapping("/test/{id}")
     public boolean test(@PathVariable Long id) throws DbEngineException {
         return service.test(id);
+    }
+
+    @OperationLog(value = "@-数据源列表")
+    @GetMapping("/list")
+    public List<GenDatasource> list() {
+        return service.list();
+    }
+
+    @OperationLog(value = "@-表列表")
+    @GetMapping("/tables/{id}")
+    public List<String> tables(@PathVariable Long id, String like) {
+        return service.tables(id, like);
     }
 }

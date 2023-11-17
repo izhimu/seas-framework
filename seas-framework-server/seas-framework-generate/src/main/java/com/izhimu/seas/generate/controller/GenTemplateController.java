@@ -35,4 +35,10 @@ public class GenTemplateController extends AbsBaseController<GenTemplateService,
     public boolean assetsSave(@RequestBody List<GenTemplateAssets> assetsList) {
         return service.assetsSave(assetsList);
     }
+
+    @OperationLog("@-模板列表")
+    @GetMapping("/list")
+    public List<GenTemplate> list() {
+        return service.list();
+    }
 }

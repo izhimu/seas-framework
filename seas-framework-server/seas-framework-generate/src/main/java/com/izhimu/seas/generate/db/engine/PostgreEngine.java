@@ -38,9 +38,9 @@ public class PostgreEngine extends AbstractDbEngine {
      */
     @Override
     public List<String> getTableList(String like) {
-        StringBuilder sql = new StringBuilder("SELECT table_name FROM user_tables");
+        StringBuilder sql = new StringBuilder("SELECT tablename FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')");
         if (Objects.nonNull(like) && StrUtil.isNotBlank(like.trim())) {
-            sql.append(" WHERE table_name LIKE ").append("'%");
+            sql.append(" AND tablename LIKE ").append("'%");
             sql.append(like).append("%'");
         }
         List<String> resultTable = new ArrayList<>();
@@ -63,7 +63,7 @@ public class PostgreEngine extends AbstractDbEngine {
      */
     @Override
     public List<Map<String, Object>> getTableField(String tableName, String databaseName) {
-        String sql = "SELECT A.attname COLUMN_NAME,D.description COLUMN_COMMENT,T.typname AS COLUMN_TYPE FROM pg_class C,pg_attribute A,pg_type T,pg_description D WHERE A.attnum > 0 AND A.attrelid = C.oid AND A.atttypid = T.oid AND D.objoid = A.attrelid AND D.objsubid = A.attnum AND C.relname = '" + tableName + "'";
+        String sql = "SELECT A.attname COLUMN_NAME,D.description COLUMN_COMMENT,T.typname AS COLUMN_TYPE,(case when a.attnotnull = true then true else false end) as IS_NULL,(case when (select count(*) from pg_constraint where conrelid = a.attrelid and conkey[1] = attnum and contype = 'p') > 0 then true else false end) as IS_PK FROM pg_class C,pg_attribute A,pg_type T,pg_description D WHERE A.attnum > 0 AND A.attrelid = C.oid AND A.atttypid = T.oid AND D.objoid = A.attrelid AND D.objsubid = A.attnum AND C.relname = '" + tableName + "'";
         List<Map<String, Object>> fieldList = new ArrayList<>();
         try {
             fieldList = this.jdbcTemplate.queryForList(sql);
