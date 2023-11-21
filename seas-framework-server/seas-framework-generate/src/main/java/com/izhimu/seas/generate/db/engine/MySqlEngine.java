@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
+import com.izhimu.seas.generate.util.TypeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -101,7 +102,7 @@ public class MySqlEngine extends AbstractDbEngine {
      */
     private void mysqlDataLength(List<Map<String, Object>> fieldList) {
         fieldList.forEach(map -> {
-            String dataType = Convert.toStr(map.get("COLUMN_TYPE"));
+            String dataType = Convert.toStr(map.get(COLUMN_TYPE));
             String[] temp = dataType.split("\\(");
             if (temp.length > 1) {
                 temp = temp[1].split("\\)");
@@ -119,6 +120,6 @@ public class MySqlEngine extends AbstractDbEngine {
      * @param fieldList 字段集合
      */
     private void mysqlPkFormat(List<Map<String, Object>> fieldList) {
-        fieldList.forEach(map -> map.put("IS_PK", "PRI".equals(Convert.toStr(map.get("IS_PK")))));
+        fieldList.forEach(map -> map.put(IS_PK, "PRI".equals(Convert.toStr(map.get(IS_PK)))));
     }
 }

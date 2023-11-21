@@ -45,6 +45,10 @@ public class GenFieldInfo implements Serializable {
      */
     private Integer isPk;
     /**
+     * 是否可空
+     */
+    private Integer isNull;
+    /**
      * 可插入
      */
     private Integer insertable;

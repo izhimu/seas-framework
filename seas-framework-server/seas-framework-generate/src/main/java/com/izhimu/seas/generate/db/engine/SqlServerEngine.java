@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
+import com.izhimu.seas.generate.util.TypeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -100,12 +101,12 @@ public class SqlServerEngine extends AbstractDbEngine {
      */
     private void sqlServerPkFormat(List<Map<String, Object>> fieldList) {
         fieldList.forEach(map -> {
-            String isPk = Convert.toStr(map.get("IS_PK"));
+            String isPk = Convert.toStr(map.get(IS_PK));
             if ("Y".equals(isPk)) {
-                map.put("IS_PK", true);
+                map.put(IS_PK, true);
             }
             if ("N".equals(isPk)) {
-                map.put("IS_PK", false);
+                map.put(IS_PK, false);
             }
         });
     }

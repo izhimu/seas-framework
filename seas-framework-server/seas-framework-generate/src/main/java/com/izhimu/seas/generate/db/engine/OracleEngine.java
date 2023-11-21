@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
+import com.izhimu.seas.generate.util.TypeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -121,8 +122,8 @@ public class OracleEngine extends AbstractDbEngine {
     private void mapMerge(List<Map<String, Object>> comment, List<Map<String, Object>> attr) {
         for (Map<String, Object> map1 : attr) {
             for (Map<String, Object> map2 : comment) {
-                if (map1.get("COLUMN_NAME").equals(map2.get("COLUMN_NAME"))) {
-                    map1.put("COLUMN_COMMENT", map2.get("COLUMN_COMMENT"));
+                if (map1.get(COLUMN_NAME).equals(map2.get(COLUMN_NAME))) {
+                    map1.put(COLUMN_COMMENT, map2.get(COLUMN_COMMENT));
                     comment.remove(map2);
                     break;
                 }
@@ -138,9 +139,9 @@ public class OracleEngine extends AbstractDbEngine {
     private void oraclePkFormat(List<Map<String, Object>> fieldList, List<Map<String, Object>> pkList) {
         fieldList.forEach(map1 -> {
             if (pkList.isEmpty()) {
-                map1.put("IS_PK", false);
+                map1.put(IS_PK, false);
             }
-            pkList.forEach(map2 -> map1.put("IS_PK", map1.get("COLUMN_NAME").equals(map2.get("COLUMN_NAME"))));
+            pkList.forEach(map2 -> map1.put(IS_PK, map1.get(COLUMN_NAME).equals(map2.get(COLUMN_NAME))));
         });
     }
 
@@ -170,6 +171,6 @@ public class OracleEngine extends AbstractDbEngine {
      * @param fieldList 字段集合
      */
     private void toLowerCase(List<Map<String, Object>> fieldList) {
-        fieldList.forEach(field -> field.put("COLUMN_NAME", Convert.toStr(field.get("COLUMN_NAME")).toLowerCase()));
+        fieldList.forEach(field -> field.put(COLUMN_NAME, Convert.toStr(field.get(COLUMN_NAME)).toLowerCase()));
     }
 }

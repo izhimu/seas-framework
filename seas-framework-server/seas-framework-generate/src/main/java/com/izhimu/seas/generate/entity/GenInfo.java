@@ -14,13 +14,17 @@ import java.util.List;
 public class GenInfo implements Serializable {
 
     /**
+     * 包名
+     */
+    private String packageName;
+    /**
      * 数据源ID
      */
-    private String sourceId;
+    private Long sourceId;
     /**
      * 模板ID
      */
-    private String templateId;
+    private Long templateId;
     /**
      * 作者
      */
@@ -33,10 +37,6 @@ public class GenInfo implements Serializable {
      * 表说明
      */
     private String tableDesc;
-    /**
-     * 表前缀
-     */
-    private String tablePrefix;
     /**
      * 类名
      */

@@ -27,4 +27,9 @@ public class GenTemplate extends IdEntity {
      */
     @Search
     private String templateVersion;
+    /**
+     * 备注
+     */
+    @Search
+    private String remark;
 }

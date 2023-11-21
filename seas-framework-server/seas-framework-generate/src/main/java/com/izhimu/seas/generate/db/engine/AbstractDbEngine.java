@@ -24,6 +24,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractDbEngine implements AutoCloseable {
 
+    public static final String COLUMN_NAME = "COLUMN_NAME";
+    public static final String COLUMN_COMMENT = "COLUMN_COMMENT";
+    public static final String COLUMN_TYPE = "COLUMN_TYPE";
+    public static final String IS_PK = "IS_PK";
+    public static final String IS_NULL = "IS_NULL";
+
     /**
      * JDBC模板
      */
@@ -102,12 +108,12 @@ public abstract class AbstractDbEngine implements AutoCloseable {
      */
     void nullFormat(List<Map<String, Object>> fieldList) {
         fieldList.forEach(map -> {
-            String isNull = Convert.toStr(map.get("IS_NULL"));
+            String isNull = Convert.toStr(map.get(IS_NULL));
             if ("Y".equals(isNull) || "YES".equals(isNull)) {
-                map.put("IS_NULL", true);
+                map.put(IS_NULL, true);
             }
             if ("N".equals(isNull) || "NO".equals(isNull)) {
-                map.put("IS_NULL", false);
+                map.put(IS_NULL, false);
             }
         });
     }
