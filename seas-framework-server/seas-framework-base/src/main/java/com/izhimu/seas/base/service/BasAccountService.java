@@ -72,4 +72,12 @@ public interface BasAccountService extends IBaseService<BasAccount> {
      * @return true可用
      */
     boolean checkAccount(BasAccount account);
+
+    /**
+     * 修改密码
+     *
+     * @param account 账号信息
+     * @return 是否成功
+     */
+    boolean changePassword(BasAccount account);
 }

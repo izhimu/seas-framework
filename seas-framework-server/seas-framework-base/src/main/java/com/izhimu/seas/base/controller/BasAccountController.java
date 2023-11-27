@@ -1,9 +1,14 @@
 package com.izhimu.seas.base.controller;
 
+import cn.hutool.core.exceptions.ValidateException;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.service.BasAccountService;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
+import com.izhimu.seas.core.entity.User;
+import com.izhimu.seas.security.util.SecurityUtil;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,5 +60,26 @@ public class BasAccountController {
     @PostMapping("/check")
     public boolean checkAccount(@RequestBody BasAccount account) {
         return service.checkAccount(account);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param account 账号信息
+     * @return 是否成功
+     */
+    @OperationLog("用户账号-修改密码")
+    @PostMapping("/change/password")
+    public boolean changePassword(@RequestBody BasAccount account) {
+        if (StrUtil.isBlankIfStr(account.getUserAccount()) ||
+                StrUtil.isBlankIfStr(account.getUserCertificate()) ||
+                StrUtil.isBlankIfStr(account.getPasswordKey())) {
+            throw new ValidateException("参数缺失");
+        }
+        User user = SecurityUtil.getUser();
+        if (ObjectUtil.isNull(user) || ObjectUtil.notEqual(account.getUserAccount(), user.getUserAccount())) {
+            throw new ValidateException("账号不匹配");
+        }
+        return service.changePassword(account);
     }
 }

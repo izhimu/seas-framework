@@ -1,11 +1,15 @@
 package com.izhimu.seas.base.service.impl;
 
+import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.mapper.BasAccountMapper;
 import com.izhimu.seas.base.service.BasAccountService;
+import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.EncryptService;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +28,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, BasAccount> implements BasAccountService {
+
+    @Resource
+    private EncryptService<EncryptKey, String> encryptService;
 
     @Override
     public List<BasAccount> findByUserId(Long userId) {
@@ -86,5 +93,14 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
                 .ne(Objects.nonNull(account.getId()), BasAccount::getId, account.getId())
                 .eq(BasAccount::getUserAccount, account.getUserAccount())
                 .exists();
+    }
+
+    @Override
+    public boolean changePassword(BasAccount account) {
+        return this.lambdaUpdate()
+                .eq(BasAccount::getUserAccount, account.getUserAccount())
+                .set(BasAccount::getUserCertificate,
+                        BCrypt.hashpw(encryptService.decrypt(account.getPasswordKey(), account.getUserCertificate())))
+                .update();
     }
 }
