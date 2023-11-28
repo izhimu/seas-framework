@@ -1,5 +1,6 @@
 package com.izhimu.seas.base.service;
 
+import cn.hutool.core.exceptions.ValidateException;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.service.IBaseService;
@@ -79,5 +80,5 @@ public interface BasAccountService extends IBaseService<BasAccount> {
      * @param account 账号信息
      * @return 是否成功
      */
-    boolean changePassword(BasAccount account);
+    boolean changePassword(BasAccount account) throws ValidateException;
 }

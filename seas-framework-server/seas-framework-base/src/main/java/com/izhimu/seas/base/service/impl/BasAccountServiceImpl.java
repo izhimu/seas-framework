@@ -1,5 +1,6 @@
 package com.izhimu.seas.base.service.impl;
 
+import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.mapper.BasAccountMapper;
@@ -96,11 +97,16 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
     }
 
     @Override
-    public boolean changePassword(BasAccount account) {
+    public boolean changePassword(BasAccount account) throws ValidateException {
+        String oldPassword = encryptService.decrypt(account.getPasswordKey(), account.getOriginalCertificate());
+        BasAccount dbAccount = getByAccount(account.getUserAccount());
+        if (!BCrypt.checkpw(oldPassword, dbAccount.getUserCertificate())) {
+            throw new ValidateException("原密码错误");
+        }
+        String newPassword = BCrypt.hashpw(encryptService.decrypt(account.getPasswordKey(), account.getUserCertificate()));
         return this.lambdaUpdate()
                 .eq(BasAccount::getUserAccount, account.getUserAccount())
-                .set(BasAccount::getUserCertificate,
-                        BCrypt.hashpw(encryptService.decrypt(account.getPasswordKey(), account.getUserCertificate())))
+                .set(BasAccount::getUserCertificate, newPassword)
                 .update();
     }
 }

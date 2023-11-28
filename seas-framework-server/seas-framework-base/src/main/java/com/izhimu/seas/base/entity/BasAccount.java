@@ -52,4 +52,10 @@ public class BasAccount extends BaseEntity {
     @ViewIgnore
     @TableField(exist = false)
     private String passwordKey;
+    /**
+     * 原密码
+     */
+    @ViewIgnore
+    @TableField(exist = false)
+    private String originalCertificate;
 }
