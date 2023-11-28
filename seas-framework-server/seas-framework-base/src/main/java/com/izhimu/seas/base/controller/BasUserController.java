@@ -114,4 +114,16 @@ public class BasUserController {
     public BasUser current() {
         return service.getCurrentUser();
     }
+
+    /**
+     * 解除临时锁定
+     *
+     * @param id 用户ID
+     * @return 结果
+     */
+    @OperationLog("用户管理-解锁")
+    @PostMapping("/unlock/{id}")
+    public boolean unlock(@PathVariable Long id) {
+        return service.unlock(id);
+    }
 }

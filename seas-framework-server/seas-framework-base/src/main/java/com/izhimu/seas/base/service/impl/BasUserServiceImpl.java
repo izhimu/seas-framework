@@ -12,12 +12,14 @@ import com.izhimu.seas.base.mapper.BasUserMapper;
 import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.EncryptService;
+import com.izhimu.seas.cache.service.RedisService;
 import com.izhimu.seas.core.entity.*;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.data.entity.BaseEntity;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.security.config.SecurityConfig;
+import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.service.SecurityService;
 import com.izhimu.seas.security.util.SecurityUtil;
 import jakarta.annotation.Resource;
@@ -55,6 +57,8 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     private EncryptService<EncryptKey, String> encryptService;
     @Resource
     private SecurityConfig securityConfig;
+    @Resource
+    private RedisService redisService;
 
     @Override
     public Page<BasUser> page(Page<BasUser> page, Object param) {
@@ -81,6 +85,9 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                 if (Objects.nonNull(org)) {
                     user.setOrgName(org.getOrgName());
                 }
+            }
+            if (redisService.hasKey(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(user.getId())))) {
+                user.setStatus(3);
             }
         }
         return result;
@@ -229,6 +236,14 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                 .list()
                 .stream()
                 .collect(Collectors.toMap(BaseEntity::getId, BasUser::getUserName));
+    }
+
+    @Override
+    public boolean unlock(Long id) {
+        List<BasAccount> accountList = accountService.findByUserId(id);
+        accountList.forEach(v -> redisService.del(SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(v.getUserAccount())));
+        redisService.del(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(id)));
+        return true;
     }
 
     @Override

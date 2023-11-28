@@ -66,7 +66,7 @@ public class BasUser extends BaseEntity {
     private Long faceSmall;
     /**
      * 状态
-     * 0.正常 1.锁定 2.密码过期
+     * 0.正常 1.锁定 2.密码过期 3.临时锁定
      */
     @Search(type = SearchType.EQUALS)
     private Integer status;

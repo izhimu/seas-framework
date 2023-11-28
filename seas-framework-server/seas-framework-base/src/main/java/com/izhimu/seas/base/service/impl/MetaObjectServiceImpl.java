@@ -27,7 +27,7 @@ public class MetaObjectServiceImpl implements IMetaObjectService {
         try {
             user = Objects.isNull(loginId) ? SecurityUtil.getUser() : SecurityUtil.getUser(loginId);
         } catch (Exception e) {
-            log.error(LogUtil.format("MetaObjectService", "Error"), e);
+            log.error(LogUtil.format("MetaObjectService", e.getMessage()));
         }
         if (Objects.isNull(user)) {
             return null;

@@ -28,4 +28,8 @@ public class SecurityConstant {
      * 密码错误次数
      */
     public static final String LOGIN_ERR_NUM_KEY = "security:login.err";
+    /**
+     * 密码错误锁定用户
+     */
+    public static final String LOGIN_ERR_USER_KEY = "security:login.err.user";
 }

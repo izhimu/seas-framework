@@ -95,6 +95,13 @@ public class LoginServiceImpl implements LoginService {
         }
         if (!BCrypt.checkpw(dto.getPassword(), user.getUserCertificate())) {
             redisService.set(errKey, ++errNum, securityConfig.getErrTime());
+            if (errNum >= securityConfig.getErrNum()) {
+                redisService.set(
+                        SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(user.getId())),
+                        1,
+                        securityConfig.getErrTime()
+                );
+            }
             dto.setStatus(2);
             EventManager.trigger(CoreEvent.E_LOGIN, dto);
             throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);

@@ -74,4 +74,12 @@ public interface BasUserService extends IBaseService<BasUser> {
      * @return 用户名映射
      */
     Map<Long, String> findUsernameMap(Collection<Long> ids);
+
+    /**
+     * 解锁账号
+     *
+     * @param id 用户ID
+     * @return true/false
+     */
+    boolean unlock(Long id);
 }
