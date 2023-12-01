@@ -11,8 +11,8 @@ import com.izhimu.seas.base.entity.BasUserRole;
 import com.izhimu.seas.base.mapper.BasUserMapper;
 import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.CacheService;
 import com.izhimu.seas.cache.service.EncryptService;
-import com.izhimu.seas.cache.service.RedisService;
 import com.izhimu.seas.core.entity.*;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
@@ -58,7 +58,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     @Resource
     private SecurityConfig securityConfig;
     @Resource
-    private RedisService redisService;
+    private CacheService cacheService;
 
     @Override
     public Page<BasUser> page(Page<BasUser> page, Object param) {
@@ -86,7 +86,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                     user.setOrgName(org.getOrgName());
                 }
             }
-            if (redisService.hasKey(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(user.getId())))) {
+            if (cacheService.hasKey(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(user.getId())))) {
                 user.setStatus(3);
             }
         }
@@ -241,8 +241,8 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
     @Override
     public boolean unlock(Long id) {
         List<BasAccount> accountList = accountService.findByUserId(id);
-        accountList.forEach(v -> redisService.del(SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(v.getUserAccount())));
-        redisService.del(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(id)));
+        accountList.forEach(v -> cacheService.del(SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(v.getUserAccount())));
+        cacheService.del(SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(id)));
         return true;
     }
 

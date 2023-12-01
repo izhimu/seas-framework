@@ -4,8 +4,8 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.cache.entity.EncryptKey;
+import com.izhimu.seas.cache.service.CacheService;
 import com.izhimu.seas.cache.service.EncryptService;
-import com.izhimu.seas.cache.service.RedisService;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.service.CaptchaService;
 import com.izhimu.seas.core.entity.Login;
@@ -46,7 +46,7 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private SecurityService securityService;
     @Resource
-    private RedisService redisService;
+    private CacheService cacheService;
     @Resource
     private SecurityConfig securityConfig;
     @Resource
@@ -80,7 +80,7 @@ public class LoginServiceImpl implements LoginService {
 
         // 校验密码错误次数
         String errKey = SecurityConstant.LOGIN_ERR_NUM_KEY.concat(":").concat(dto.getAccount());
-        int errNum = Optional.ofNullable(redisService.get(errKey, Integer.class)).orElse(0);
+        int errNum = Optional.ofNullable(cacheService.get(errKey, Integer.class)).orElse(0);
         if (errNum >= securityConfig.getErrNum()) {
             dto.setStatus(3);
             EventManager.trigger(CoreEvent.E_LOGIN, dto);
@@ -94,9 +94,9 @@ public class LoginServiceImpl implements LoginService {
             throw new SecurityException(ResultCode.LOGIN_PASSWORD_ERROR);
         }
         if (!BCrypt.checkpw(dto.getPassword(), user.getUserCertificate())) {
-            redisService.set(errKey, ++errNum, securityConfig.getErrTime());
+            cacheService.set(errKey, ++errNum, securityConfig.getErrTime());
             if (errNum >= securityConfig.getErrNum()) {
-                redisService.set(
+                cacheService.set(
                         SecurityConstant.LOGIN_ERR_USER_KEY.concat(":").concat(String.valueOf(user.getId())),
                         1,
                         securityConfig.getErrTime()
@@ -112,7 +112,7 @@ public class LoginServiceImpl implements LoginService {
             Login token = createToken(user);
             sessionHandle(user);
             // 清除错误次数
-            redisService.del(errKey);
+            cacheService.del(errKey);
             dto.setStatus(0);
             EventManager.trigger(CoreEvent.E_LOGIN, dto);
             return token;

@@ -14,12 +14,6 @@ spring:
     multipart:
       max-file-size: 1GB
       max-request-size: 10GB
-  data:
-    redis:
-      host: 192.168.31.221
-      port: 6379
-      database: 0
-      password: 123456
   datasource:
     name: dataSource
     url: jdbc:postgresql://192.168.31.221:5432/seas_db

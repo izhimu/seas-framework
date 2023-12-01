@@ -11,10 +11,8 @@ import cn.hutool.crypto.asymmetric.RSA;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.enums.EncryptType;
 import com.izhimu.seas.cache.exception.EncryptException;
+import com.izhimu.seas.cache.service.CacheService;
 import com.izhimu.seas.cache.service.EncryptService;
-import com.izhimu.seas.cache.service.RedisService;
-import jakarta.annotation.Resource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +26,14 @@ import java.time.Instant;
  * @version v1.0
  */
 @Service
-@ConditionalOnClass(value = RedisService.class)
 @ConditionalOnProperty(prefix = "seas.security", name = "encrypt-mode", havingValue = "RSA")
-public class RedisRsaEncryptServiceImpl implements EncryptService<EncryptKey, String> {
+public class RsaEncryptServiceImpl implements EncryptService<EncryptKey, String> {
 
-    @Resource
-    private RedisService redisService;
+    private final CacheService cacheService;
+
+    public RsaEncryptServiceImpl(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
 
     @Override
     public EncryptKey createEncryptKey(long timeout) {
@@ -44,18 +44,18 @@ public class RedisRsaEncryptServiceImpl implements EncryptService<EncryptKey, St
         String privateKey = Base64.encode(keyPair.getPrivate().getEncoded());
 
         EncryptKey encryptKey = new EncryptKey(key, EncryptType.RSA, publicKey, privateKey, Instant.now().toEpochMilli());
-        redisService.set(cacheKey(key), encryptKey, timeout);
+        cacheService.set(cacheKey(key), encryptKey, timeout);
         return encryptKey;
     }
 
     @Override
     public EncryptKey getEncryptKey(String key) {
-        return redisService.get(cacheKey(key), EncryptKey.class);
+        return cacheService.get(cacheKey(key), EncryptKey.class);
     }
 
     @Override
     public boolean delEncryptKey(String key) {
-        return redisService.del(cacheKey(key));
+        return cacheService.del(cacheKey(key));
     }
 
     @Override
