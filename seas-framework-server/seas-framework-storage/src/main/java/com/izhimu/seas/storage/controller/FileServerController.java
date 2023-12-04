@@ -4,7 +4,7 @@ import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.storage.entity.FileInfo;
 import com.izhimu.seas.storage.entity.StoFile;
-import com.izhimu.seas.storage.service.FileServerService;
+import com.izhimu.seas.storage.service.FileService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.util.*;
 public class FileServerController {
 
     @Resource
-    private FileServerService service;
+    private FileService service;
 
     /**
      * 下载文件
@@ -98,7 +98,7 @@ public class FileServerController {
     @OperationLog(value = "文件服务-文件信息", enable = false)
     @GetMapping("/preview/info/{id}")
     public FileInfo info(@PathVariable Long id) throws FileNotFoundException {
-        return service.getFileInfo(id);
+        return service.previewInfo(id);
     }
 
     private StoFile wrapFile(StoFile entity, MultipartFile file) {
