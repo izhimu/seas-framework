@@ -4,5 +4,10 @@
       "name": "seas.core.virtual-thread",
       "type": "java.lang.String",
       "description": "Description for seas.core.enable-virtual-thread."
-  }
-] }
+    },
+    {
+      "name": "seas.cache.type",
+      "type": "java.lang.String",
+      "description": "Description for seas.cache.type."
+    }
+  ] }

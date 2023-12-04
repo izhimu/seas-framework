@@ -12,6 +12,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,24 +25,24 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "mem", matchIfMissing = true)
 public class MemCacheServiceImpl implements CacheService {
 
-    private final Cache<Object, ExpireCache> cache;
+    private final Cache<String, ExpireCache> cache;
 
     public MemCacheServiceImpl() {
         this.cache = Caffeine.newBuilder()
                 .initialCapacity(16)
-                .expireAfter(new Expiry<Object, ExpireCache>() {
+                .expireAfter(new Expiry<String, ExpireCache>() {
                     @Override
-                    public long expireAfterCreate(Object key, ExpireCache value, long currentTime) {
+                    public long expireAfterCreate(String key, ExpireCache value, long currentTime) {
                         return value.getTimeUnit().toNanos(value.getExpireTime());
                     }
 
                     @Override
-                    public long expireAfterUpdate(Object key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
+                    public long expireAfterUpdate(String key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
                         return value.getTimeUnit().toNanos(value.getExpireTime());
                     }
 
                     @Override
-                    public long expireAfterRead(Object key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
+                    public long expireAfterRead(String key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
                         return currentDuration;
                     }
                 })
@@ -141,5 +142,10 @@ public class MemCacheServiceImpl implements CacheService {
             return -1;
         }
         return data.getExpireTime();
+    }
+
+    @Override
+    public Set<String> keys(String pattern) {
+        return cache.asMap().keySet();
     }
 }

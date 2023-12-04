@@ -25,4 +25,8 @@ public class LogConfig {
      * 天
      */
     private int loginRetainTime = 30;
+    /**
+     * 启用IP地址查询
+     */
+    private boolean enableIpAddressQuery = true;
 }

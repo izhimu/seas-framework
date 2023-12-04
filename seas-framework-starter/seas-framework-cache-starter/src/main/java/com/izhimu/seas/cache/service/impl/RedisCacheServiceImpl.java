@@ -1,5 +1,7 @@
 package com.izhimu.seas.cache.service.impl;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.TypeReference;
 import com.izhimu.seas.cache.service.CacheService;
 import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +10,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -180,6 +184,17 @@ public class RedisCacheServiceImpl implements CacheService {
         } catch (Exception e) {
             log.error(LogUtil.format("RedisCache", "Get expire error"), e);
             return -1L;
+        }
+    }
+
+    @Override
+    public Set<String> keys(String pattern) {
+        try {
+            return Convert.convert(new TypeReference<>() {
+            }, redisTemplate.keys(pattern));
+        } catch (Exception e) {
+            log.error(LogUtil.format("RedisCache", "Keys error"), e);
+            return Collections.emptySet();
         }
     }
 }

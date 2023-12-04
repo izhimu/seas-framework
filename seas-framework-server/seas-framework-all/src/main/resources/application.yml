@@ -46,10 +46,11 @@ logging:
 seas:
   core:
     virtual-thread: enable
+  cache:
+    type: mem
   security:
     supers:
       - admin
-      - root
     err-time: 300
     err-num: 5
     token-time: 1800
@@ -59,4 +60,5 @@ seas:
       access-key: minioadmin
       secret-key: minioadmin
       bucket: seas
-
+  log:
+    enable-ip-address-query: false

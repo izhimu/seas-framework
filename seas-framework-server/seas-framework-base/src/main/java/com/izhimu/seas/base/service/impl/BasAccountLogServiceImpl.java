@@ -72,7 +72,9 @@ public class BasAccountLogServiceImpl extends BaseServiceImpl<BasAccountLogMappe
         log.setLoginDeviceId(device.getId());
         log.setLoginDevice(device.getDeviceName());
         log.setLoginIp(loginDTO.getIp());
-        log.setLoginAddress(IpUtil.getLocation(loginDTO.getIp()));
+        if (config.isEnableIpAddressQuery()) {
+            log.setLoginAddress(IpUtil.getLocation(loginDTO.getIp()));
+        }
         log.setLoginVersion(loginDTO.getVersion());
         log.setLoginOsVersion(loginDTO.getSystemVersion());
         log.setUserId(account.getUserId());

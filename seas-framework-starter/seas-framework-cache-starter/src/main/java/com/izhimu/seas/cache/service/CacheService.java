@@ -1,5 +1,6 @@
 package com.izhimu.seas.cache.service;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -124,4 +125,12 @@ public interface CacheService extends CacheConvertService {
      * @return 时间(秒) 0 永久有效|1 错误
      */
     long getExpire(String key);
+
+    /**
+     * 获取所有Key
+     *
+     * @param pattern 查询参数
+     * @return 所有Key
+     */
+    Set<String> keys(String pattern);
 }
