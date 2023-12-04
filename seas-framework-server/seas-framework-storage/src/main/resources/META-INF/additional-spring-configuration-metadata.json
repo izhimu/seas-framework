@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "seas.storage.type",
+      "type": "java.lang.String",
+      "description": "Description for seas.storage.type."
+  }
+] }

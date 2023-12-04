@@ -4,6 +4,7 @@ import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.izhimu.seas.base.entity.BasAuthOrg;
@@ -51,13 +52,13 @@ public class BasOrgServiceImpl extends BaseServiceImpl<BasOrgMapper, BasOrg> imp
     @Override
     public Page<BasOrg> page(Page<BasOrg> page, Object param) {
         Page<BasOrg> result = super.page(page, param);
-        for (BasOrg record : result.getRecords()) {
-            String orgType = record.getOrgType();
-            if (StrUtil.isBlank(orgType)) {
+        for (BasOrg entity : result.getRecords()) {
+            String orgType = entity.getOrgType();
+            if (CharSequenceUtil.isBlank(orgType)) {
                 continue;
             }
             BasDict dict = dictService.getDictByCode(DICT_KEY, orgType);
-            record.setOrgTypeName(dict.getDictName());
+            entity.setOrgTypeName(dict.getDictName());
         }
         return result;
     }

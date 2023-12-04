@@ -52,7 +52,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                         authMenu.setMenuId(v);
                         authMenu.setIsChecked(1);
                         return authMenu;
-                    }).collect(Collectors.toList());
+                    }).toList();
             authMenuService.saveBatch(authMenuList);
         }
         List<Long> menuPIds = entity.getMenuPIds();
@@ -64,7 +64,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                         authMenu.setMenuId(v);
                         authMenu.setIsChecked(0);
                         return authMenu;
-                    }).collect(Collectors.toList());
+                    }).toList();
             authMenuService.saveBatch(parentAuthMenuList);
         }
         EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
@@ -81,7 +81,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                         authOrg.setRoleId(entity.getRoleId());
                         authOrg.setOrgId(v);
                         return authOrg;
-                    }).collect(Collectors.toList());
+                    }).toList();
             authOrgService.saveBatch(authOrgList);
         }
         EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
@@ -98,7 +98,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
                         userRole.setRoleId(entity.getRoleId());
                         userRole.setUserId(v);
                         return userRole;
-                    }).collect(Collectors.toList());
+                    }).toList();
             userRoleService.saveBatch(userRoleList);
         }
         EventManager.trigger(CoreEvent.E_SESSION_REFRESH, RefreshSession.role(entity.getRoleId()));
@@ -202,7 +202,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
             Set<Integer> subTypeSet = orgAuth.stream()
                     .map(BasRole::getAuthType)
                     .collect(Collectors.toSet());
-            permission.setType(subTypeSet.size() == 1 ? subTypeSet.stream().findFirst().get() : 1);
+            permission.setType(subTypeSet.size() == 1 ? subTypeSet.stream().findFirst().orElse(1) : 1);
             for (BasRole role : orgAuth) {
                 // 自定义部门
                 if (Objects.equals(1, role.getAuthType())) {

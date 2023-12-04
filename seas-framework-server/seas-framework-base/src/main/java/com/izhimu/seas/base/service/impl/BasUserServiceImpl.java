@@ -1,5 +1,6 @@
 package com.izhimu.seas.base.service.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
@@ -128,7 +129,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
             // 获取密钥
             AtomicReference<String> key = new AtomicReference<>();
             basUser.getAccounts().stream()
-                    .filter(v -> StrUtil.isNotBlank(v.getPasswordKey()))
+                    .filter(v -> CharSequenceUtil.isNotBlank(v.getPasswordKey()))
                     .findFirst()
                     .ifPresent(v -> key.set(v.getPasswordKey()));
             // 删除的账号
@@ -150,7 +151,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                     .forEach(v -> {
                         BasAccount basAccount = new BasAccount();
                         basAccount.setId(v.getId());
-                        if (StrUtil.isNotBlank(v.getUserCertificate())) {
+                        if (CharSequenceUtil.isNotBlank(v.getUserCertificate())) {
                             basAccount.setUserCertificate(BCrypt.hashpw(encryptService.decrypt(key.get(), v.getUserCertificate())));
                         }
                         if (basUser.getStatus() == 1) {

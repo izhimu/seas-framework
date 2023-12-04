@@ -98,7 +98,7 @@ public abstract class AbstractDbEngine implements AutoCloseable {
         return maps.stream()
                 .flatMap(v -> v.values().stream())
                 .map(Convert::toStr)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

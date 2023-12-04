@@ -56,7 +56,7 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
                 .list()
                 .stream()
                 .map(item -> new Select<>(item.getDictName(), item.getDictCode()))
-                .collect(Collectors.toList())).orElse(Collections.emptyList());
+                .toList()).orElse(Collections.emptyList());
     }
 
     @Override

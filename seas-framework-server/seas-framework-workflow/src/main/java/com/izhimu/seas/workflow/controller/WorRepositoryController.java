@@ -21,6 +21,6 @@ public class WorRepositoryController {
 
     @GetMapping("/test")
     public void test(){
-        System.out.println(service.getNativeService());
+//        System.out.println(service.getNativeService());
     }
 }

@@ -8,6 +8,9 @@ package com.izhimu.seas.core.event;
  */
 public class CoreEvent {
 
+    private CoreEvent() {
+    }
+
     /**
      * 登录事件
      */
