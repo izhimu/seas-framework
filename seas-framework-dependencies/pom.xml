@@ -18,7 +18,7 @@
         <mybatis.plus.version>3.5.4.1</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
         <minio.version>8.5.7</minio.version>
-        <oshi.version>6.4.7</oshi.version>
+        <oshi.version>6.4.8</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.77</bcprov.version>
         <satoken.version>1.37.0</satoken.version>
@@ -137,11 +137,6 @@
             <dependency>
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-core</artifactId>
-                <version>${satoken.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-redis</artifactId>
                 <version>${satoken.version}</version>
             </dependency>
             <dependency>
