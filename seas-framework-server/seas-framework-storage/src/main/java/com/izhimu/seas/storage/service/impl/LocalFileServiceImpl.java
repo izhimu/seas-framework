@@ -19,10 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -171,7 +168,7 @@ public class LocalFileServiceImpl implements FileService {
     public StoFile upload(StoFile file, InputStream is) {
         createFilePath(file);
         file.setStorageType("LOCAL");
-        file.setFilePath(localConfig.getPath().concat(file.getFilePath()));
+        file.setFilePath(localConfig.getPath().concat(File.separator).concat(file.getFilePath()));
         try (is) {
             calculateFileSize(file, is);
             FileUtil.writeFromStream(is, file.getFilePath());
