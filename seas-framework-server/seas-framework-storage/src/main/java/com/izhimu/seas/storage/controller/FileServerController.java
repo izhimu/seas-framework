@@ -104,10 +104,11 @@ public class FileServerController {
     private StoFile wrapFile(StoFile entity, MultipartFile file) {
         StoFile stoFile = new StoFile();
         stoFile.setBindId(entity.getBindId());
-        if (Objects.nonNull(file.getOriginalFilename())) {
-            int index = file.getOriginalFilename().lastIndexOf(".");
-            stoFile.setFileName(file.getOriginalFilename().substring(0, index));
-            stoFile.setFileSuffix(file.getOriginalFilename().substring(index + 1));
+        String originalFilename = file.getOriginalFilename();
+        if (Objects.nonNull(originalFilename)) {
+            int index = originalFilename.lastIndexOf(".");
+            stoFile.setFileName(originalFilename.substring(0, index));
+            stoFile.setFileSuffix(originalFilename.substring(index + 1));
         }
         stoFile.setFileSize(file.getSize());
         stoFile.setContentType(file.getContentType());

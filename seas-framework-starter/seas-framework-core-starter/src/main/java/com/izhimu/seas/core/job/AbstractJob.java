@@ -26,6 +26,7 @@ public abstract class AbstractJob implements Runnable {
 
     private long end;
 
+    @SuppressWarnings("unused")
     public abstract void run(Map<String, Object> param);
 
     @Override

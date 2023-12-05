@@ -55,6 +55,7 @@ public interface BasAccountService extends IBaseService<BasAccount> {
      * @param userId 用户ID
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByUserId(Long userId);
 
     /**
@@ -64,6 +65,7 @@ public interface BasAccountService extends IBaseService<BasAccount> {
      * @param ids    排除的ID集合
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByUserIdAndNotInId(Long userId, List<Long> ids);
 
     /**

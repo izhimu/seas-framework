@@ -28,5 +28,6 @@ public interface GenTemplateService extends IBaseService<GenTemplate> {
      * @param assetsList List<GenTemplateAssets>
      * @return boolean
      */
+    @SuppressWarnings("SameReturnValue")
     boolean assetsSave(List<GenTemplateAssets> assetsList);
 }

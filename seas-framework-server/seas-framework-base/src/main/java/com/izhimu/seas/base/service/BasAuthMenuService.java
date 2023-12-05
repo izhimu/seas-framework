@@ -23,6 +23,7 @@ public interface BasAuthMenuService extends IService<BasAuthMenu> {
      * @param roleId 角色ID
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByRoleId(Serializable roleId);
 
     /**

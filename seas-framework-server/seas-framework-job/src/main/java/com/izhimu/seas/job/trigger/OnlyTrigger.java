@@ -10,6 +10,8 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
+ * 单次触发器
+ *
  * @author haoran
  * @version v1.0
  */

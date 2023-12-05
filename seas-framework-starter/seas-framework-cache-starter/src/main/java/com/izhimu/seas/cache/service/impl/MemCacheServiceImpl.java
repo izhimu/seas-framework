@@ -12,6 +12,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -51,7 +52,7 @@ public class MemCacheServiceImpl implements CacheService {
 
     @Override
     public boolean hasKey(String key) {
-        return ObjectUtil.isNotNull(cache.getIfPresent(key));
+        return Objects.nonNull(cache.getIfPresent(key));
     }
 
     @Override
@@ -115,7 +116,7 @@ public class MemCacheServiceImpl implements CacheService {
     @Override
     public boolean setExpire(String key, long time) {
         ExpireCache data = cache.getIfPresent(key);
-        if (ObjectUtil.isNull(data)) {
+        if (Objects.isNull(data)) {
             return false;
         }
         data.setExpireTime(time);
@@ -126,7 +127,7 @@ public class MemCacheServiceImpl implements CacheService {
     @Override
     public boolean setExpire(String key, long time, TimeUnit timeUnit) {
         ExpireCache data = cache.getIfPresent(key);
-        if (ObjectUtil.isNull(data)) {
+        if (Objects.isNull(data)) {
             return false;
         }
         data.setExpireTime(time);
@@ -138,7 +139,7 @@ public class MemCacheServiceImpl implements CacheService {
     @Override
     public long getExpire(String key) {
         ExpireCache data = cache.getIfPresent(key);
-        if (ObjectUtil.isNull(data)) {
+        if (Objects.isNull(data)) {
             return -1;
         }
         return data.getExpireTime();

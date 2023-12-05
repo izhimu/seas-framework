@@ -1,6 +1,5 @@
 package com.izhimu.seas.job.trigger;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.izhimu.seas.core.event.EventManager;
 import com.izhimu.seas.job.event.JobEvent;
@@ -9,11 +8,14 @@ import org.springframework.scheduling.TriggerContext;
 import org.springframework.scheduling.support.CronExpression;
 import org.springframework.scheduling.support.CronTrigger;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.ZoneId;
 import java.util.Objects;
 
 /**
+ * 有时间范围的cron触发器
+ *
  * @author haoran
  * @version v1.0
  */
@@ -30,21 +32,38 @@ public class RangeCronTrigger extends CronTrigger {
         this.endTime = endTime;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public Date nextExecutionTime(@NonNull TriggerContext triggerContext) {
-        Date date = super.nextExecutionTime(triggerContext);
-        if (Objects.isNull(date)) {
+    public Instant nextExecution(@NonNull TriggerContext triggerContext) {
+        Instant instant = super.nextExecution(triggerContext);
+        if (Objects.isNull(instant)) {
             return null;
         }
         // 晚于结束时间
-        if (Objects.nonNull(endTime) && LocalDateTimeUtil.toEpochMilli(endTime) < date.getTime()) {
+        if (Objects.nonNull(endTime) && LocalDateTimeUtil.toEpochMilli(endTime) < instant.toEpochMilli()) {
             EventManager.trigger(JobEvent.E_JOB_FINISH, key);
             return null;
         }
         // 早于开始时间
-        if (Objects.nonNull(startTime) && LocalDateTimeUtil.toEpochMilli(startTime) > date.getTime()) {
-            return DateUtil.date(CronExpression.parse(super.getExpression()).next(startTime));
+        if (Objects.nonNull(startTime) && LocalDateTimeUtil.toEpochMilli(startTime) > instant.toEpochMilli()) {
+            CronExpression cron = CronExpression.parse(super.getExpression());
+            LocalDateTime next = cron.next(startTime);
+            return Objects.isNull(next) ? null : next.atZone(ZoneId.systemDefault()).toInstant();
         }
-        return date;
+        return instant;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RangeCronTrigger that = (RangeCronTrigger) o;
+        return Objects.equals(key, that.key) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), key, startTime, endTime);
     }
 }

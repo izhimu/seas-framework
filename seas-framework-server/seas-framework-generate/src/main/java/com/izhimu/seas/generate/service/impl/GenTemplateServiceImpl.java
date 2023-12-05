@@ -1,6 +1,5 @@
 package com.izhimu.seas.generate.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.generate.entity.GenTemplate;
 import com.izhimu.seas.generate.entity.GenTemplateAssets;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 模板服务层实现
@@ -43,7 +43,7 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
     public boolean assetsSave(List<GenTemplateAssets> assetsList) {
         assetsList.stream()
                 .map(GenTemplateAssets::getTemplateId)
-                .filter(ObjectUtil::isNotNull)
+                .filter(Objects::nonNull)
                 .findFirst()
                 .ifPresent(id -> templateAssetsService.lambdaUpdate()
                         .eq(GenTemplateAssets::getTemplateId, id)

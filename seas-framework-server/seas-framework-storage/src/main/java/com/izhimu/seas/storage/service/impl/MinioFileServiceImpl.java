@@ -2,7 +2,6 @@ package com.izhimu.seas.storage.service.impl;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.storage.config.MinioConfig;
@@ -24,7 +23,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -36,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.izhimu.seas.storage.constant.PreviewConst.*;
-import static com.izhimu.seas.storage.service.impl.StoFileServiceImpl.BASE_URL;
+import static com.izhimu.seas.storage.constant.PreviewConst.PDF_CONVERT_MAP;
+import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
 
 /**
  * 文件服务实现
@@ -45,6 +43,7 @@ import static com.izhimu.seas.storage.service.impl.StoFileServiceImpl.BASE_URL;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("DuplicatedCode")
 @Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "minio")

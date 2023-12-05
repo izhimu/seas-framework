@@ -37,6 +37,7 @@ import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
  *
  * @author haoran
  */
+@SuppressWarnings("DuplicatedCode")
 @Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "local", matchIfMissing = true)

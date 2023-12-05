@@ -21,6 +21,7 @@ public interface BasAuthOrgService extends IService<BasAuthOrg> {
      * @param roleId 角色ID
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByRoleId(Serializable roleId);
 
     /**

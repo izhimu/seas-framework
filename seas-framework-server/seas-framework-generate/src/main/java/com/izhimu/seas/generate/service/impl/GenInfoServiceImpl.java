@@ -2,7 +2,6 @@ package com.izhimu.seas.generate.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.izhimu.seas.generate.db.enums.DbType;
 import com.izhimu.seas.generate.entity.GenDatasource;
 import com.izhimu.seas.generate.entity.GenFieldInfo;
@@ -14,9 +13,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.izhimu.seas.generate.db.engine.AbstractDbEngine.*;
 
@@ -49,12 +48,12 @@ public class GenInfoServiceImpl implements GenInfoService {
                     fieldInfo.setFieldName(Convert.toStr(v.get(COLUMN_NAME)));
                     fieldInfo.setShowName(Convert.toStr(v.get(COLUMN_COMMENT)));
                     fieldInfo.setFieldType(Convert.toStr(v.get(COLUMN_TYPE)));
-                    fieldInfo.setIsPk(Convert.toBool(v.get(IS_PK)) ? 1 : 0);
-                    fieldInfo.setIsNull(Convert.toBool(v.get(IS_NULL)) ? 1 : 0);
+                    fieldInfo.setIsPk(Boolean.TRUE.equals(Convert.toBool(v.get(IS_PK))) ? 1 : 0);
+                    fieldInfo.setIsNull(Boolean.TRUE.equals(Convert.toBool(v.get(IS_NULL))) ? 1 : 0);
                     fieldInfo.setAttrName(CharSequenceUtil.toCamelCase(fieldInfo.getFieldName()));
                     fieldInfo.setJavaType(TypeUtil.getJavaType(fieldInfo.getFieldType(), dbType));
                     fieldInfo.setJsType(TypeUtil.getJsType(fieldInfo.getFieldType(), dbType));
-                    fieldInfo.setInsertable(ObjectUtil.equals(0, fieldInfo.getIsPk()) ? 1 : 0);
+                    fieldInfo.setInsertable(Objects.equals(0, fieldInfo.getIsPk()) ? 1 : 0);
                     fieldInfo.setListable(fieldInfo.getInsertable());
                     fieldInfo.setSearchable(fieldInfo.getInsertable());
                     fieldInfo.setSortable(fieldInfo.getInsertable());

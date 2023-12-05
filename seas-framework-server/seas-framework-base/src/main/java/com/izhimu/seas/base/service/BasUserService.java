@@ -81,5 +81,6 @@ public interface BasUserService extends IBaseService<BasUser> {
      * @param id 用户ID
      * @return true/false
      */
+    @SuppressWarnings("SameReturnValue")
     boolean unlock(Long id);
 }

@@ -21,6 +21,7 @@ public interface BasUserRoleService extends IService<BasUserRole> {
      * @param roleId 角色ID
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByRoleId(Serializable roleId);
 
     /**
@@ -29,6 +30,7 @@ public interface BasUserRoleService extends IService<BasUserRole> {
      * @param userId 用户ID
      * @return boolean
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean removeByUserId(Serializable userId);
 
     /**

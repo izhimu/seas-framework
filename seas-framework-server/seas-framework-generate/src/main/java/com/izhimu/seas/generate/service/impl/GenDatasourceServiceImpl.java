@@ -1,6 +1,5 @@
 package com.izhimu.seas.generate.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.generate.db.engine.AbstractDbEngine;
 import com.izhimu.seas.generate.db.engine.DbEngineFactory;
@@ -11,6 +10,7 @@ import com.izhimu.seas.generate.service.GenDatasourceService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,14 +42,14 @@ public class GenDatasourceServiceImpl extends BaseServiceImpl<GenDatasourceMappe
     public List<String> tables(Long id, String like) {
         GenDatasource datasource = this.getById(id);
         try (AbstractDbEngine engine = DbEngineFactory.getEngine(datasource.getDsType(), datasource.getDsUrl(), datasource.getDsUser(), datasource.getDsPwd())) {
-            if (ObjectUtil.isNull(engine)) {
-                return null;
+            if (Objects.isNull(engine)) {
+                return Collections.emptyList();
             }
             return engine.getTableList(like).stream()
                     .sorted()
                     .toList();
         } catch (Exception e) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -57,12 +57,12 @@ public class GenDatasourceServiceImpl extends BaseServiceImpl<GenDatasourceMappe
     public List<Map<String, Object>> fields(Long id, String tableName) {
         GenDatasource datasource = this.getById(id);
         try (AbstractDbEngine engine = DbEngineFactory.getEngine(datasource.getDsType(), datasource.getDsUrl(), datasource.getDsUser(), datasource.getDsPwd())) {
-            if (ObjectUtil.isNull(engine)) {
-                return null;
+            if (Objects.isNull(engine)) {
+                return Collections.emptyList();
             }
             return engine.getTableField(tableName, datasource.getDbName());
         } catch (Exception e) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -70,7 +70,7 @@ public class GenDatasourceServiceImpl extends BaseServiceImpl<GenDatasourceMappe
     public String tableComment(Long id, String tableName) {
         GenDatasource datasource = this.getById(id);
         try (AbstractDbEngine engine = DbEngineFactory.getEngine(datasource.getDsType(), datasource.getDsUrl(), datasource.getDsUser(), datasource.getDsPwd())) {
-            if (ObjectUtil.isNull(engine)) {
+            if (Objects.isNull(engine)) {
                 return null;
             }
             return engine.getTableComment(tableName, datasource.getDbName());

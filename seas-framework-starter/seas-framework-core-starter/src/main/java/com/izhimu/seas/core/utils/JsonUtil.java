@@ -37,9 +37,13 @@ import java.time.format.DateTimeFormatter;
 @UtilityClass
 public class JsonUtil {
 
+    private static final String LOG_NAME = "JsonUtil";
     private static final JsonMapper MAPPER = JsonMapper.builder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .build();
+
+    private static final String DATA_FORMAT_TIME = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATA_FORMAT = "yyyy-MM-dd";
 
     static {
         config(MAPPER);
@@ -65,16 +69,16 @@ public class JsonUtil {
         mapper.configure(JsonReadFeature.ALLOW_LEADING_ZEROS_FOR_NUMBERS.mappedFeature(), true);
         // 时间格式化
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat(DATA_FORMAT_TIME));
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(LocalDate.class,
-                new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                new LocalDateSerializer(DateTimeFormatter.ofPattern(DATA_FORMAT)));
         javaTimeModule.addSerializer(LocalDateTime.class,
-                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATA_FORMAT_TIME)));
         javaTimeModule.addDeserializer(LocalDate.class,
-                new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATA_FORMAT)));
         javaTimeModule.addDeserializer(LocalDateTime.class,
-                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATA_FORMAT_TIME)));
         mapper.registerModule(javaTimeModule);
         // Long类型转换String，防止丢失精度
         SimpleModule longModule = new SimpleModule();
@@ -87,7 +91,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format("JsonUtil", "Error"), e);
+            log.error(LogUtil.format(LOG_NAME, "To json str error"), e);
             return null;
         }
     }
@@ -96,8 +100,8 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format("JsonUtil", "Error"), e);
-            return null;
+            log.error(LogUtil.format(LOG_NAME, "To json byte error"), e);
+            return new byte[0];
         }
     }
 
@@ -105,7 +109,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format("JsonUtil", "Error"), e);
+            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
             return null;
         }
     }
@@ -114,7 +118,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(is, clazz);
         } catch (IOException e) {
-            log.error(LogUtil.format("JsonUtil", "Error"), e);
+            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
             return null;
         }
     }
@@ -123,7 +127,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(bytes, clazz);
         } catch (IOException e) {
-            log.error(LogUtil.format("JsonUtil", "Error"), e);
+            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
             return null;
         }
     }

@@ -1,7 +1,6 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
 import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
 import com.zaxxer.hikari.HikariDataSource;
@@ -13,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * 数据库引擎
@@ -120,11 +119,11 @@ public abstract class AbstractDbEngine implements AutoCloseable {
 
     @Override
     public void close() {
-        if (ObjectUtil.isNull(jdbcTemplate)) {
+        if (Objects.isNull(jdbcTemplate)) {
             return;
         }
         DataSource dataSource = jdbcTemplate.getDataSource();
-        if (ObjectUtil.isNull(dataSource)) {
+        if (Objects.isNull(dataSource)) {
             return;
         }
         if (dataSource instanceof HikariDataSource hikariDataSource) {

@@ -6,7 +6,10 @@ import com.izhimu.seas.core.utils.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 事件管理器
@@ -18,6 +21,8 @@ import java.util.concurrent.*;
 @SuppressWarnings("unused")
 @Slf4j
 public class EventManager {
+    
+    private static final String LOG_NAME = "EventManager";
 
     /**
      * 串行事件监听器器Map
@@ -55,7 +60,7 @@ public class EventManager {
             List<EventListenerWrapper> list = map.get(event);
             list.add(wrapper);
             sort(list);
-            log.info(LogUtil.format("EventManager", event, "Loading {}", Map.of("Async", wrapper.isAsync())), wrapper.getListener().getClass().getSimpleName());
+            log.info(LogUtil.format(LOG_NAME, event, "Loading {}", Map.of("Async", wrapper.isAsync())), wrapper.getListener().getClass().getSimpleName());
         }
     }
 
@@ -73,7 +78,7 @@ public class EventManager {
         boolean hasAsync = ASYNC_EVENT_LISTENER_MAP.containsKey(key);
         if (!hasSync && !hasAsync) {
             NO_LISTENER_EVENT.add(key);
-            log.warn(LogUtil.format("EventManager", key, "Not Found Listener"));
+            log.warn(LogUtil.format(LOG_NAME, key, "Not Found Listener"));
             return;
         }
         Object loginId = LoginIdHolder.get();
@@ -90,15 +95,15 @@ public class EventManager {
                 List<EventListenerWrapper> list = ASYNC_EVENT_LISTENER_MAP.get(key);
                 EVENT_POOL.submit(() -> list.parallelStream().map(EventListenerWrapper::getListener).forEach(listener -> {
                     if (Objects.isNull(data)) {
-                        log.info(LogUtil.format("EventManager", key, "Trigger Async Listener {}"), listener.getClass().getSimpleName());
+                        log.info(LogUtil.format(LOG_NAME, key, "Trigger Async Listener {}"), listener.getClass().getSimpleName());
                     } else {
-                        log.info(LogUtil.format("EventManager", key, "Trigger Async Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
+                        log.info(LogUtil.format(LOG_NAME, key, "Trigger Async Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
                     }
                     try {
                         LoginIdHolder.set(finalLoginId);
                         listener.onEvent(data);
                     } catch (Exception e) {
-                        log.error(LogUtil.format("EventManager", key, "Error"), e);
+                        log.error(LogUtil.format(LOG_NAME, key, "Error"), e);
                     } finally {
                         LoginIdHolder.remove();
                     }
@@ -110,19 +115,19 @@ public class EventManager {
                 while (flag && iterator.hasNext()) {
                     IEventListener listener = iterator.next().getListener();
                     if (Objects.isNull(data)) {
-                        log.info(LogUtil.format("EventManager", key, "Trigger Sync Listener {}"), listener.getClass().getSimpleName());
+                        log.info(LogUtil.format(LOG_NAME, key, "Trigger Sync Listener {}"), listener.getClass().getSimpleName());
                     } else {
-                        log.info(LogUtil.format("EventManager", key, "Trigger Sync Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
+                        log.info(LogUtil.format(LOG_NAME, key, "Trigger Sync Listener {}", Map.of("Data", data)), listener.getClass().getSimpleName());
                     }
                     try {
                         flag = listener.onEvent(data);
                     } catch (Exception e) {
-                        log.error(LogUtil.format("EventManager", key, "Error"), e);
+                        log.error(LogUtil.format(LOG_NAME, key, "Error"), e);
                     }
                 }
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("EventManager", key, "Error"), e);
+            log.error(LogUtil.format(LOG_NAME, key, "Error"), e);
         } finally {
             LoginIdHolder.remove();
         }

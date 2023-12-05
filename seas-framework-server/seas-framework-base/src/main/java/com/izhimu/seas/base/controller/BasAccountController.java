@@ -1,7 +1,6 @@
 package com.izhimu.seas.base.controller;
 
 import cn.hutool.core.exceptions.ValidateException;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.service.BasAccountService;
@@ -13,6 +12,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户账号控制层
@@ -77,7 +77,7 @@ public class BasAccountController {
             throw new ValidateException("参数缺失");
         }
         User user = SecurityUtil.getUser();
-        if (ObjectUtil.isNull(user) || ObjectUtil.notEqual(account.getUserAccount(), user.getUserAccount())) {
+        if (Objects.isNull(user) || !Objects.equals(account.getUserAccount(), user.getUserAccount())) {
             throw new ValidateException("账号不匹配");
         }
         return service.changePassword(account);

@@ -24,11 +24,11 @@ import static com.izhimu.seas.security.constant.SecurityConstant.DEF_USER;
 @Service
 public class DefSecurityServiceImpl implements SecurityService {
 
-    private final String DEF_PWD;
+    private final String defPwd;
 
     public DefSecurityServiceImpl() {
-        DEF_PWD = RandomUtil.randomString(16);
-        log.info(LogUtil.format("SecurityService", "Use def user", Map.of("User", DEF_USER, "Password", DEF_PWD)));
+        defPwd = RandomUtil.randomString(16);
+        log.info(LogUtil.format("SecurityService", "Use def user", Map.of("User", DEF_USER, "Password", defPwd)));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DefSecurityServiceImpl implements SecurityService {
         User user = new User();
         user.setId(IdUtil.getSnowflakeNextId());
         user.setUserAccount(DEF_USER);
-        user.setUserCertificate(BCrypt.hashpw(DEF_PWD));
+        user.setUserCertificate(BCrypt.hashpw(defPwd));
         user.setLogicDel(0);
         user.setStatus(0);
         user.setTypeCode(0);

@@ -2,6 +2,7 @@ package com.izhimu.seas.base.service.impl;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.base.entity.BasAccount;
 import com.izhimu.seas.base.mapper.BasAccountMapper;
 import com.izhimu.seas.base.service.BasAccountService;
@@ -85,7 +86,7 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
                 .eq(BasAccount::getUserId, userId)
                 .notIn(!ids.isEmpty(), BasAccount::getId, ids)
                 .list();
-        return this.removeBatchByIds(delIdList);
+        return SpringUtil.getBean(BasAccountService.class).removeBatchByIds(delIdList);
     }
 
     @Override

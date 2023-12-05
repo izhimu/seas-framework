@@ -8,6 +8,9 @@ package com.izhimu.seas.job.event;
  */
 public class JobEvent {
 
+    private JobEvent() {
+    }
+
     /**
      * 任务完成
      */

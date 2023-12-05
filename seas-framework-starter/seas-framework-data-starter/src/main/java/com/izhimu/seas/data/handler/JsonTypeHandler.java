@@ -1,5 +1,6 @@
 package com.izhimu.seas.data.handler;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -33,7 +34,7 @@ public class JsonTypeHandler extends BaseTypeHandler<String> {
     @Override
     public String getNullableResult(ResultSet resultSet, String s) throws SQLException {
         String sqlJson = resultSet.getString(s);
-        if (StrUtil.isNotBlank(sqlJson)) {
+        if (CharSequenceUtil.isNotBlank(sqlJson)) {
             return sqlJson;
         }
         return null;
@@ -42,7 +43,7 @@ public class JsonTypeHandler extends BaseTypeHandler<String> {
     @Override
     public String getNullableResult(ResultSet resultSet, int i) throws SQLException {
         String sqlJson = resultSet.getString(i);
-        if (StrUtil.isNotBlank(sqlJson)) {
+        if (CharSequenceUtil.isNotBlank(sqlJson)) {
             return sqlJson;
         }
         return null;
@@ -51,7 +52,7 @@ public class JsonTypeHandler extends BaseTypeHandler<String> {
     @Override
     public String getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
         String sqlJson = callableStatement.getString(i);
-        if (StrUtil.isNotBlank(sqlJson)) {
+        if (CharSequenceUtil.isNotBlank(sqlJson)) {
             return sqlJson;
         }
         return null;
