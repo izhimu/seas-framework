@@ -6,6 +6,7 @@ package com.izhimu.seas.core.enums;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("unused")
 public enum DeviceType {
 
     /**

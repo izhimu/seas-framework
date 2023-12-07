@@ -1,13 +1,12 @@
 package com.izhimu.seas.storage.controller;
 
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.entity.FileInfo;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.service.FileService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -22,10 +21,11 @@ import java.util.*;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @RestController
 @RequestMapping("/sto/file")
 public class FileServerController {
+
+    private static final LogWrapper log = LogWrapper.build("FileServer");
 
     @Resource
     private FileService service;
@@ -66,12 +66,12 @@ public class FileServerController {
         values.parallelStream()
                 .flatMap(Collection::stream)
                 .forEach(v -> {
-            try {
-                vos.add(service.upload(wrapFile(file, v), v.getInputStream()));
-            } catch (IOException e) {
-                log.error(LogUtil.format("FileStorage", "Error"), e);
-            }
-        });
+                    try {
+                        vos.add(service.upload(wrapFile(file, v), v.getInputStream()));
+                    } catch (IOException e) {
+                        log.error(e);
+                    }
+                });
         return vos;
     }
 

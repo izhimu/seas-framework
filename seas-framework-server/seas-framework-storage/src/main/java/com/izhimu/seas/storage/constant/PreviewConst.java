@@ -14,6 +14,9 @@ import java.util.Map;
  */
 public class PreviewConst {
 
+    private PreviewConst() {
+    }
+
     public static final Map<String, Class<? extends IFileConvert>> PDF_CONVERT_MAP = Map.of(
             "application/msword", WordToPdfConvert.class,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document", WordToPdfConvert.class

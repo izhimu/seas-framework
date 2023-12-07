@@ -1,9 +1,10 @@
 package com.izhimu.seas.captcha.service.impl;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.cache.entity.EncryptKey;
 import com.izhimu.seas.cache.service.CacheService;
 import com.izhimu.seas.cache.service.EncryptService;
@@ -11,11 +12,9 @@ import com.izhimu.seas.captcha.config.CaptchaConfig;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.model.Point;
 import com.izhimu.seas.captcha.service.CaptchaService;
-import com.izhimu.seas.captcha.util.ImageUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.JsonUtil;
-import com.izhimu.seas.core.utils.LogUtil;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -24,7 +23,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * 滑动验证码服务实现
@@ -32,9 +30,11 @@ import java.util.Random;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 public class SlideCaptchaServiceImpl implements CaptchaService {
+
+    private static final LogWrapper log = LogWrapper.build("CaptchaService");
+
     private static final String IMAGE_TYPE_PNG = "png";
     private static final String CACHE_CAPTCHA_KEY = "seas:captcha:";
     private static final String CACHE_CAPTCHA_RECEIPT_KEY = "seas:captcha:receipt:";
@@ -52,16 +52,16 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
     public Captcha get(Captcha captcha) {
         //原生图片
         String originalImageBase64 = loadImage(config.getOriginalPath(), config.getOriginalSize());
-        BufferedImage originalImage = ImageUtil.getBase64StrToImage(originalImageBase64);
+        BufferedImage originalImage = ImgUtil.toImage(originalImageBase64);
         if (Objects.isNull(originalImage)) {
-            log.error(LogUtil.format("SlideCaptchaService", "Original image init error"));
+            log.error("Original image init error");
             return captcha;
         }
         //抠图图片
         String blockImageBase64 = loadImage(config.getBlockPath(), config.getBlockSize());
-        BufferedImage blockImage = ImageUtil.getBase64StrToImage(blockImageBase64);
+        BufferedImage blockImage = ImgUtil.toImage(blockImageBase64);
         if (Objects.isNull(blockImage)) {
-            log.error(LogUtil.format("SlideCaptchaService", "Slide image init error"));
+            log.error("Slide image init error");
             return captcha;
         }
         Captcha newCaptcha = pictureTemplatesCut(originalImage, blockImage, blockImageBase64);
@@ -86,7 +86,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         // 解密
         String pointJson = captcha.getPointJson();
         pointJson = encryptService.decrypt(token, pointJson);
-        if (StrUtil.isBlank(pointJson)) {
+        if (CharSequenceUtil.isBlank(pointJson)) {
             return captcha;
         }
         Point checkPoint = JsonUtil.toObject(pointJson, Point.class);
@@ -114,7 +114,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             cacheService.del(CACHE_CAPTCHA_RECEIPT_KEY.concat(key));
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("SlideCaptchaService", "Verification error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -162,7 +162,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                 while (true) {
                     String s = loadImage(config.getBlockPath(), config.getBlockSize());
                     if (!blockImageBase64.equals(s)) {
-                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtil.getBase64StrToImage(s)), position);
+                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImgUtil.toImage(s)), position);
                         break;
                     }
                 }
@@ -171,7 +171,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                     String s = loadImage(config.getBlockPath(), config.getBlockSize());
                     if (!blockImageBase64.equals(s)) {
                         int randomInt = RandomUtil.randomInt(blockWidth, 100 - blockWidth);
-                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImageUtil.getBase64StrToImage(s)), randomInt);
+                        interferenceByTemplate(originalImage, Objects.requireNonNull(ImgUtil.toImage(s)), randomInt);
                         break;
                     }
                 }
@@ -197,7 +197,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             captcha.setSecretKey(point.getPublicKey());
             return captcha;
         } catch (Exception e) {
-            log.error(LogUtil.format("SlideCaptchaService", "Cut image error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -213,19 +213,19 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
      * @return PointDTO
      */
     private Point generateBlockPoint(int originalWidth, int originalHeight, int blockWidth, int blockHeight) {
-        Random random = new Random();
         int widthDifference = originalWidth - blockWidth;
         int heightDifference = originalHeight - blockHeight;
-        int x, y;
+        int x;
+        int y;
         if (widthDifference <= 0) {
             x = 5;
         } else {
-            x = random.nextInt(originalWidth - blockWidth - 100) + 100;
+            x = RandomUtil.randomInt(originalWidth - blockWidth - 100) + 100;
         }
         if (heightDifference <= 0) {
             y = 5;
         } else {
-            y = random.nextInt(originalHeight - blockHeight) + 5;
+            y = RandomUtil.randomInt(originalHeight - blockHeight) + 5;
         }
         EncryptKey encryptKey = encryptService.createEncryptKey(config.getCaptchaExpire());
         String key = encryptKey.getKey();
@@ -246,7 +246,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         try (InputStream stream = ResourceUtil.getStream(path.concat(String.valueOf(i)).concat(".png"))) {
             return Base64.encode(stream);
         } catch (Exception e) {
-            log.error(LogUtil.format("SlideCaptchaService", "Load image error"), e);
+            log.error(e);
             return null;
         }
     }

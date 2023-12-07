@@ -7,7 +7,7 @@ package com.izhimu.seas.core.event;
  * @version v1.0
  * 2021/11/2 14:10
  */
-@SuppressWarnings("SameReturnValue")
+@SuppressWarnings({"SameReturnValue", "unused"})
 public interface IEventListener {
 
     /**

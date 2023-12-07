@@ -1,10 +1,9 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
@@ -18,8 +17,9 @@ import java.util.Objects;
  * @author Haoran
  * @version v1.0
  */
-@Slf4j
 public class SqlServerEngine extends AbstractDbEngine {
+
+    private static final LogWrapper log = LogWrapper.build("SqlServerEngine");
 
     SqlServerEngine(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -40,7 +40,7 @@ public class SqlServerEngine extends AbstractDbEngine {
     @Override
     public List<String> getTableList(String like) {
         StringBuilder sql = new StringBuilder("select name from sysobjects where xtype='U'");
-        if (Objects.nonNull(like) && StrUtil.isNotBlank(like.trim())) {
+        if (Objects.nonNull(like) && CharSequenceUtil.isNotBlank(like.trim())) {
             sql.append(" AND name ");
             sql.append("LIKE ").append("'%");
             sql.append(like).append("%'");
@@ -49,7 +49,7 @@ public class SqlServerEngine extends AbstractDbEngine {
         try {
             tableList = mapToList(this.jdbcTemplate.queryForList(sql.toString()));
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "sqlserver get tables error"), e);
+            log.error(e);
         }
         return tableList;
     }
@@ -68,7 +68,7 @@ public class SqlServerEngine extends AbstractDbEngine {
             sqlServerPkFormat(fieldList);
             nullFormat(fieldList);
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "sqlserver get table field error"), e);
+            log.error(e);
         }
         return fieldList;
     }
@@ -85,10 +85,10 @@ public class SqlServerEngine extends AbstractDbEngine {
         try {
             List<Map<String, Object>> fieldList = this.jdbcTemplate.queryForList(sql);
             if (!fieldList.isEmpty()) {
-                comment = (String) fieldList.get(0).get("value");
+                comment = (String) fieldList.getFirst().get("value");
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "sqlserver get table comment error"), e);
+            log.error(e);
         }
         return comment;
     }

@@ -1,7 +1,6 @@
 package com.izhimu.seas.data.service.impl;
 
-
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import org.apache.ibatis.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,11 @@ import org.slf4j.LoggerFactory;
 public class LogImpl implements Log {
 
     private final Logger log;
+    private final LogWrapper logWrapper;
 
     public LogImpl(String clazz) {
         this.log = LoggerFactory.getLogger(clazz);
+        this.logWrapper = LogWrapper.build(this.log, "Mybatis");
     }
 
     @Override
@@ -32,26 +33,26 @@ public class LogImpl implements Log {
 
     @Override
     public void error(String s, Throwable e) {
-        log.error(LogUtil.format("Mybatis", s), e);
+        logWrapper.error(s, e);
     }
 
     @Override
     public void error(String s) {
-        log.error(LogUtil.format("Mybatis", s));
+        logWrapper.error(s);
     }
 
     @Override
     public void debug(String s) {
-        log.debug(LogUtil.format("Mybatis", s));
+        logWrapper.debug(s);
     }
 
     @Override
     public void trace(String s) {
-        log.trace(LogUtil.format("Mybatis", s));
+        log.trace(s);
     }
 
     @Override
     public void warn(String s) {
-        log.warn(LogUtil.format("Mybatis", s));
+        logWrapper.warn(s);
     }
 }

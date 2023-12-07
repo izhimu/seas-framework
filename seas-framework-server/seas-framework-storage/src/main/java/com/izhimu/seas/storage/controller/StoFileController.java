@@ -5,7 +5,6 @@ import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.service.StoFileService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @RestController
 @RequestMapping("/sto/file/info")
 public class StoFileController {

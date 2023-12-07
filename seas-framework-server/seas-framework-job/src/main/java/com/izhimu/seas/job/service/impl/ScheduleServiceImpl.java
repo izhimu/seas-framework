@@ -1,18 +1,17 @@
 package com.izhimu.seas.job.service.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassLoaderUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.job.AbstractJob;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.JsonUtil;
-import com.izhimu.seas.core.utils.LogUtil;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.service.ScheduleService;
 import com.izhimu.seas.job.trigger.OnlyTrigger;
 import com.izhimu.seas.job.trigger.RangeCronTrigger;
 import com.izhimu.seas.job.trigger.RangePeriodicTrigger;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,11 @@ import java.util.concurrent.TimeUnit;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private static final LogWrapper log = LogWrapper.build("ScheduleService");
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static final Map<String, ScheduledFuture<?>> TASK_MAP = new ConcurrentHashMap<>();
@@ -48,7 +47,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public boolean add(JobTimer timer) {
-        if (StrUtil.isBlank(timer.getExpression()) || StrUtil.isBlank(timer.getClassPath())) {
+        if (CharSequenceUtil.isBlank(timer.getExpression()) || CharSequenceUtil.isBlank(timer.getClassPath())) {
             return false;
         }
         Trigger trigger = getTrigger(timer);
@@ -61,13 +60,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         ScheduledFuture<?> schedule = scheduler.schedule(job, trigger);
         TASK_MAP.put(timer.getKey(), schedule);
-        log.info(LogUtil.format("TimerJob", timer.getName(), "Added", Map.of("Expression", timer.getExpression(), "Class", timer.getClassPath())));
+        log.info(timer.getName(), Map.of("Expression", timer.getExpression(), "Class", timer.getClassPath()), "Added");
         return true;
     }
 
     @Override
     public boolean del(JobTimer timer) {
-        if (StrUtil.isBlank(timer.getKey())) {
+        if (CharSequenceUtil.isBlank(timer.getKey())) {
             return false;
         }
         if (!TASK_MAP.containsKey(timer.getKey())) {
@@ -84,7 +83,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public boolean run(JobTimer timer) {
-        if (StrUtil.isBlank(timer.getClassPath())) {
+        if (CharSequenceUtil.isBlank(timer.getClassPath())) {
             return false;
         }
         AbstractJob job = getAbstractJob(timer);
@@ -153,7 +152,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private Map<String, Object> getParam(String json) {
-        if (StrUtil.isBlank(json)) {
+        if (CharSequenceUtil.isBlank(json)) {
             return Collections.emptyMap();
         }
         //noinspection unchecked

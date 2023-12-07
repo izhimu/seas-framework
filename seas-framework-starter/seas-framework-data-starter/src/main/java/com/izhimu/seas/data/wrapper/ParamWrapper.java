@@ -4,19 +4,17 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
 import com.izhimu.seas.data.enums.SearchType;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -28,8 +26,9 @@ import java.util.*;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-@Slf4j
 public class ParamWrapper<T> {
+
+    private static final LogWrapper log = LogWrapper.build("ParamWrapper");
 
     private final QueryChainWrapper<T> wrapper;
 
@@ -139,18 +138,23 @@ public class ParamWrapper<T> {
                     SearchType type = search.type();
                     String name = f.getName();
                     Object value = ReflectUtil.getFieldValue(entity, f);
-                    boolean b = value instanceof String ? StrUtil.isNotBlank((String) value) : Objects.nonNull(value);
+                    boolean b;
+                    if (value instanceof String s) {
+                        b = CharSequenceUtil.isNotBlank(s);
+                    } else {
+                        b = Objects.nonNull(value);
+                    }
                     if (b) {
                         searchStructure(
                                 type,
-                                StrUtil.isNotBlank(search.name()) ? search.name() : CharSequenceUtil.toUnderlineCase(name)
+                                CharSequenceUtil.isNotBlank(search.name()) ? search.name() : CharSequenceUtil.toUnderlineCase(name)
                                 , value
                         );
                     }
                 }
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("ParamWrapper", "Error"), e);
+            log.error(e);
         }
     }
 
@@ -161,7 +165,7 @@ public class ParamWrapper<T> {
         try {
             // 获取所有的字段
             Field[] fields = ReflectUtil.getFields(entity.getClass());
-            Map<String, Boolean> map = new HashMap<>(fields.length);
+            Map<String, Boolean> map = HashMap.newHashMap(fields.length);
             for (Field f : fields) {
                 // 判断字段注解是否存在
                 boolean orderAnnotationPresent = f.isAnnotationPresent(OrderBy.class);
@@ -174,8 +178,8 @@ public class ParamWrapper<T> {
             }
             return map;
         } catch (Exception e) {
-            log.error(LogUtil.format("ParamWrapper", "Error"), e);
-            return new HashMap<>(16);
+            log.error(e);
+            return Collections.emptyMap();
         }
     }
 
@@ -198,8 +202,6 @@ public class ParamWrapper<T> {
             case GE -> wrapper.ge(name, value);
             case LT -> wrapper.lt(name, value);
             case LE -> wrapper.le(name, value);
-            default -> {
-            }
         }
     }
 
@@ -207,7 +209,7 @@ public class ParamWrapper<T> {
         try {
             return entity.getClass().getAnnotation(Permission.class);
         } catch (Exception e) {
-            log.error(LogUtil.format("ParamWrapper", "Error"), e);
+            log.error(e);
             return null;
         }
     }

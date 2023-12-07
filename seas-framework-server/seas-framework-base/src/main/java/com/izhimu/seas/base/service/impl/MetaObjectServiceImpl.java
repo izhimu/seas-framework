@@ -2,10 +2,9 @@ package com.izhimu.seas.base.service.impl;
 
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.holder.LoginIdHolder;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.data.service.IMetaObjectService;
 import com.izhimu.seas.security.util.SecurityUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -16,9 +15,10 @@ import java.util.Objects;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 public class MetaObjectServiceImpl implements IMetaObjectService {
+
+    private static final LogWrapper log = LogWrapper.build("MetaObjectService");
 
     @Override
     public Long getUserId() {
@@ -27,7 +27,7 @@ public class MetaObjectServiceImpl implements IMetaObjectService {
         try {
             user = Objects.isNull(loginId) ? SecurityUtil.getUser() : SecurityUtil.getUser(loginId);
         } catch (Exception e) {
-            log.error(LogUtil.format("MetaObjectService", e.getMessage()));
+            log.warn(e.getMessage());
         }
         if (Objects.isNull(user)) {
             return null;

@@ -12,8 +12,8 @@ import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
-import com.izhimu.seas.core.utils.LogUtil;
-import com.izhimu.seas.core.utils.WebUtil;
+import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
 import com.izhimu.seas.security.constant.SecurityConstant;
@@ -22,7 +22,6 @@ import com.izhimu.seas.security.service.LoginService;
 import com.izhimu.seas.security.service.SecurityService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -35,9 +34,10 @@ import java.util.Optional;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
+
+    private static final LogWrapper log = LogWrapper.build("LoginService");
 
     @Resource
     private EncryptService<EncryptKey, String> encryptService;
@@ -57,7 +57,7 @@ public class LoginServiceImpl implements LoginService {
         if (Objects.isNull(dto)) {
             throw new SecurityException(ResultCode.LOGIN_ERROR, "登录信息异常");
         }
-        dto.setIp(WebUtil.getClientIP(request));
+        dto.setIp(IpUtil.getClientIP(request));
 
         // 验证码错误
         Captcha captcha = new Captcha();
@@ -118,7 +118,7 @@ public class LoginServiceImpl implements LoginService {
             return token;
         } catch (Exception e) {
             StpUtil.logout(user.getId());
-            log.error(LogUtil.format("LoginService", "Error"), e);
+            log.error(e);
         }
         dto.setStatus(5);
         EventManager.trigger(CoreEvent.E_LOGIN, dto);

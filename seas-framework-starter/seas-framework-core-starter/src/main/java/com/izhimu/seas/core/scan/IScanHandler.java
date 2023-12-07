@@ -8,6 +8,7 @@ import org.reflections.Reflections;
  * @author haoran
  * @version v1.0
  */
+@SuppressWarnings("unused")
 public interface IScanHandler {
 
     /**

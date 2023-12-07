@@ -3,7 +3,6 @@ package com.izhimu.seas.core.entity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,13 +25,6 @@ public class DataPermission implements Serializable {
      * 权限列表
      */
     private List<Long> authList;
-
-    public static DataPermission def() {
-        DataPermission dataPermission = new DataPermission();
-        dataPermission.setType(4);
-        dataPermission.setAuthList(Collections.singletonList(NO_PERMISSION));
-        return dataPermission;
-    }
 
     /**
      * 返回简单类型

@@ -1,10 +1,9 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
@@ -18,8 +17,9 @@ import java.util.Objects;
  * @author Haoran
  * @version v1.0
  */
-@Slf4j
 public class MySqlEngine extends AbstractDbEngine {
+
+    private static final LogWrapper log = LogWrapper.build("MySqlEngine");
 
     MySqlEngine(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -41,13 +41,13 @@ public class MySqlEngine extends AbstractDbEngine {
     public List<String> getTableList(String like) {
         List<String> result = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SHOW TABLES ");
-        if (Objects.nonNull(like) && StrUtil.isNotBlank(like.trim())) {
+        if (Objects.nonNull(like) && CharSequenceUtil.isNotBlank(like.trim())) {
             sql.append("LIKE ").append("'%").append(like).append("%'");
         }
         try {
             result = mapToList(this.jdbcTemplate.queryForList(sql.toString()));
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "mysql get tables error"), e);
+            log.error(e);
         }
         return result;
     }
@@ -60,7 +60,7 @@ public class MySqlEngine extends AbstractDbEngine {
     @Override
     public List<Map<String, Object>> getTableField(String tableName, String databaseName) {
         String sql = "SELECT COLUMN_NAME,COLUMN_TYPE,COLUMN_COMMENT,IS_NULLABLE AS IS_NULL,COLUMN_KEY AS IS_PK FROM information_schema.columns WHERE TABLE_NAME = '{}' AND TABLE_SCHEMA = '{}'";
-        sql = StrUtil.format(sql, tableName, databaseName);
+        sql = CharSequenceUtil.format(sql, tableName, databaseName);
         List<Map<String, Object>> fieldList = new ArrayList<>();
         try {
             fieldList = this.jdbcTemplate.queryForList(sql);
@@ -68,7 +68,7 @@ public class MySqlEngine extends AbstractDbEngine {
             mysqlPkFormat(fieldList);
             nullFormat(fieldList);
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "mysql get table field error"), e);
+            log.error(e);
         }
         return fieldList;
     }
@@ -81,15 +81,15 @@ public class MySqlEngine extends AbstractDbEngine {
     @Override
     public String getTableComment(String tableName, String databaseName) {
         String sql = "SELECT table_comment FROM information_schema.TABLES WHERE TABLE_NAME = '{}' AND TABLE_SCHEMA = '{}'";
-        sql = StrUtil.format(sql, tableName, databaseName);
+        sql = CharSequenceUtil.format(sql, tableName, databaseName);
         String comment = "";
         try {
             List<Map<String, Object>> fieldList = this.jdbcTemplate.queryForList(sql);
             if (!fieldList.isEmpty()) {
-                comment = Convert.toStr(fieldList.get(0).get("table_comment"));
+                comment = Convert.toStr(fieldList.getFirst().get("table_comment"));
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "mysql get table comment error"), e);
+            log.error(e);
         }
         return comment;
     }

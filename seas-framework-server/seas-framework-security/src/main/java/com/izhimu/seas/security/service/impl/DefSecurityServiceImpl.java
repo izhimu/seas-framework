@@ -5,9 +5,8 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.security.service.SecurityService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,15 +19,16 @@ import static com.izhimu.seas.security.constant.SecurityConstant.DEF_USER;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 public class DefSecurityServiceImpl implements SecurityService {
+
+    private static final LogWrapper log = LogWrapper.build("SecurityService");
 
     private final String defPwd;
 
     public DefSecurityServiceImpl() {
         defPwd = RandomUtil.randomString(16);
-        log.info(LogUtil.format("SecurityService", "Use def user", Map.of("User", DEF_USER, "Password", defPwd)));
+        log.info(Map.of("User", DEF_USER, "Password", defPwd), "Use def user");
     }
 
     @Override

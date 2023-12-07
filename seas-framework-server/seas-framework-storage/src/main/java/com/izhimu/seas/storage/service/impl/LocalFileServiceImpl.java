@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.config.LocalConfig;
 import com.izhimu.seas.storage.convert.DefFileConvert;
 import com.izhimu.seas.storage.convert.IFileConvert;
@@ -15,7 +15,6 @@ import com.izhimu.seas.storage.service.StoFileService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +37,11 @@ import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
  * @author haoran
  */
 @SuppressWarnings("DuplicatedCode")
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "local", matchIfMissing = true)
 public class LocalFileServiceImpl implements FileService {
+
+    private static final LogWrapper log = LogWrapper.build("LocalFileService");
 
     @Resource
     private StoFileService fileService;
@@ -59,7 +59,7 @@ public class LocalFileServiceImpl implements FileService {
              os) {
             IoUtil.copy(is, os);
         } catch (Exception e) {
-            log.error(LogUtil.format("LocalFileService", "Download as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -76,7 +76,7 @@ public class LocalFileServiceImpl implements FileService {
             response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             IoUtil.copy(is, os);
         } catch (Exception e) {
-            log.error(LogUtil.format("LocalFileService", "Download as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -95,7 +95,7 @@ public class LocalFileServiceImpl implements FileService {
             }
             ZipUtil.zip(os, ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
         } catch (Exception e) {
-            log.error(LogUtil.format("LocalFileService", "Download zip as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -117,7 +117,7 @@ public class LocalFileServiceImpl implements FileService {
             response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             ZipUtil.zip(response.getOutputStream(), ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
         } catch (Exception e) {
-            log.error(LogUtil.format("LocalFileService", "Download zip as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -138,7 +138,7 @@ public class LocalFileServiceImpl implements FileService {
                 convert.convert(is, os, param);
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Preview as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -161,7 +161,7 @@ public class LocalFileServiceImpl implements FileService {
                 convert.convert(is, os, param);
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Preview as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -175,7 +175,7 @@ public class LocalFileServiceImpl implements FileService {
             FileUtil.writeFromStream(is, file.getFilePath());
             fileService.save(file);
         } catch (Exception e) {
-            log.error(LogUtil.format("FileStorage", "Error"), e);
+            log.error(e);
         }
         return file;
     }
@@ -199,7 +199,7 @@ public class LocalFileServiceImpl implements FileService {
             fileInfo.setContentType(file.getContentType());
             return fileInfo;
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Get file info error"), e);
+            log.error(e);
             return null;
         }
     }

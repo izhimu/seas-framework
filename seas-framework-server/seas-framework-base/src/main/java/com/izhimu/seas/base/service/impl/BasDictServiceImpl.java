@@ -67,7 +67,7 @@ public class BasDictServiceImpl extends BaseServiceImpl<BasDictMapper, BasDict> 
         if (list.isEmpty()){
             return null;
         }
-        BasDict parentDict = list.get(0);
+        BasDict parentDict = list.getFirst();
         return this.lambdaQuery()
                 .eq(BasDict::getParentId, parentDict.getId())
                 .eq(BasDict::getDictCode, dictCode)

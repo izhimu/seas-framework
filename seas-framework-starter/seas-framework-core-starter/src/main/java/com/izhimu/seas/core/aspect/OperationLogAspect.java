@@ -8,13 +8,12 @@ import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
+import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.core.utils.JsonUtil;
-import com.izhimu.seas.core.utils.LogUtil;
-import com.izhimu.seas.core.utils.WebUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -30,10 +29,11 @@ import java.util.Objects;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Aspect
 @Component
 public class OperationLogAspect {
+
+    private static final LogWrapper log = LogWrapper.build("OperationLog");
 
     private static final String PLACEHOLDER = "@";
 
@@ -54,7 +54,7 @@ public class OperationLogAspect {
         try {
             params = JsonUtil.toJsonStr(args);
         } catch (Exception e) {
-            log.error(LogUtil.format("OperationLog", "Error"), e);
+            log.warn(e.getMessage());
             params = "";
         }
         Object target = pjp.getTarget();
@@ -65,17 +65,12 @@ public class OperationLogAspect {
             if (Objects.nonNull(request)) {
                 data.setRequestUrl(request.getRequestURI());
                 data.setMethod(request.getMethod());
-                data.setIp(WebUtil.getClientIP(request));
+                data.setIp(IpUtil.getClientIP(request));
             }
             if (Objects.nonNull(response)) {
                 data.setStatus(String.valueOf(response.getStatus()));
             }
-            User user = null;
-            try {
-                user = StpUtil.getSession().getModel(SaSession.USER, User.class);
-            } catch (Exception ignored) {
-
-            }
+            User user = getUser();
             if (Objects.nonNull(user)) {
                 data.setUserId(user.getId());
                 data.setAccount(user.getUserAccount());
@@ -95,8 +90,18 @@ public class OperationLogAspect {
             data.setResult(JsonUtil.toJsonStr(ret));
             EventManager.trigger(CoreEvent.E_LOG, data);
         } catch (Throwable e) {
-            log.error(LogUtil.format("OperationLog", "Error"), e);
+            log.error(e);
         }
         return ret;
+    }
+
+    private User getUser() {
+        User user = null;
+        try {
+            user = StpUtil.getSession().getModel(SaSession.USER, User.class);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+        return user;
     }
 }

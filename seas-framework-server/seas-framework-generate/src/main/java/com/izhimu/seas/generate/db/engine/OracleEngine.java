@@ -1,10 +1,9 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
@@ -18,8 +17,12 @@ import java.util.Objects;
  * @author Haoran
  * @version v1.0
  */
-@Slf4j
 public class OracleEngine extends AbstractDbEngine {
+
+    private static final LogWrapper log = LogWrapper.build("OracleEngine");
+
+    private static final String DATA_PRECISION = "DATA_PRECISION";
+    private static final String DATA_SCALE = "DATA_SCALE";
 
     OracleEngine(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -40,7 +43,7 @@ public class OracleEngine extends AbstractDbEngine {
     @Override
     public List<String> getTableList(String like) {
         StringBuilder sql = new StringBuilder("SELECT table_name FROM user_tables");
-        if (Objects.nonNull(like) && StrUtil.isNotBlank(like.trim())) {
+        if (Objects.nonNull(like) && CharSequenceUtil.isNotBlank(like.trim())) {
             sql.append(" WHERE table_name LIKE ").append("'%");
             sql.append(like).append("%'");
         }
@@ -52,7 +55,7 @@ public class OracleEngine extends AbstractDbEngine {
                 resultTable.add(tableName.toLowerCase());
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "oracle get tables error"), e);
+            log.error(e);
         }
         return resultTable;
     }
@@ -87,7 +90,7 @@ public class OracleEngine extends AbstractDbEngine {
             nullFormat(fieldList);
             toLowerCase(fieldList);
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "oracle get table field error"), e);
+            log.error(e);
         }
         return fieldList;
     }
@@ -104,10 +107,10 @@ public class OracleEngine extends AbstractDbEngine {
         try {
             List<Map<String, Object>> fieldList = this.jdbcTemplate.queryForList(sql);
             if (!fieldList.isEmpty()) {
-                comment = (String) fieldList.get(0).get("COMMENTS");
+                comment = (String) fieldList.getFirst().get("COMMENTS");
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "oracle get table comment error"), e);
+            log.error(e);
         }
         return comment;
     }
@@ -151,16 +154,16 @@ public class OracleEngine extends AbstractDbEngine {
      */
     private void oracleDataType(List<Map<String, Object>> fieldList) {
         fieldList.forEach(map -> {
-            if (map.get("DATA_PRECISION") != null) {
+            if (map.get(DATA_PRECISION) != null) {
                 StringBuilder length = new StringBuilder();
-                length.append(map.get("DATA_PRECISION"));
-                if (map.get("DATA_SCALE") != null) {
-                    length.append(",").append(map.get("DATA_SCALE"));
+                length.append(map.get(DATA_PRECISION));
+                if (map.get(DATA_SCALE) != null) {
+                    length.append(",").append(map.get(DATA_SCALE));
                 }
                 map.put("DATA_LENGTH", length);
             }
-            map.remove("DATA_PRECISION");
-            map.remove("DATA_SCALE");
+            map.remove(DATA_PRECISION);
+            map.remove(DATA_SCALE);
         });
     }
 

@@ -32,5 +32,5 @@ public @interface Permission {
      *
      * @return boolean
      */
-    boolean enable() default true;
+    @SuppressWarnings("unused") boolean enable() default true;
 }

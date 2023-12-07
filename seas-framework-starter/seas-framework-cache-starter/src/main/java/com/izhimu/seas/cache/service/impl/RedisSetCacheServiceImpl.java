@@ -2,8 +2,7 @@ package com.izhimu.seas.cache.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.izhimu.seas.cache.service.SetCacheService;
-import com.izhimu.seas.core.utils.LogUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author haoran
  */
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisSetCacheServiceImpl implements SetCacheService {
+
+    private static final LogWrapper log = LogWrapper.build("RedisSetCache");
+
     private final RedisTemplate<Object, Object> redisTemplate;
 
     public RedisSetCacheServiceImpl(RedisTemplate<Object, Object> redisTemplate) {
@@ -33,7 +34,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Get error"), e);
+            log.error(e);
             return Collections.emptySet();
         }
     }
@@ -43,7 +44,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
         try {
             return Convert.toSet(clazz, redisTemplate.opsForSet().members(key));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Get error"), e);
+            log.error(e);
             return Collections.emptySet();
         }
     }
@@ -54,7 +55,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.opsForSet().isMember(key, value));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Has key error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -65,7 +66,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
             Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForSet().add(key, values));
             return optional.orElse(-1L) > 0;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -82,7 +83,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
             }
             return false;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -92,7 +93,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
         try {
             return Optional.ofNullable(redisTemplate.opsForSet().size(key)).orElse(0L);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Size error"), e);
+            log.error(e);
             return 0;
         }
     }
@@ -103,7 +104,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
             Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForSet().remove(key, values));
             return optional.orElse(-1L) > 0;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisSetCache", "Del error"), e);
+            log.error(e);
             return false;
         }
     }

@@ -1,10 +1,9 @@
 package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -20,8 +19,9 @@ import java.util.Objects;
  * @author Haoran
  * @version v1.0
  */
-@Slf4j
 public abstract class AbstractDbEngine implements AutoCloseable {
+
+    private static final LogWrapper log = LogWrapper.build("DbEngine");
 
     public static final String COLUMN_NAME = "COLUMN_NAME";
     public static final String COLUMN_COMMENT = "COLUMN_COMMENT";
@@ -47,7 +47,7 @@ public abstract class AbstractDbEngine implements AutoCloseable {
         try (Connection conn = dataSource.getConnection()) {
             return !conn.isClosed();
         } catch (SQLException e) {
-            log.error(LogUtil.format("DbEngine", "test connection error"), e);
+            log.error(e);
             throw new DbEngineException(e.getMessage());
         }
     }

@@ -1,8 +1,7 @@
 package com.izhimu.seas.core.event;
 
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.scan.IScanHandler;
-import com.izhimu.seas.core.utils.LogUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
 import java.util.Set;
@@ -14,8 +13,9 @@ import java.util.Set;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-@Slf4j
 public class EventListenerScanHandler implements IScanHandler {
+
+    private static final LogWrapper log = LogWrapper.build("ScanServer");
 
     @Override
     public String name() {
@@ -40,7 +40,7 @@ public class EventListenerScanHandler implements IScanHandler {
                     }
                 }
             } catch (Exception e) {
-                log.error(LogUtil.format("ScanServer", "EventListener", "Error"), e);
+                log.error("EventListener", "", e);
             }
         }
     }

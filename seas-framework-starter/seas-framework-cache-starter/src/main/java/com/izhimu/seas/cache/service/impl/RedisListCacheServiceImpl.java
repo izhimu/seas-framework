@@ -1,8 +1,7 @@
 package com.izhimu.seas.cache.service.impl;
 
 import com.izhimu.seas.cache.service.ListCacheService;
-import com.izhimu.seas.core.utils.LogUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author haoran
  */
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisListCacheServiceImpl implements ListCacheService {
+
+    private static final LogWrapper log = LogWrapper.build("RedisListCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
@@ -33,7 +33,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
         try {
             return redisTemplate.opsForList().range(key, 0, -1);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Get error"), e);
+            log.error(e);
             return Collections.emptyList();
         }
     }
@@ -43,7 +43,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
         try {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Get error"), e);
+            log.error(e);
             return Collections.emptyList();
         }
     }
@@ -53,7 +53,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -63,7 +63,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
         try {
             return convert(redisTemplate.opsForList().index(key, index), clazz);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -73,7 +73,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
         try {
             return Optional.ofNullable(redisTemplate.opsForList().size(key)).orElse(0L);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Size error"), e);
+            log.error(e);
             return 0;
         }
     }
@@ -84,7 +84,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().rightPush(key, value);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -98,7 +98,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().rightPush(key, value);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -112,7 +112,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().rightPush(key, value);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, timeUnit));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -123,7 +123,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -137,7 +137,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().rightPushAll(key, value);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -148,7 +148,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             redisTemplate.opsForList().set(key, index, value);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -159,7 +159,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
             Optional<Long> optional = Optional.ofNullable(redisTemplate.opsForList().remove(key, count, value));
             return optional.orElse(-1L) > 0;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisListCache", "Del error"), e);
+            log.error(e);
             return false;
         }
     }

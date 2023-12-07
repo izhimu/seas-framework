@@ -4,8 +4,8 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.util.Pool;
+import com.izhimu.seas.core.log.LogWrapper;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,9 +17,10 @@ import java.io.IOException;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @UtilityClass
 public class KryoUtil {
+
+    private static final LogWrapper log = LogWrapper.build("KryoUtil");
 
     private static final Pool<Kryo> KRYO_POOL = new Pool<>(true, false, 8) {
         @Override
@@ -49,7 +50,7 @@ public class KryoUtil {
             output.flush();
             bytes = byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            log.error(LogUtil.format("KryoUtil", "Error"), e);
+            log.error(e);
         }
         return bytes;
     }
@@ -72,7 +73,7 @@ public class KryoUtil {
         ) {
             t = kryo.readClassAndObject(input);
         } catch (Exception e) {
-            log.error(LogUtil.format("KryoUtil", "Error"), e);
+            log.error(e);
         }
         return t;
     }

@@ -4,7 +4,6 @@ import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.mapper.StoFileMapper;
 import com.izhimu.seas.storage.service.StoFileService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ import java.util.Optional;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class StoFileServiceImpl extends BaseServiceImpl<StoFileMapper, StoFile> implements StoFileService {

@@ -2,10 +2,9 @@ package com.izhimu.seas.core.web.handler;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +26,12 @@ import java.util.List;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Order(-100)
 @ControllerAdvice
 @ConditionalOnClass({ControllerAdvice.class})
 public class CoreExceptionHandler {
+
+    private static final LogWrapper log = LogWrapper.build("ExceptionHandler");
 
     /**
      * 找不到页面
@@ -39,7 +40,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = NoHandlerFoundException.class)
     @ResponseBody
-    public ResponseEntity<Result<Object>> noHandlerFoundExceptionHandler() {
+    public ResponseEntity<Result<Serializable>> noHandlerFoundExceptionHandler() {
         return Result.fail(ResultCode.NOT_FOUND).buildResponseEntity();
     }
 
@@ -50,7 +51,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseEntity<Result<Object>> httpRequestMethodNotSupportedExceptionHandler() {
+    public ResponseEntity<Result<Serializable>> httpRequestMethodNotSupportedExceptionHandler() {
         return Result.fail(ResultCode.WRONG_METHOD).buildResponseEntity();
     }
 
@@ -61,7 +62,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = ValidateException.class)
     @ResponseBody
-    public ResponseEntity<Result<Object>> validationExceptionHandler(Exception e) {
+    public ResponseEntity<Result<Serializable>> validationExceptionHandler(Exception e) {
         if (CharSequenceUtil.isNotBlank(e.getMessage())) {
             return Result.fail(ResultCode.VERIFY_ERROR, e.getMessage()).buildResponseEntity();
         } else {
@@ -76,7 +77,7 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<Result<Object>> springValidationExceptionHandler(MethodArgumentNotValidException e) {
+    public ResponseEntity<Result<Serializable>> springValidationExceptionHandler(MethodArgumentNotValidException e) {
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
         List<String> errors = new ArrayList<>();
         for (ObjectError allError : allErrors) {
@@ -97,9 +98,9 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ResponseEntity<Result<Object>> defaultErrorHandler(Exception e) {
+    public ResponseEntity<Result<Serializable>> defaultErrorHandler(Exception e) {
         //500
-        log.error(LogUtil.format("ExceptionHandler", "Error"), e);
+        log.error(e);
         return Result.error().buildResponseEntity();
     }
 }

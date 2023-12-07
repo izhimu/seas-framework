@@ -79,7 +79,7 @@ public class BasOrgServiceImpl extends BaseServiceImpl<BasOrgMapper, BasOrg> imp
             BasOrg org = this.getById(entity.getParentId());
             entity.setOrgCode(org.getOrgCode().concat("001"));
         } else {
-            BasOrg last = list.get(0);
+            BasOrg last = list.getFirst();
             String code = CodeUtil.generateTreeCode(last.getOrgCode());
             entity.setOrgCode(code);
         }

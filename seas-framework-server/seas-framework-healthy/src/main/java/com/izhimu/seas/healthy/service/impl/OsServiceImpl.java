@@ -15,7 +15,6 @@ import oshi.util.FormatUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * OS信息服务层实现
@@ -81,7 +80,7 @@ public class OsServiceImpl implements OsService {
                     data.setUsedStr(FormatUtil.formatBytes(data.getUsed()));
                     return data;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -107,7 +106,7 @@ public class OsServiceImpl implements OsService {
                     return data;
                 })
                 .sorted(Comparator.comparing(Network::getStatus).reversed())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

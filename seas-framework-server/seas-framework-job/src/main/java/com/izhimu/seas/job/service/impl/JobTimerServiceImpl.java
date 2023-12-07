@@ -2,14 +2,13 @@ package com.izhimu.seas.job.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.mapper.JobTimerMapper;
 import com.izhimu.seas.job.service.JobTimerService;
 import com.izhimu.seas.job.service.ScheduleService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +22,11 @@ import java.util.Objects;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTimer> implements JobTimerService {
+
+    private static final LogWrapper logger = LogWrapper.build("JobTimerService");
 
     @Resource
     private ScheduleService scheduleService;
@@ -80,7 +80,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
 
     @Override
     public boolean initSchedule() {
-        log.info(LogUtil.format("TimerJob", "Loading"));
+        logger.info("Loading");
         TimeInterval t = DateUtil.timer();
         List<JobTimer> list = this.lambdaQuery()
                 .eq(JobTimer::getStatus, 1)
@@ -94,7 +94,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
                         this.updateById(timer);
                     }
                 });
-        log.info(LogUtil.format("TimerJob", "Load Done {}ms"), t.interval());
+        logger.info("Load Done {}ms", t.interval());
         return true;
     }
 

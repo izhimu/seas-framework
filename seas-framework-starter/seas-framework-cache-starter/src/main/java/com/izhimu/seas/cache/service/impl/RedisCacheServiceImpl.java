@@ -3,8 +3,7 @@ package com.izhimu.seas.cache.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.TypeReference;
 import com.izhimu.seas.cache.service.CacheService;
-import com.izhimu.seas.core.utils.LogUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,10 +19,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author haoran
  */
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisCacheServiceImpl implements CacheService {
+
+    private static final LogWrapper log = LogWrapper.build("RedisCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
@@ -37,7 +37,7 @@ public class RedisCacheServiceImpl implements CacheService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.hasKey(key));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Has key error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -57,7 +57,7 @@ public class RedisCacheServiceImpl implements CacheService {
             }
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Del error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -67,7 +67,7 @@ public class RedisCacheServiceImpl implements CacheService {
         try {
             return redisTemplate.opsForValue().get(key);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -77,7 +77,7 @@ public class RedisCacheServiceImpl implements CacheService {
         try {
             return convert(redisTemplate.opsForValue().get(key), clazz);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -88,7 +88,7 @@ public class RedisCacheServiceImpl implements CacheService {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -99,7 +99,7 @@ public class RedisCacheServiceImpl implements CacheService {
             set(key, value, time, TimeUnit.SECONDS);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -113,7 +113,7 @@ public class RedisCacheServiceImpl implements CacheService {
             redisTemplate.opsForValue().set(key, value, time, timeUnit);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -123,7 +123,7 @@ public class RedisCacheServiceImpl implements CacheService {
         try {
             return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, value));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set if absent error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -133,7 +133,7 @@ public class RedisCacheServiceImpl implements CacheService {
         try {
             return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, value, time, TimeUnit.SECONDS));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set if absent error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -143,7 +143,7 @@ public class RedisCacheServiceImpl implements CacheService {
         try {
             return Boolean.TRUE.equals(redisTemplate.opsForValue().setIfAbsent(key, value, time, timeUnit));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set if absent error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -157,7 +157,7 @@ public class RedisCacheServiceImpl implements CacheService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, TimeUnit.SECONDS));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set expire error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -171,7 +171,7 @@ public class RedisCacheServiceImpl implements CacheService {
             Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, timeUnit));
             return optional.orElse(false);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Set expire error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -182,7 +182,7 @@ public class RedisCacheServiceImpl implements CacheService {
             Optional<Long> optional = Optional.ofNullable(redisTemplate.getExpire(key, TimeUnit.SECONDS));
             return optional.orElse(-1L);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Get expire error"), e);
+            log.error(e);
             return -1L;
         }
     }
@@ -193,7 +193,7 @@ public class RedisCacheServiceImpl implements CacheService {
             return Convert.convert(new TypeReference<>() {
             }, redisTemplate.keys(pattern));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisCache", "Keys error"), e);
+            log.error(e);
             return Collections.emptySet();
         }
     }

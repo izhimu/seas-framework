@@ -12,6 +12,9 @@ import java.util.Set;
  */
 public class ScanHandlerHolder {
 
+    private ScanHandlerHolder() {
+    }
+
     private static final Set<IScanHandler> HANDLER_SET = new HashSet<>();
 
     /**

@@ -3,7 +3,7 @@ package com.izhimu.seas.storage.service.impl;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.config.MinioConfig;
 import com.izhimu.seas.storage.convert.DefFileConvert;
 import com.izhimu.seas.storage.convert.IFileConvert;
@@ -18,7 +18,6 @@ import io.minio.PutObjectArgs;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +43,11 @@ import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
  * @version v1.0
  */
 @SuppressWarnings("DuplicatedCode")
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "minio")
 public class MinioFileServiceImpl implements FileService {
+
+    private static final LogWrapper log = LogWrapper.build("MinioFileService");
 
     private MinioClient minioClient;
 
@@ -74,7 +74,7 @@ public class MinioFileServiceImpl implements FileService {
              os) {
             IoUtil.copy(object, os);
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Download as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class MinioFileServiceImpl implements FileService {
             response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             IoUtil.copy(object, output);
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Download as http error"), e);
+            log.error(e);
         }
     }
 
@@ -117,7 +117,7 @@ public class MinioFileServiceImpl implements FileService {
             }
             ZipUtil.zip(os, ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Download zip as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -143,7 +143,7 @@ public class MinioFileServiceImpl implements FileService {
             response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             ZipUtil.zip(response.getOutputStream(), ArrayUtil.toArray(pathList, String.class), ArrayUtil.toArray(inList, InputStream.class));
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Download zip as http error"), e);
+            log.error(e);
         }
     }
 
@@ -167,7 +167,7 @@ public class MinioFileServiceImpl implements FileService {
                 convert.convert(object, os, param);
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Preview as stream error"), e);
+            log.error(e);
         }
     }
 
@@ -194,7 +194,7 @@ public class MinioFileServiceImpl implements FileService {
                 convert.convert(object, output, param);
             }
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Preview as http error"), e);
+            log.error(e);
         }
     }
 
@@ -212,7 +212,7 @@ public class MinioFileServiceImpl implements FileService {
                     .build());
             fileService.save(file);
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Upload error"), e);
+            log.error(e);
         }
         return file;
     }
@@ -239,7 +239,7 @@ public class MinioFileServiceImpl implements FileService {
             fileInfo.setContentType(file.getContentType());
             return fileInfo;
         } catch (Exception e) {
-            log.error(LogUtil.format("MinioFileService", "Get file info error"), e);
+            log.error(e);
             return null;
         }
     }

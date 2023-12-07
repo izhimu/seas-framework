@@ -7,7 +7,6 @@ import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.security.constant.SecurityConstant;
 import com.izhimu.seas.security.service.LoginService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 @RestController
 @RequestMapping("/security")
 public class SecurityController {

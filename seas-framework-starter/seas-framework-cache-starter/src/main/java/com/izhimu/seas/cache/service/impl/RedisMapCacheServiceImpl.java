@@ -1,8 +1,7 @@
 package com.izhimu.seas.cache.service.impl;
 
 import com.izhimu.seas.cache.service.MapCacheService;
-import com.izhimu.seas.core.utils.LogUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author haoran
  */
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisMapCacheServiceImpl implements MapCacheService {
+
+    private static final LogWrapper log = LogWrapper.build("RedisMapCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
@@ -33,7 +33,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return redisTemplate.opsForHash().get(key, item);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -43,7 +43,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return convert(redisTemplate.opsForHash().get(key, item), clazz);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Get error"), e);
+            log.error(e);
             return null;
         }
     }
@@ -53,7 +53,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return redisTemplate.opsForHash().entries(key);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Get to map error"), e);
+            log.error(e);
             return Collections.emptyMap();
         }
     }
@@ -63,7 +63,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return redisTemplate.opsForHash().values(key);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Get values error"), e);
+            log.error(e);
             return Collections.emptyList();
         }
     }
@@ -74,7 +74,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -88,7 +88,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().putAll(key, map);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -102,7 +102,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().putAll(key, map);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, timeUnit));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -113,7 +113,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -124,7 +124,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().put(key, item, value);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -138,7 +138,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
             redisTemplate.opsForHash().put(key, item, value);
             return Boolean.TRUE.equals(redisTemplate.expire(key, time, timeUnit));
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Set error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -148,7 +148,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return redisTemplate.opsForHash().delete(key, item) > 0;
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Del error"), e);
+            log.error(e);
             return false;
         }
     }
@@ -158,7 +158,7 @@ public class RedisMapCacheServiceImpl implements MapCacheService {
         try {
             return redisTemplate.opsForHash().hasKey(key, item);
         } catch (Exception e) {
-            log.error(LogUtil.format("RedisMapCache", "Has key error"), e);
+            log.error(e);
             return false;
         }
     }

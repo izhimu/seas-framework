@@ -1,10 +1,10 @@
 package com.izhimu.seas.job.handler;
 
 import com.izhimu.seas.core.annotation.JobRegister;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.scan.IScanHandler;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.service.JobTimerService;
-import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
 import java.util.List;
@@ -14,8 +14,9 @@ import java.util.Set;
  * @author haoran
  * @version v1.0
  */
-@Slf4j
 public class JobRegisterScanHandler implements IScanHandler {
+
+    private static final LogWrapper log = LogWrapper.build("ScanServer");
 
     private final JobTimerService timerService;
 
@@ -49,7 +50,7 @@ public class JobRegisterScanHandler implements IScanHandler {
                 timer.setClassPath(aClass.getName());
                 timerService.add(timer);
             } catch (Exception e) {
-                log.error("#ScanServer :JobRegister: Error ", e);
+                log.error("JobRegister", "", e);
             }
         }
     }

@@ -56,7 +56,7 @@ public class BasAccountLogServiceImpl extends BaseServiceImpl<BasAccountLogMappe
             return;
         }
         List<BasDevice> list = deviceService.findByCode(loginDTO.getDeviceId());
-        BasDevice device = list.isEmpty() ? null : list.get(0);
+        BasDevice device = list.isEmpty() ? null : list.getFirst();
         boolean newDevice = Objects.isNull(device);
         if (newDevice) {
             device = new BasDevice();

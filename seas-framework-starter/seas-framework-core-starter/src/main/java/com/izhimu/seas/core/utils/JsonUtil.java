@@ -16,8 +16,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.izhimu.seas.core.log.LogWrapper;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,11 +33,11 @@ import java.time.format.DateTimeFormatter;
  * @version v1.0
  */
 @SuppressWarnings("unused")
-@Slf4j
 @UtilityClass
 public class JsonUtil {
 
-    private static final String LOG_NAME = "JsonUtil";
+    private static final LogWrapper log = LogWrapper.build("JsonUtil");
+
     private static final JsonMapper MAPPER = JsonMapper.builder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .build();
@@ -91,7 +91,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format(LOG_NAME, "To json str error"), e);
+            log.error("To json str error", e);
             return null;
         }
     }
@@ -100,7 +100,7 @@ public class JsonUtil {
         try {
             return MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format(LOG_NAME, "To json byte error"), e);
+            log.error("To json byte error", e);
             return new byte[0];
         }
     }
@@ -109,7 +109,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(json, clazz);
         } catch (JsonProcessingException e) {
-            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
+            log.error("Json to object error", e);
             return null;
         }
     }
@@ -118,7 +118,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(is, clazz);
         } catch (IOException e) {
-            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
+            log.error("Stream to object error", e);
             return null;
         }
     }
@@ -127,7 +127,7 @@ public class JsonUtil {
         try {
             return MAPPER.readValue(bytes, clazz);
         } catch (IOException e) {
-            log.error(LogUtil.format(LOG_NAME, "To object error"), e);
+            log.error("Bytes to object error", e);
             return null;
         }
     }

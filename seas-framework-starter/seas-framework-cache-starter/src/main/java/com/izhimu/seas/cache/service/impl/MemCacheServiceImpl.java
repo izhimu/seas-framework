@@ -7,7 +7,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.izhimu.seas.cache.entity.ExpireCache;
 import com.izhimu.seas.cache.service.CacheService;
-import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author haoran
  */
-@Slf4j
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "mem", matchIfMissing = true)
 public class MemCacheServiceImpl implements CacheService {

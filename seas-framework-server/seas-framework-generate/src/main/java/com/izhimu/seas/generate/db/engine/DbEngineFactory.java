@@ -1,9 +1,8 @@
 package com.izhimu.seas.generate.db.engine;
 
-import com.izhimu.seas.core.utils.LogUtil;
+import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.enums.DbType;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -12,8 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author Haoran
  * @version v1.0
  */
-@Slf4j
 public class DbEngineFactory {
+
+    private static final LogWrapper log = LogWrapper.build("DbEngine");
 
     private DbEngineFactory() {
     }
@@ -42,7 +42,7 @@ public class DbEngineFactory {
         try {
             return dbType.getEngine().getDeclaredConstructor(JdbcTemplate.class).newInstance(jdbcTemplate);
         } catch (Exception e) {
-            log.error(LogUtil.format("DbEngine", "get engine error"), e);
+            log.error(e);
             return null;
         }
     }
