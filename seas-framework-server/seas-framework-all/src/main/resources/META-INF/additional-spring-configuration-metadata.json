@@ -2,7 +2,7 @@
   "properties": [
     {
       "name": "seas.core.virtual-thread",
-      "type": "java.lang.String",
+      "type": "java.lang.Boolean",
       "description": "Description for seas.core.enable-virtual-thread."
     },
     {

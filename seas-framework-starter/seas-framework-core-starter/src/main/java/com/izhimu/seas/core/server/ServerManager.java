@@ -1,7 +1,7 @@
 package com.izhimu.seas.core.server;
 
-import cn.hutool.core.thread.ThreadUtil;
 import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.core.pool.ThreadPoolFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ServerManager {
     private final List<IServer> serverList;
 
     public ServerManager() {
-        executorService = ThreadUtil.newExecutor();
+        executorService = ThreadPoolFactory.build("Server");
         serverList = new ArrayList<>();
     }
 

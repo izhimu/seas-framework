@@ -2,13 +2,13 @@ package com.izhimu.seas.core.log;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
+import com.izhimu.seas.core.pool.ThreadPoolFactory;
 import com.izhimu.seas.core.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 日志包装器
@@ -21,9 +21,7 @@ public class LogWrapper {
     /**
      * 日志输出线程池
      */
-    private static final ExecutorService LOG_POOL = Executors.newThreadPerTaskExecutor(
-            Thread.ofVirtual().name("Log-V#", 1).factory()
-    );
+    private static final ExecutorService LOG_POOL = ThreadPoolFactory.build("Log");
 
     private static final String BOX_1 = "{}";
     private static final String BOX_2 = "{} {}";

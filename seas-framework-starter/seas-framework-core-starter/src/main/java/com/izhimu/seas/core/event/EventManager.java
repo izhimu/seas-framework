@@ -3,12 +3,12 @@ package com.izhimu.seas.core.event;
 import cn.dev33.satoken.stp.StpUtil;
 import com.izhimu.seas.core.holder.LoginIdHolder;
 import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.core.pool.ThreadPoolFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 事件管理器
@@ -36,9 +36,7 @@ public class EventManager {
     /**
      * 事件处理线程池
      */
-    private static final ExecutorService EVENT_POOL = Executors.newThreadPerTaskExecutor(
-            Thread.ofVirtual().name("Event-V#", 1).factory()
-    );
+    private static final ExecutorService EVENT_POOL = ThreadPoolFactory.build("Event");
 
     private EventManager() {
     }

@@ -89,7 +89,7 @@ public class OperationLogAspect {
             data.setParams(params);
             data.setResult(JsonUtil.toJsonStr(ret));
             EventManager.trigger(CoreEvent.E_LOG, data);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.error(e);
         }
         return ret;
