@@ -75,7 +75,11 @@ public class LogWrapper {
 
     private void execute(Runnable runnable) {
         if (async) {
-            LOG_POOL.execute(runnable);
+            String name = Thread.currentThread().getName();
+            LOG_POOL.execute(() -> {
+                Thread.currentThread().setName(name);
+                runnable.run();
+            });
         } else {
             runnable.run();
         }
