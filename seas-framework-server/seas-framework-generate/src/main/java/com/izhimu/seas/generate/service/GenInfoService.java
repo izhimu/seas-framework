@@ -18,4 +18,18 @@ public interface GenInfoService {
      * @return 生成信息
      */
     GenInfo getInfo(Long sourceId, String table);
+
+    /**
+     * 生成
+     *
+     * @param genInfo 生成信息
+     */
+    void create(GenInfo genInfo);
+
+    /**
+     * 预览生成内容
+     *
+     * @param genInfo 生成信息
+     */
+    void preview(GenInfo genInfo);
 }

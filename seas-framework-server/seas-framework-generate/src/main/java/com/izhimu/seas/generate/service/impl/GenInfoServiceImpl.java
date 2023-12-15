@@ -62,4 +62,14 @@ public class GenInfoServiceImpl implements GenInfoService {
                 .toList());
         return info;
     }
+
+    @Override
+    public void create(GenInfo genInfo) {
+
+    }
+
+    @Override
+    public void preview(GenInfo genInfo) {
+
+    }
 }
