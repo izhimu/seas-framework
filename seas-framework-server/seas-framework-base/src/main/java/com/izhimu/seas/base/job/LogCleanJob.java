@@ -7,6 +7,7 @@ import com.izhimu.seas.core.enums.TimerType;
 import com.izhimu.seas.core.job.AbstractJob;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 日志清理任务
@@ -26,5 +27,19 @@ public class LogCleanJob extends AbstractJob {
     @Override
     public void run(Map<String, Object> param) {
         logService.cleanLog();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LogCleanJob that = (LogCleanJob) o;
+        return Objects.equals(logService, that.logService);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), logService);
     }
 }

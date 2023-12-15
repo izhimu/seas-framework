@@ -1,5 +1,6 @@
 package com.izhimu.seas.generate.service.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.generate.entity.GenTemplate;
 import com.izhimu.seas.generate.entity.GenTemplateAssets;
@@ -33,8 +34,8 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
                 .eq(GenTemplateAssets::getTemplateId, id)
                 .list().stream()
                 .peek(v -> {
-                    if (v.getAssetsData() instanceof byte[] bytes) {
-                        v.setAssetsData(new String(bytes, StandardCharsets.UTF_8));
+                    if (Objects.nonNull(v.getAssetsData())) {
+                        v.setAssetsDataStr(new String(v.getAssetsData(), StandardCharsets.UTF_8));
                     }
                 }).toList();
     }
@@ -51,8 +52,8 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
         assetsList
                 .stream()
                 .peek(v -> {
-                    if (v.getAssetsData() instanceof String data) {
-                        v.setAssetsData(data.getBytes(StandardCharsets.UTF_8));
+                    if (CharSequenceUtil.isNotBlank(v.getAssetsDataStr())) {
+                        v.setAssetsData(v.getAssetsDataStr().getBytes(StandardCharsets.UTF_8));
                     }
                 })
                 .forEach(templateAssetsService::save);

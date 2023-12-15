@@ -1,6 +1,8 @@
 package com.izhimu.seas.generate.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +29,13 @@ public class GenTemplateAssets extends IdEntity {
     /**
      * 资源数据
      */
-    private Object assetsData;
+    @ViewIgnore
+    private byte[] assetsData;
+    /**
+     * 资源数据
+     */
+    @TableField(exist = false)
+    private String assetsDataStr;
     /**
      * 输出路径
      */

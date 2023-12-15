@@ -133,7 +133,7 @@ public class JsonUtil {
     }
 
     public static String removeEnter(String str) {
-        return str.replaceAll("\\s*|\r|\n|\t", "");
+        return str.replaceAll("\\s*", "");
     }
 
     public static String end(String str, String end) {
