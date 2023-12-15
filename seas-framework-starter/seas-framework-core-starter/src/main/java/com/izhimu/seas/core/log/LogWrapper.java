@@ -1,11 +1,11 @@
 package com.izhimu.seas.core.log;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.pool.ThreadPoolFactory;
 import com.izhimu.seas.core.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -92,79 +92,79 @@ public class LogWrapper {
     }
 
     public void info(String msg, Object... params) {
-        execute(() -> log.info(BOX_2, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.info(BOX_2, topic, format(msg, params)));
     }
 
     public void info(String tag, String msg, Object... params) {
-        execute(() -> log.info(BOX_3, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.info(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
     public void info(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.info(BOX_3, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.info(BOX_3, topic, format(msg, params), param(param)));
     }
 
     public void info(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.info(BOX_4, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.info(BOX_4, topic, tag(tag), format(msg, params), param(param)));
     }
 
     public void debug(String msg, Object... params) {
         if (!log.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_2, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.debug(BOX_2, topic, format(msg, params)));
     }
 
     public void debug(String tag, String msg, Object... params) {
         if (!log.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_3, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.debug(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
     public void debug(Map<String, Object> param, String msg, Object... params) {
         if (!log.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_3, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.debug(BOX_3, topic, format(msg, params), param(param)));
     }
 
     public void debug(String tag, Map<String, Object> param, String msg, Object... params) {
         if (!log.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_4, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.debug(BOX_4, topic, tag(tag), format(msg, params), param(param)));
     }
 
     public void warn(String msg, Object... params) {
-        execute(() -> log.warn(BOX_2, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.warn(BOX_2, topic, format(msg, params)));
     }
 
     public void warn(String tag, String msg, Object... params) {
-        execute(() -> log.warn(BOX_3, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.warn(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
     public void warn(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.warn(BOX_3, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.warn(BOX_3, topic, format(msg, params), param(param)));
     }
 
     public void warn(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.warn(BOX_4, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.warn(BOX_4, topic, tag(tag), format(msg, params), param(param)));
     }
 
     public void error(String msg, Object... params) {
-        execute(() -> log.error(BOX_2, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.error(BOX_2, topic, format(msg, params)));
     }
 
     public void error(String tag, String msg, Object... params) {
-        execute(() -> log.error(BOX_3, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params)));
+        execute(() -> log.error(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
     public void error(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.error(BOX_3, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.error(BOX_3, topic, format(msg, params), param(param)));
     }
 
     public void error(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.error(BOX_4, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param)));
+        execute(() -> log.error(BOX_4, topic, tag(tag), format(msg, params), param(param)));
     }
 
     public void error(Throwable e) {
@@ -172,18 +172,22 @@ public class LogWrapper {
     }
 
     public void error(String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_2, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), e));
+        execute(() -> log.error(BOX_2, topic, format(msg, params), e));
     }
 
     public void error(String tag, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_3, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), e));
+        execute(() -> log.error(BOX_3, topic, tag(tag), format(msg, params), e));
     }
 
     public void error(Map<String, Object> param, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_3, topic, params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param), e));
+        execute(() -> log.error(BOX_3, topic, format(msg, params), param(param), e));
     }
 
     public void error(String tag, Map<String, Object> param, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_4, topic, tag(tag), params.length == 0 ? msg : CharSequenceUtil.format(msg, params), param(param), e));
+        execute(() -> log.error(BOX_4, topic, tag(tag), format(msg, params), param(param), e));
+    }
+
+    private String format(String msg, Object... params) {
+        return params.length == 0 ? msg : MessageFormatter.basicArrayFormat(msg, params);
     }
 }
