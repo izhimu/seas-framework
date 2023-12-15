@@ -91,6 +91,10 @@ public class LogWrapper {
         return JsonUtil.toJsonStr(param);
     }
 
+    private String format(String msg, Object... params) {
+        return params.length == 0 ? msg : MessageFormatter.basicArrayFormat(msg, params);
+    }
+
     public void info(String msg, Object... params) {
         execute(() -> log.info(BOX_2, topic, format(msg, params)));
     }
@@ -185,9 +189,5 @@ public class LogWrapper {
 
     public void error(String tag, Map<String, Object> param, String msg, Throwable e, Object... params) {
         execute(() -> log.error(BOX_4, topic, tag(tag), format(msg, params), param(param), e));
-    }
-
-    private String format(String msg, Object... params) {
-        return params.length == 0 ? msg : MessageFormatter.basicArrayFormat(msg, params);
     }
 }
