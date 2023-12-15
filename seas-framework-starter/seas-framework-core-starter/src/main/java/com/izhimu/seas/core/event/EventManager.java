@@ -72,7 +72,7 @@ public class EventManager {
         boolean hasAsync = ASYNC_EVENT_LISTENER_MAP.containsKey(key);
         if (!hasSync && !hasAsync) {
             NO_LISTENER_EVENT.add(key);
-            log.warn(key, "Not Found Listener");
+            log.warnT(key, "Not Found Listener");
             return;
         }
         Object loginId = LoginIdHolder.get();
@@ -80,7 +80,7 @@ public class EventManager {
             try {
                 loginId = StpUtil.getSession().getLoginId();
             } catch (Exception e) {
-                log.warn(key, "", e.getMessage());
+                log.warnT(key, "", e.getMessage());
             }
         }
         Object finalLoginId = loginId;
@@ -90,7 +90,7 @@ public class EventManager {
                 List<EventListenerWrapper> list = ASYNC_EVENT_LISTENER_MAP.get(key);
                 EVENT_POOL.submit(() -> list.parallelStream().map(EventListenerWrapper::getListener).forEach(listener -> {
                     if (Objects.isNull(data)) {
-                        log.info(key, "Trigger async listener {}", listener.getClass().getSimpleName());
+                        log.infoT(key, "Trigger async listener {}", listener.getClass().getSimpleName());
                     } else {
                         log.info(key, Map.of("Data", data), "Trigger async listener {}", listener.getClass().getSimpleName());
                     }
@@ -110,7 +110,7 @@ public class EventManager {
                 while (flag && iterator.hasNext()) {
                     IEventListener listener = iterator.next().getListener();
                     if (Objects.isNull(data)) {
-                        log.info(key, "Trigger sync listener {}", listener.getClass().getSimpleName());
+                        log.infoT(key, "Trigger sync listener {}", listener.getClass().getSimpleName());
                     } else {
                         log.info(key, Map.of("Data", data), "Trigger sync listener {}", listener.getClass().getSimpleName());
                     }

@@ -99,7 +99,7 @@ public class LogWrapper {
         execute(() -> log.info(BOX_2, topic, format(msg, params)));
     }
 
-    public void info(String tag, String msg, Object... params) {
+    public void infoT(String tag, String msg, Object... params) {
         execute(() -> log.info(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
@@ -118,7 +118,7 @@ public class LogWrapper {
         execute(() -> log.debug(BOX_2, topic, format(msg, params)));
     }
 
-    public void debug(String tag, String msg, Object... params) {
+    public void debugT(String tag, String msg, Object... params) {
         if (!log.isDebugEnabled()) {
             return;
         }
@@ -143,7 +143,7 @@ public class LogWrapper {
         execute(() -> log.warn(BOX_2, topic, format(msg, params)));
     }
 
-    public void warn(String tag, String msg, Object... params) {
+    public void warnT(String tag, String msg, Object... params) {
         execute(() -> log.warn(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
@@ -159,7 +159,7 @@ public class LogWrapper {
         execute(() -> log.error(BOX_2, topic, format(msg, params)));
     }
 
-    public void error(String tag, String msg, Object... params) {
+    public void errorT(String tag, String msg, Object... params) {
         execute(() -> log.error(BOX_3, topic, tag(tag), format(msg, params)));
     }
 
