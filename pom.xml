@@ -91,6 +91,11 @@
     </build>
 
     <distributionManagement>
+<!--        <repository>-->
+<!--            <id>izhimu-seas-maven-releases-open</id>-->
+<!--            <name>maven-releases-open</name>-->
+<!--            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>-->
+<!--        </repository>-->
         <repository>
             <id>izhimu-seas-maven-releases</id>
             <name>maven-releases</name>
