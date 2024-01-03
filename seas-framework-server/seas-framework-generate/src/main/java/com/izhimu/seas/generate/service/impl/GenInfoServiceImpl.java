@@ -8,6 +8,8 @@ import com.izhimu.seas.generate.entity.GenFieldInfo;
 import com.izhimu.seas.generate.entity.GenInfo;
 import com.izhimu.seas.generate.service.GenDatasourceService;
 import com.izhimu.seas.generate.service.GenInfoService;
+import com.izhimu.seas.generate.service.GenTemplateAssetsService;
+import com.izhimu.seas.generate.service.GenTemplateService;
 import com.izhimu.seas.generate.util.TypeUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,10 @@ public class GenInfoServiceImpl implements GenInfoService {
 
     @Resource
     private GenDatasourceService datasourceService;
+    @Resource
+    private GenTemplateService templateService;
+    @Resource
+    private GenTemplateAssetsService templateAssetsService;
 
     @Override
     public GenInfo getInfo(Long sourceId, String table) {
