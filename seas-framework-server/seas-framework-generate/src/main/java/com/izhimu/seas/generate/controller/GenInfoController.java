@@ -2,9 +2,13 @@ package com.izhimu.seas.generate.controller;
 
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.generate.entity.GenInfo;
+import com.izhimu.seas.generate.entity.GenTemplateAssets;
 import com.izhimu.seas.generate.service.GenInfoService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 代码生成控制层
@@ -38,8 +42,8 @@ public class GenInfoController {
      */
     @OperationLog("代码生成-生成")
     @PostMapping("/create")
-    public void create(@RequestBody GenInfo info) {
-        infoService.create(info);
+    public void create(@RequestBody GenInfo info, HttpServletResponse response) {
+        infoService.create(info, response);
     }
 
 
@@ -50,7 +54,7 @@ public class GenInfoController {
      */
     @OperationLog("代码生成-预览")
     @PostMapping("/preview")
-    public void preview(@RequestBody GenInfo info) {
-        infoService.preview(info);
+    public List<GenTemplateAssets> preview(@RequestBody GenInfo info) {
+        return infoService.preview(info);
     }
 }

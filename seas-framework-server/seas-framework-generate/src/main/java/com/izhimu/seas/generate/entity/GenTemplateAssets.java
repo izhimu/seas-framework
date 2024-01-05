@@ -40,4 +40,8 @@ public class GenTemplateAssets extends IdEntity {
      * 输出路径
      */
     private String outPath;
+    /**
+     * 资源类型
+     */
+    private String assetsType;
 }

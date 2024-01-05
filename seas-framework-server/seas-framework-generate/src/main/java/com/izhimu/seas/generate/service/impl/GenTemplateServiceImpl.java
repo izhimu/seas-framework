@@ -1,5 +1,6 @@
 package com.izhimu.seas.generate.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.izhimu.seas.data.service.impl.BaseServiceImpl;
 import com.izhimu.seas.generate.entity.GenTemplate;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -42,6 +45,15 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
 
     @Override
     public boolean assetsSave(List<GenTemplateAssets> assetsList) {
+        Map<String, String> languageMap = new HashMap<>();
+        languageMap.put("java", "java");
+        languageMap.put("js", "javascript");
+        languageMap.put("ts", "typescript");
+        languageMap.put("vue", "typescript");
+        languageMap.put("css", "css");
+        languageMap.put("json", "json");
+        languageMap.put("sql", "sql");
+        languageMap.put("rs", "rust");
         assetsList.stream()
                 .map(GenTemplateAssets::getTemplateId)
                 .filter(Objects::nonNull)
@@ -54,6 +66,9 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
                 .peek(v -> {
                     if (CharSequenceUtil.isNotBlank(v.getAssetsDataStr())) {
                         v.setAssetsData(v.getAssetsDataStr().getBytes(StandardCharsets.UTF_8));
+                    }
+                    if (CharSequenceUtil.isNotBlank(v.getAssetsName())) {
+                        v.setAssetsType(languageMap.getOrDefault(FileUtil.getSuffix(v.getAssetsName()), ""));
                     }
                 })
                 .forEach(templateAssetsService::save);

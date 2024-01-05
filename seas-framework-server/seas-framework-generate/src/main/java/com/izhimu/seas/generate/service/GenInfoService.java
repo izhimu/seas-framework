@@ -1,6 +1,10 @@
 package com.izhimu.seas.generate.service;
 
 import com.izhimu.seas.generate.entity.GenInfo;
+import com.izhimu.seas.generate.entity.GenTemplateAssets;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.List;
 
 /**
  * 代码生成服务层接口
@@ -24,12 +28,12 @@ public interface GenInfoService {
      *
      * @param genInfo 生成信息
      */
-    void create(GenInfo genInfo);
+    void create(GenInfo genInfo, HttpServletResponse response);
 
     /**
      * 预览生成内容
      *
      * @param genInfo 生成信息
      */
-    void preview(GenInfo genInfo);
+    List<GenTemplateAssets> preview(GenInfo genInfo);
 }

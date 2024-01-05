@@ -22,6 +22,11 @@ public class TypeConst {
     public static final String JAVA_TYPE_OBJECT = "Object";
     public static final String JAVA_TYPE_STRING = "String";
 
+    public static final String JAVA_IMPORT_BIG_DECIMAL = "java.math.BigDecimal";
+    public static final String JAVA_IMPORT_LOCAL_DATE = "java.time.LocalDate";
+    public static final String JAVA_IMPORT_LOCAL_DATETIME = "java.time.LocalDateTime";
+    public static final String JAVA_IMPORT_LOCAL_TIME = "java.time.LocalTime";
+
     public static final String JS_TYPE_ANY = "any";
     public static final String JS_TYPE_BOOLEAN = "boolean";
     public static final String JS_TYPE_NUMBER = "number";
