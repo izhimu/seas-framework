@@ -5,7 +5,6 @@ SERVER_NAME="Seas"
 BASE_PATH=/usr/local/seas
 JRE_PATH=${BASE_PATH}/jre/bin/java
 APP_PATH=${BASE_PATH}/lib/seas.jar
-LOG_PATH=${BASE_PATH}/log/seas.log
 JAVA_OPTION="-Xms128m -Xmx128m"
 MAX_TIMEOUT=120
 
@@ -29,7 +28,7 @@ start(){
     ## 判断方法返回值是否等于0 ，等于则不存在
     if [ $? -eq "0" ]; then
     	echo "服务启动中 ......"
-    	nohup ${JRE_PATH} ${JAVA_OPTION} -jar ${APP_PATH} > ${LOG_PATH} 2>&1 &
+    	nohup ${JRE_PATH} ${JAVA_OPTION} -jar ${APP_PATH} > /dev/null 2>&1 &
      	echo "服务启动成功"
     else
    		echo "服务已存在 - PID: ${pid}"
