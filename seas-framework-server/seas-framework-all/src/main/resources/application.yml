@@ -1,17 +1,6 @@
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
 spring:
-  web:
-    resources:
-      add-mappings: false
-  servlet:
-    multipart:
-      max-file-size: 1GB
-      max-request-size: 10GB
+  profiles:
+    include: common,seas
   datasource:
     name: dataSource
     url: jdbc:postgresql://192.168.31.243:5432/seas_db
@@ -22,43 +11,7 @@ spring:
     redis:
       host: 192.168.31.221
       password: 123456
-mybatis-plus:
-  configuration:
-    log-impl: com.izhimu.seas.data.service.impl.LogImpl
-  global-config:
-    banner: false
-    db-config:
-      logic-delete-field: LOGIC_DEL
-      logic-delete-value: 1
-      logic-not-delete-value: 0
 logging:
   level:
     root: INFO
     com.izhimu: DEBUG
-    oshi.util.platform.windows.WmiQueryHandler: ERROR
-  pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:%3.-3p}) |%clr(%12.12t){magenta}| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
-    file: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:%3.-3p} |%12.12t| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
-  file:
-    path: ./log
-    name: ${logging.file.path}/server.log
-  logback:
-    rollingpolicy:
-      clean-history-on-start: true
-seas:
-  cache:
-    type: redis
-  security:
-    supers:
-      - admin
-    err-time: 300
-    err-num: 5
-    token-time: 1800
-  storage:
-    minio:
-      end-point: http://192.168.31.221:9001
-      access-key: minioadmin
-      secret-key: minioadmin
-      bucket: seas
-  log:
-    enable-ip-address-query: false
