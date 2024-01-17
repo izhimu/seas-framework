@@ -42,6 +42,18 @@ public class GenInfo implements Serializable {
      */
     private String className;
     /**
+     * 文件名
+     */
+    private String fileName;
+    /**
+     * 路径名
+     */
+    private String pathName;
+    /**
+     * 键名
+     */
+    private String keyName;
+    /**
      * 字段信息
      */
     private List<GenFieldInfo> fieldList;

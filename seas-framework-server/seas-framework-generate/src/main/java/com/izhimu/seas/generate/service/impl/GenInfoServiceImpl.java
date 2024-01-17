@@ -143,6 +143,9 @@ public class GenInfoServiceImpl implements GenInfoService {
         param.put("tableName", genInfo.getTableName());
         param.put("tableDesc", genInfo.getTableDesc());
         param.put("className", genInfo.getClassName());
+        param.put("fileName", CharSequenceUtil.lowerFirst(genInfo.getClassName()));
+        param.put("pathName", "/".concat(CharSequenceUtil.toUnderlineCase(genInfo.getClassName()).replace("_", "/")));
+        param.put("keyName", CharSequenceUtil.toUnderlineCase(genInfo.getClassName()).replace("_", "."));
         param.put("fieldList", genInfo.getFieldList());
         extJavaParam(param, genInfo);
         return param;
