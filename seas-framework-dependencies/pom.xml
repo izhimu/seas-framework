@@ -14,7 +14,7 @@
 
     <properties>
         <spring.boot.version>3.1.7</spring.boot.version>
-        <hutool.version>5.8.24</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
         <mybatis.plus.version>3.5.5</mybatis.plus.version>
         <kryo.version>5.5.0</kryo.version>
         <minio.version>8.5.7</minio.version>
@@ -24,6 +24,7 @@
         <satoken.version>1.37.0</satoken.version>
         <camunda.version>7.20.0</camunda.version>
         <aspose.version>23.5</aspose.version>
+        <fury.version>0.4.1</fury.version>
     </properties>
 
     <dependencyManagement>
@@ -148,6 +149,11 @@
                 <groupId>com.aspose</groupId>
                 <artifactId>aspose-words</artifactId>
                 <version>${aspose.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.furyio</groupId>
+                <artifactId>fury-core</artifactId>
+                <version>${fury.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

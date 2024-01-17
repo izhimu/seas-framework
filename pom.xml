@@ -19,14 +19,10 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.plugin.version>2.7.10</spring.boot.plugin.version>
-        <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
-        <maven.deploy.plugin.version>3.1.1</maven.deploy.plugin.version>
-        <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
-        <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
-        <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
+        <maven.compile.plugin.version>3.12.1</maven.compile.plugin.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
-        <maven.dependency.plugin.version>3.6.0</maven.dependency.plugin.version>
+        <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
     </properties>
 
     <repositories>
@@ -47,29 +43,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven.clean.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven.deploy.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>${maven.install.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven.site.plugin.version}</version>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compile.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

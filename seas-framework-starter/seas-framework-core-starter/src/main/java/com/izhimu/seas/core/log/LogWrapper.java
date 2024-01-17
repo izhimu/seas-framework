@@ -43,13 +43,13 @@ public class LogWrapper {
 
     public LogWrapper(Logger log, String topic, boolean async) {
         this.log = log;
-        this.topic = "•".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16));
+        this.topic = StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16);
         this.async = async;
     }
 
     public LogWrapper(Class<?> clazz, String topic, boolean async) {
         this.log = LoggerFactory.getLogger(clazz);
-        this.topic = "•".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16));
+        this.topic = StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16);
         this.async = async;
     }
 
@@ -84,7 +84,7 @@ public class LogWrapper {
     }
 
     private String tag(String tag) {
-        return "⟨".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat("⟩");
+        return "<".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat(">");
     }
 
     private String param(Map<String, Object> param) {

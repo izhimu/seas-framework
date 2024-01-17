@@ -1,7 +1,6 @@
 package com.izhimu.seas.cache.config;
 
 import com.izhimu.seas.cache.serializer.KryoRedisSerializer;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +24,6 @@ public class RedisConfig {
      * @return RedisTemplate
      */
     @Bean
-    @ConditionalOnBean(RedisConnectionFactory.class)
     @ConditionalOnMissingBean(name = "redisTemplate")
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

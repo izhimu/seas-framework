@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author haoran
  * @version v1.0
  */
-@MapperScan({"com.izhimu.seas.*.mapper"})
+@MapperScan({"com.izhimu.seas.generate.mapper"})
 @ComponentScan(basePackages = {"com.izhimu.seas"})
 @SpringBootApplication
 public class SeasGenerateApplication {

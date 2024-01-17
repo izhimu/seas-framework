@@ -12,6 +12,8 @@ spring:
     multipart:
       max-file-size: 1GB
       max-request-size: 10GB
+  freemarker:
+    check-template-location: false
 mybatis-plus:
   configuration:
     log-impl: com.izhimu.seas.data.service.impl.LogImpl

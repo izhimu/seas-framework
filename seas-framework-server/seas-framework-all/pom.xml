@@ -11,6 +11,10 @@
 
     <artifactId>seas-framework-all</artifactId>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.izhimu</groupId>
