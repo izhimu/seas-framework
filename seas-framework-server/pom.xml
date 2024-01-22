@@ -20,6 +20,7 @@
         <module>seas-framework-storage</module>
         <module>seas-framework-workflow</module>
         <module>seas-framework-generate</module>
+        <module>seas-framework-mqtt</module>
     </modules>
 
     <profiles>
