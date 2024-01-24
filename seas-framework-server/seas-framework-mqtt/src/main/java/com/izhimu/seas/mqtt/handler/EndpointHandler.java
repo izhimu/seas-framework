@@ -1,6 +1,7 @@
 package com.izhimu.seas.mqtt.handler;
 
 import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.mqtt.cache.ClientCache;
 import io.vertx.core.Handler;
 import io.vertx.mqtt.MqttEndpoint;
 
@@ -29,5 +30,6 @@ public class EndpointHandler implements Handler<MqttEndpoint> {
                 .publishReceivedHandler(endpoint::publishRelease)
                 .publishCompletionMessageHandler(new PubCompletionHandler(endpoint))
                 .publishAcknowledgeMessageHandler(new PubAcknowledgeHandler(endpoint));
+        ClientCache.put(endpoint);
     }
 }

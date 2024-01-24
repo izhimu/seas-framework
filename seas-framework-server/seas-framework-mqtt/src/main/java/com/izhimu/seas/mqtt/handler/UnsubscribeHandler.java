@@ -1,6 +1,8 @@
 package com.izhimu.seas.mqtt.handler;
 
 import com.izhimu.seas.core.log.LogWrapper;
+import com.izhimu.seas.mqtt.cache.SubscribeCache;
+import com.izhimu.seas.mqtt.entity.SubscribeInfo;
 import io.vertx.core.Handler;
 import io.vertx.mqtt.MqttEndpoint;
 import io.vertx.mqtt.messages.MqttUnsubscribeMessage;
@@ -10,20 +12,15 @@ import io.vertx.mqtt.messages.MqttUnsubscribeMessage;
  *
  * @author haoran
  */
-public class UnsubscribeHandler implements Handler<MqttUnsubscribeMessage> {
+public record UnsubscribeHandler(MqttEndpoint endpoint) implements Handler<MqttUnsubscribeMessage> {
 
     private static final LogWrapper log = LogWrapper.build("MQTTServer");
-
-    private final MqttEndpoint endpoint;
-
-    public UnsubscribeHandler(MqttEndpoint endpoint) {
-        this.endpoint = endpoint;
-    }
 
     @Override
     public void handle(MqttUnsubscribeMessage unsubscribe) {
         for (String t : unsubscribe.topics()) {
             log.info("Unsubscription for " + t);
+            SubscribeCache.del(t, new SubscribeInfo(endpoint.clientIdentifier(), null));
         }
         endpoint.unsubscribeAcknowledge(unsubscribe.messageId());
     }

@@ -11,15 +11,9 @@ import java.util.Map;
  *
  * @author haoran
  */
-public class PingHandler implements Handler<Void> {
+public record PingHandler(MqttEndpoint endpoint) implements Handler<Void> {
 
     private static final LogWrapper log = LogWrapper.build("MQTTServer");
-
-    private final MqttEndpoint endpoint;
-
-    public PingHandler(MqttEndpoint endpoint) {
-        this.endpoint = endpoint;
-    }
 
     @Override
     public void handle(Void unused) {

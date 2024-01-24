@@ -18,6 +18,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.izhimu</groupId>
+            <artifactId>seas-framework-cache-starter</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mqtt</artifactId>
         </dependency>

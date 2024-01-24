@@ -12,15 +12,9 @@ import java.util.Map;
  *
  * @author haoran
  */
-public class PubCompletionHandler implements Handler<MqttPubCompMessage> {
+public record PubCompletionHandler(MqttEndpoint endpoint) implements Handler<MqttPubCompMessage> {
 
     private static final LogWrapper log = LogWrapper.build("MQTTServer");
-
-    private final MqttEndpoint endpoint;
-
-    public PubCompletionHandler(MqttEndpoint endpoint) {
-        this.endpoint = endpoint;
-    }
 
     @Override
     public void handle(MqttPubCompMessage event) {

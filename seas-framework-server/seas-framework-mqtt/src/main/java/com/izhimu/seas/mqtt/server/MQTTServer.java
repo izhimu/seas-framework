@@ -4,7 +4,7 @@ import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.server.IServer;
 import com.izhimu.seas.mqtt.config.MQTTConfig;
 import com.izhimu.seas.mqtt.handler.EndpointHandler;
-import io.vertx.core.*;
+import io.vertx.core.Vertx;
 import io.vertx.mqtt.MqttServer;
 import io.vertx.mqtt.MqttServerOptions;
 
