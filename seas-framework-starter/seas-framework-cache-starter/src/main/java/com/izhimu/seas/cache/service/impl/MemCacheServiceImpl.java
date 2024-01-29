@@ -1,6 +1,7 @@
 package com.izhimu.seas.cache.service.impl;
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -67,6 +68,11 @@ public class MemCacheServiceImpl implements CacheService {
     @Override
     public <T> T get(String key, Class<T> clazz) {
         return ObjectUtil.defaultIfNull(cache.getIfPresent(key), data -> convert(data.getValue(), clazz), null);
+    }
+
+    @Override
+    public <T> T get(String key, TypeReference<T> typeReference) {
+        return ObjectUtil.defaultIfNull(cache.getIfPresent(key), data -> convert(data.getValue(), typeReference), null);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.izhimu.seas.cache.service;
 
+import cn.hutool.core.lang.TypeReference;
+
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +43,15 @@ public interface CacheService extends CacheConvertService {
      * @return 值
      */
     <T> T get(String key, Class<T> clazz);
+
+    /**
+     * 普通缓存获取
+     *
+     * @param key 键
+     * @return 值
+     */
+    <T> T get(String key, TypeReference<T> typeReference);
+
 
     /**
      * 普通缓存放入
@@ -106,6 +117,7 @@ public interface CacheService extends CacheConvertService {
      * @param time 时间(秒)
      * @return true成功|false失败
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean setExpire(String key, long time);
 
     /**
@@ -116,6 +128,7 @@ public interface CacheService extends CacheConvertService {
      * @param timeUnit 时间单位
      * @return true成功|false失败
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean setExpire(String key, long time, TimeUnit timeUnit);
 
     /**

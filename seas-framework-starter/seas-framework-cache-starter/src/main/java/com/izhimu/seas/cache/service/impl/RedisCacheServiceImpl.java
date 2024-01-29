@@ -83,6 +83,16 @@ public class RedisCacheServiceImpl implements CacheService {
     }
 
     @Override
+    public <T> T get(String key, TypeReference<T> typeReference) {
+        try {
+            return convert(redisTemplate.opsForValue().get(key), typeReference);
+        } catch (Exception e) {
+            log.error(e);
+            return null;
+        }
+    }
+
+    @Override
     public boolean set(String key, Object value) {
         try {
             redisTemplate.opsForValue().set(key, value);
