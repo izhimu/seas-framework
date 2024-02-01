@@ -6,6 +6,8 @@ import lombok.experimental.UtilityClass;
 
 import java.util.Set;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 订阅缓存
  * topicRule -> subscribeInfo Set
@@ -41,6 +43,7 @@ public class SubscribeCache {
         setCacheService.set(getKey(topicRule), subscribeInfo);
         putRule(topicRule);
         TopicCache.refreshRule(topicRule, false);
+        log.debug("SubscribeCache add subscribeInfo, {} -> {}", topicRule, subscribeInfo);
     }
 
     /**
@@ -61,6 +64,7 @@ public class SubscribeCache {
      */
     public static void del(String topicRule, SubscribeInfo subscribeInfo) {
         setCacheService.del(getKey(topicRule), subscribeInfo);
+        log.debug("SubscribeCache del subscribeInfo, {} -> {}", topicRule, subscribeInfo);
         delRule(topicRule);
         TopicCache.refreshRule(topicRule, true);
     }
@@ -72,6 +76,7 @@ public class SubscribeCache {
      */
     public static void putRule(String topicRule) {
         setCacheService.set(SUBSCRIBE_TOPIC_CACHE_KEY, topicRule);
+        log.debug("SubscribeCache add topic, topic: {}", topicRule);
     }
 
     /**
@@ -81,6 +86,7 @@ public class SubscribeCache {
      */
     public static void delRule(String topicRule) {
         setCacheService.del(SUBSCRIBE_TOPIC_CACHE_KEY, topicRule);
+        log.debug("SubscribeCache del topic, topic: {}", topicRule);
     }
 
     /**

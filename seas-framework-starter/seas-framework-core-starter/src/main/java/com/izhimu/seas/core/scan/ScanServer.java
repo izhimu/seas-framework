@@ -28,7 +28,7 @@ public class ScanServer implements IServer {
 
     @Override
     public void run() {
-        log.info("Scan path={}", path);
+        log.info("Scan path: {}", path);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(path))
                 .addScanners(Scanners.TypesAnnotated);

@@ -22,7 +22,7 @@ public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPubli
 
     @Override
     public void handle(MqttPublishMessage message) {
-        log.infoT(endpoint.clientIdentifier(), "MQTT Server {}", message.payload().toString(Charset.defaultCharset()));
+        log.infoT(endpoint.clientIdentifier(), "Publish message: {}", message.payload().toString(Charset.defaultCharset()));
         TopicCache.putRule(message.topicName());
         publish(message);
         ack(message);
@@ -33,7 +33,11 @@ public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPubli
                 SubscribeCache.get(rule).forEach(subscribe -> {
                     MqttEndpoint client = ClientCache.get(subscribe.clientId());
                     if (Objects.nonNull(client)) {
-                        client.publish(message.topicName(), message.payload(), subscribe.qos(), message.isDup(), message.isRetain());
+                        if (client.isConnected()) {
+                            client.publish(message.topicName(), message.payload(), qosAdaptation(message.qosLevel(), subscribe.qos()), message.isDup(), message.isRetain());
+                        } else {
+                            ClientCache.del(client.clientIdentifier());
+                        }
                     }
                 }));
     }
@@ -48,6 +52,20 @@ public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPubli
             endpoint.publishAcknowledge(message.messageId());
         } else if (message.qosLevel() == MqttQoS.EXACTLY_ONCE) {
             endpoint.publishReceived(message.messageId());
+        }
+    }
+
+    /**
+     * QoS适配
+     *
+     * @param source 源QoS
+     * @param target 目标QoS
+     */
+    private MqttQoS qosAdaptation(MqttQoS source, MqttQoS target) {
+        if (source.value() > target.value()) {
+            return target;
+        } else {
+            return source;
         }
     }
 }

@@ -26,7 +26,7 @@ public class ClientCache {
      */
     public static void put(MqttEndpoint endpoint) {
         CLIENT_CACHE.put(endpoint.clientIdentifier(), endpoint);
-        log.debug("ClientCache add client, clientId:{}", endpoint.clientIdentifier());
+        log.debug("ClientCache add client, clientId: {}", endpoint.clientIdentifier());
     }
 
     /**
@@ -46,6 +46,6 @@ public class ClientCache {
      */
     public static void del(String clientId) {
         CLIENT_CACHE.remove(clientId);
-        log.debug("ClientCache del client, clientId:{}", clientId);
+        log.debug("ClientCache del client, clientId: {}", clientId);
     }
 }

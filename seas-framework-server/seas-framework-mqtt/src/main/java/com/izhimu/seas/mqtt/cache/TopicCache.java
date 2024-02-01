@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import static com.izhimu.seas.mqtt.constant.MQTTConst.*;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 主题缓存
  *
@@ -30,6 +32,7 @@ public class TopicCache {
      */
     public static void put(String topic) {
         setCacheService.setExpire(TOPIC_CACHE_KEY, CACHE_DAY, topic);
+        log.debug("TopicCache add topic, topic: {}", topic);
     }
 
     /**
@@ -48,6 +51,7 @@ public class TopicCache {
      */
     public static void putRule(String topic) {
         setCacheService.setExpire(getKey(topic), CACHE_DAY, ruleMatch(topic).toArray());
+        log.debug("TopicCache add rule, topic: {}", topic);
         put(topic);
     }
 
@@ -88,6 +92,7 @@ public class TopicCache {
                         setCacheService.setExpire(getKey(t), CACHE_DAY, topicRule);
                     }
                 });
+        log.debug("TopicCache refresh rule, topic: {}, isDel: {}", topicRule, isDel);
     }
 
     /**

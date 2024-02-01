@@ -25,7 +25,7 @@ public class DefSecurityServiceImpl implements SecurityService {
 
     public DefSecurityServiceImpl() {
         defPwd = RandomUtil.randomString(16);
-        log.info("SecurityService create default user, user={} password={}", DEF_USER, defPwd);
+        log.info("SecurityService create default user, user: {} password: {}", DEF_USER, defPwd);
     }
 
     @Override

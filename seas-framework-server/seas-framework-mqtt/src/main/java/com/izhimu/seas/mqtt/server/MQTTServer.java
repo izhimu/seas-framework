@@ -42,7 +42,7 @@ public class MQTTServer implements IServer {
                 .endpointHandler(new EndpointHandler())
                 .listen(ar -> {
                     if (ar.succeeded()) {
-                        log.info("Start success,port={}", config.getPort());
+                        log.info("MQTT Server start success, port: {}", config.getPort());
                     } else {
                         log.error(ar.cause());
                     }

@@ -30,7 +30,7 @@ public abstract class AbstractJob implements Runnable {
 
     @Override
     public void run() {
-        log.infoT(key, "Job run, param={}", param);
+        log.infoT(key, "Job run, param: {}", param);
         TimeInterval timer = DateUtil.timer();
         run(param);
         log.info(key, "Job done {}ms", timer.interval());

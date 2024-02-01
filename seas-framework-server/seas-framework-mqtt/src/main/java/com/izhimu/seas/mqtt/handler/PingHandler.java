@@ -15,6 +15,6 @@ public record PingHandler(MqttEndpoint endpoint) implements Handler<Void> {
 
     @Override
     public void handle(Void unused) {
-        log.debugT(endpoint.clientIdentifier(), "MQTT Server -> ping received from client");
+        log.debugT(endpoint.clientIdentifier(), "ping received from client");
     }
 }
