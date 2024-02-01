@@ -2,7 +2,6 @@ package com.izhimu.seas.cache.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.izhimu.seas.cache.service.SetCacheService;
-import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * Redis Set缓存实现
  *
@@ -20,8 +21,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisSetCacheServiceImpl implements SetCacheService {
-
-    private static final LogWrapper log = LogWrapper.build("RedisSetCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
@@ -72,7 +71,7 @@ public class RedisSetCacheServiceImpl implements SetCacheService {
     }
 
     @Override
-    public boolean set(String key, long time, Object... values) {
+    public boolean setExpire(String key, long time, Object... values) {
         try {
             if (time <= 0) {
                 return false;

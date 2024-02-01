@@ -1,9 +1,10 @@
 package com.izhimu.seas.generate.db.engine;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.enums.DbType;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 数据库引擎工厂类
@@ -12,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @version v1.0
  */
 public class DbEngineFactory {
-
-    private static final LogWrapper log = LogWrapper.build("DbEngine");
 
     private DbEngineFactory() {
     }

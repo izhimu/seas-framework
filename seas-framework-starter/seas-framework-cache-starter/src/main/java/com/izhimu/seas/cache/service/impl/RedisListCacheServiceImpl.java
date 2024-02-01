@@ -1,7 +1,6 @@
 package com.izhimu.seas.cache.service.impl;
 
 import com.izhimu.seas.cache.service.ListCacheService;
-import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * Redis List缓存实现
  *
@@ -19,8 +20,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisListCacheServiceImpl implements ListCacheService {
-
-    private static final LogWrapper log = LogWrapper.build("RedisListCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 

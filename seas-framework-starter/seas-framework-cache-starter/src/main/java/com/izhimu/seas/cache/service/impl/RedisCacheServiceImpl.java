@@ -3,7 +3,6 @@ package com.izhimu.seas.cache.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.TypeReference;
 import com.izhimu.seas.cache.service.CacheService;
-import com.izhimu.seas.core.log.LogWrapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * Redis缓存实现
  *
@@ -22,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @ConditionalOnProperty(prefix = "seas.cache", name = "type", havingValue = "redis")
 public class RedisCacheServiceImpl implements CacheService {
-
-    private static final LogWrapper log = LogWrapper.build("RedisCache");
 
     private final RedisTemplate<Object, Object> redisTemplate;
 

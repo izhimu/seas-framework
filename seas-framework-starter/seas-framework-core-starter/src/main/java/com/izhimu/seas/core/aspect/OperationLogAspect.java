@@ -8,7 +8,6 @@ import com.izhimu.seas.core.entity.Log;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.core.utils.JsonUtil;
 import jakarta.annotation.Resource;
@@ -23,6 +22,8 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 操作日志切面
  *
@@ -32,8 +33,6 @@ import java.util.Objects;
 @Aspect
 @Component
 public class OperationLogAspect {
-
-    private static final LogWrapper log = LogWrapper.build("OperationLog");
 
     private static final String PLACEHOLDER = "@";
 
@@ -54,7 +53,7 @@ public class OperationLogAspect {
         try {
             params = JsonUtil.toJsonStr(args);
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.warn("OperationLog param to json str error: {}", e.getMessage());
             params = "";
         }
         Object target = pjp.getTarget();
@@ -100,7 +99,7 @@ public class OperationLogAspect {
         try {
             user = StpUtil.getSession().getModel(SaSession.USER, User.class);
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.warn("OperationLog get user error: {}", e.getMessage());
         }
         return user;
     }

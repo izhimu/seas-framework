@@ -4,7 +4,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassLoaderUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.izhimu.seas.core.job.AbstractJob;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.job.entity.JobTimer;
 import com.izhimu.seas.job.service.ScheduleService;
@@ -27,6 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 定时服务实现
  *
@@ -37,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 @Transactional(rollbackFor = Exception.class)
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private static final LogWrapper log = LogWrapper.build("ScheduleService");
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private static final Map<String, ScheduledFuture<?>> TASK_MAP = new ConcurrentHashMap<>();
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         ScheduledFuture<?> schedule = scheduler.schedule(job, trigger);
         TASK_MAP.put(timer.getKey(), schedule);
-        log.info(timer.getName(), Map.of("Expression", timer.getExpression(), "Class", timer.getClassPath()), "Added");
+        log.infoT(timer.getName(), "Added expression={}, class={}", timer.getExpression(), timer.getClassPath());
         return true;
     }
 

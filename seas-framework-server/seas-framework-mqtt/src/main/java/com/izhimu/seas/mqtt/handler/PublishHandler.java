@@ -1,9 +1,8 @@
 package com.izhimu.seas.mqtt.handler;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.mqtt.cache.ClientCache;
-import com.izhimu.seas.mqtt.cache.TopicCache;
 import com.izhimu.seas.mqtt.cache.SubscribeCache;
+import com.izhimu.seas.mqtt.cache.TopicCache;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.Handler;
 import io.vertx.mqtt.MqttEndpoint;
@@ -12,6 +11,8 @@ import io.vertx.mqtt.messages.MqttPublishMessage;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 消息处理器
  *
@@ -19,11 +20,9 @@ import java.util.Objects;
  */
 public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPublishMessage> {
 
-    private static final LogWrapper log = LogWrapper.build("MQTTServer");
-
     @Override
     public void handle(MqttPublishMessage message) {
-        log.info("{}", message.payload().toString(Charset.defaultCharset()));
+        log.infoT(endpoint.clientIdentifier(), "MQTT Server {}", message.payload().toString(Charset.defaultCharset()));
         TopicCache.putRule(message.topicName());
         publish(message);
         ack(message);

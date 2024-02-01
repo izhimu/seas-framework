@@ -2,12 +2,14 @@ package com.izhimu.seas.base.service.impl;
 
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.holder.LoginIdHolder;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.data.service.IMetaObjectService;
 import com.izhimu.seas.security.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 
 /**
  * 自动填充服务接口
@@ -17,8 +19,6 @@ import java.util.Objects;
  */
 @Service
 public class MetaObjectServiceImpl implements IMetaObjectService {
-
-    private static final LogWrapper log = LogWrapper.build("MetaObjectService");
 
     @Override
     public Long getUserId() {

@@ -12,7 +12,6 @@ import com.izhimu.seas.captcha.config.CaptchaConfig;
 import com.izhimu.seas.captcha.model.Captcha;
 import com.izhimu.seas.captcha.model.Point;
 import com.izhimu.seas.captcha.service.CaptchaService;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.JsonUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Objects;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 滑动验证码服务实现
  *
@@ -32,8 +33,6 @@ import java.util.Objects;
  */
 @Service
 public class SlideCaptchaServiceImpl implements CaptchaService {
-
-    private static final LogWrapper log = LogWrapper.build("CaptchaService");
 
     private static final String IMAGE_TYPE_PNG = "png";
     private static final String CACHE_CAPTCHA_KEY = "seas:captcha:";

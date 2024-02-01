@@ -3,7 +3,6 @@ package com.izhimu.seas.storage.service.impl;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.config.MinioConfig;
 import com.izhimu.seas.storage.convert.DefFileConvert;
 import com.izhimu.seas.storage.convert.IFileConvert;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
 import static com.izhimu.seas.storage.constant.PreviewConst.PDF_CONVERT_MAP;
 import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
 
@@ -46,8 +46,6 @@ import static com.izhimu.seas.storage.constant.PreviewConst.PNG_CONVERT_MAP;
 @Service
 @ConditionalOnProperty(prefix = "seas.storage", name = "type", havingValue = "minio")
 public class MinioFileServiceImpl implements FileService {
-
-    private static final LogWrapper log = LogWrapper.build("MinioFileService");
 
     private MinioClient minioClient;
 

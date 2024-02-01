@@ -2,10 +2,11 @@ package com.izhimu.seas.core.job;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
-import com.izhimu.seas.core.log.LogWrapper;
 import lombok.Data;
 
 import java.util.Map;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 抽象任务类
@@ -15,8 +16,6 @@ import java.util.Map;
  */
 @Data
 public abstract class AbstractJob implements Runnable {
-
-    private static final LogWrapper log = LogWrapper.build("Job");
 
     private String key;
 
@@ -31,9 +30,9 @@ public abstract class AbstractJob implements Runnable {
 
     @Override
     public void run() {
-        log.info(key, param, "Start");
+        log.infoT(key, "Job run, param={}", param);
         TimeInterval timer = DateUtil.timer();
         run(param);
-        log.info(key, param, "Done {}ms", timer.interval());
+        log.info(key, "Job done {}ms", timer.interval());
     }
 }

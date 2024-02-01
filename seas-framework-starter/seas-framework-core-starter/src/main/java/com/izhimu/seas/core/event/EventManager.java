@@ -2,13 +2,14 @@ package com.izhimu.seas.core.event;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.izhimu.seas.core.holder.LoginIdHolder;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.pool.ThreadPoolFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 事件管理器
@@ -19,8 +20,6 @@ import java.util.concurrent.ExecutorService;
  */
 @SuppressWarnings("unused")
 public class EventManager {
-
-    private static final LogWrapper log = LogWrapper.build("EventManager");
 
     /**
      * 串行事件监听器器Map
@@ -54,7 +53,7 @@ public class EventManager {
             List<EventListenerWrapper> list = map.get(event);
             list.add(wrapper);
             sort(list);
-            log.info(event, Map.of("Async", wrapper.isAsync()), "Loading {}", wrapper.getListener().getClass().getSimpleName());
+            log.infoT(event, "EventManager loading {}", wrapper.getListener().getClass().getSimpleName());
         }
     }
 
@@ -72,7 +71,7 @@ public class EventManager {
         boolean hasAsync = ASYNC_EVENT_LISTENER_MAP.containsKey(key);
         if (!hasSync && !hasAsync) {
             NO_LISTENER_EVENT.add(key);
-            log.warnT(key, "Not Found Listener");
+            log.warnT(key, "EventManager not found listener");
             return;
         }
         Object loginId = LoginIdHolder.get();
@@ -80,7 +79,7 @@ public class EventManager {
             try {
                 loginId = StpUtil.getSession().getLoginId();
             } catch (Exception e) {
-                log.warnT(key, "", e.getMessage());
+                log.warnT(key, "EventManager get session error: {}", e.getMessage());
             }
         }
         Object finalLoginId = loginId;
@@ -89,16 +88,12 @@ public class EventManager {
             if (hasAsync) {
                 List<EventListenerWrapper> list = ASYNC_EVENT_LISTENER_MAP.get(key);
                 EVENT_POOL.submit(() -> list.parallelStream().map(EventListenerWrapper::getListener).forEach(listener -> {
-                    if (Objects.isNull(data)) {
-                        log.infoT(key, "Trigger async listener {}", listener.getClass().getSimpleName());
-                    } else {
-                        log.info(key, Map.of("Data", data), "Trigger async listener {}", listener.getClass().getSimpleName());
-                    }
+                    log.infoT(key, "EventManager trigger async listener {}, data={}", listener.getClass().getSimpleName(), data);
                     try {
                         LoginIdHolder.set(finalLoginId);
                         listener.onEvent(data);
                     } catch (Exception e) {
-                        log.error(key, "", e);
+                        log.error(e);
                     } finally {
                         LoginIdHolder.remove();
                     }
@@ -109,16 +104,12 @@ public class EventManager {
                 boolean flag = true;
                 while (flag && iterator.hasNext()) {
                     IEventListener listener = iterator.next().getListener();
-                    if (Objects.isNull(data)) {
-                        log.infoT(key, "Trigger sync listener {}", listener.getClass().getSimpleName());
-                    } else {
-                        log.info(key, Map.of("Data", data), "Trigger sync listener {}", listener.getClass().getSimpleName());
-                    }
+                    log.infoT(key, "EventManager trigger sync listener {}, data={}", listener.getClass().getSimpleName(), data);
                     flag = listener.onEvent(data);
                 }
             }
         } catch (Exception e) {
-            log.error(key, "", e);
+            log.error(e);
         } finally {
             LoginIdHolder.remove();
         }

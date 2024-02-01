@@ -1,7 +1,6 @@
 package com.izhimu.seas.storage.controller;
 
 import com.izhimu.seas.core.annotation.OperationLog;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.entity.FileInfo;
 import com.izhimu.seas.storage.entity.StoFile;
 import com.izhimu.seas.storage.service.FileService;
@@ -15,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 文件服务控制层
  *
@@ -24,8 +25,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/sto/file")
 public class FileServerController {
-
-    private static final LogWrapper log = LogWrapper.build("FileServer");
 
     @Resource
     private FileService service;

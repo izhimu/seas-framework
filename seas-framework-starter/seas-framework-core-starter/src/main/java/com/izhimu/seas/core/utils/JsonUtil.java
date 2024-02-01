@@ -16,7 +16,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.izhimu.seas.core.log.LogWrapper;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -25,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * JSON工具
@@ -35,8 +36,6 @@ import java.time.format.DateTimeFormatter;
 @SuppressWarnings("unused")
 @UtilityClass
 public class JsonUtil {
-
-    private static final LogWrapper log = LogWrapper.build("JsonUtil");
 
     private static final JsonMapper MAPPER = JsonMapper.builder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)

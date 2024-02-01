@@ -4,12 +4,13 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.util.Pool;
-import com.izhimu.seas.core.log.LogWrapper;
 import lombok.experimental.UtilityClass;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * Kryo序列化工具
@@ -19,8 +20,6 @@ import java.io.IOException;
  */
 @UtilityClass
 public class KryoUtil {
-
-    private static final LogWrapper log = LogWrapper.build("KryoUtil");
 
     private static final Pool<Kryo> KRYO_POOL = new Pool<>(true, false, 8) {
         @Override

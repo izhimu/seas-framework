@@ -1,10 +1,11 @@
 package com.izhimu.seas.core.event;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.scan.IScanHandler;
 import org.reflections.Reflections;
 
 import java.util.Set;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 事件监听器扫描处理
@@ -14,8 +15,6 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class EventListenerScanHandler implements IScanHandler {
-
-    private static final LogWrapper log = LogWrapper.build("ScanServer");
 
     @Override
     public String name() {
@@ -40,7 +39,7 @@ public class EventListenerScanHandler implements IScanHandler {
                     }
                 }
             } catch (Exception e) {
-                log.error("EventListener", "", e);
+                log.error(e);
             }
         }
     }

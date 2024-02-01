@@ -12,7 +12,6 @@ import com.izhimu.seas.core.entity.Login;
 import com.izhimu.seas.core.entity.User;
 import com.izhimu.seas.core.event.CoreEvent;
 import com.izhimu.seas.core.event.EventManager;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.utils.IpUtil;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.config.SecurityConfig;
@@ -27,6 +26,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 
 /**
  * 登录服务接口实现
@@ -36,8 +37,6 @@ import java.util.Optional;
  */
 @Service
 public class LoginServiceImpl implements LoginService {
-
-    private static final LogWrapper log = LogWrapper.build("LoginService");
 
     @Resource
     private EncryptService<EncryptKey, String> encryptService;

@@ -1,6 +1,6 @@
 package com.izhimu.seas.mqtt;
 
-import com.izhimu.seas.cache.service.CacheService;
+import com.izhimu.seas.cache.service.SetCacheService;
 import com.izhimu.seas.core.server.ServerManager;
 import com.izhimu.seas.mqtt.cache.MQTTCache;
 import com.izhimu.seas.mqtt.config.MQTTConfig;
@@ -28,7 +28,7 @@ public class SeasMqttApplication implements ApplicationRunner, DisposableBean {
     }
 
     @Resource
-    private CacheService cacheService;
+    private SetCacheService setCacheService;
 
     @Resource
     private ServerManager serverManager;
@@ -38,7 +38,7 @@ public class SeasMqttApplication implements ApplicationRunner, DisposableBean {
 
     @Override
     public void run(ApplicationArguments args) {
-        MQTTCache.init(cacheService);
+        MQTTCache.init(setCacheService);
         serverManager
                 .add(new MQTTServer(mqttConfig))
                 .start();

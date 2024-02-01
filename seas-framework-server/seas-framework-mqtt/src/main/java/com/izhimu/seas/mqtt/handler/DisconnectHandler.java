@@ -1,12 +1,11 @@
 package com.izhimu.seas.mqtt.handler;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.mqtt.cache.ClientCache;
 import io.vertx.core.Handler;
 import io.vertx.mqtt.MqttEndpoint;
 import io.vertx.mqtt.messages.MqttDisconnectMessage;
 
-import java.util.Map;
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 断开连接处理
@@ -15,11 +14,9 @@ import java.util.Map;
  */
 public record DisconnectHandler(MqttEndpoint endpoint) implements Handler<MqttDisconnectMessage> {
 
-    private static final LogWrapper log = LogWrapper.build("MQTTServer");
-
     @Override
     public void handle(MqttDisconnectMessage message) {
-        log.info(Map.of("clientId", endpoint.clientIdentifier()), "client disconnected");
+        log.infoT(endpoint.clientIdentifier(), "client disconnected");
         ClientCache.del(endpoint.clientIdentifier());
     }
 }

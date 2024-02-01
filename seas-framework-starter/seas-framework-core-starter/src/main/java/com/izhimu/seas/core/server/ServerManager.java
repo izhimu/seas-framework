@@ -1,12 +1,12 @@
 package com.izhimu.seas.core.server;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.pool.ThreadPoolFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 服务管理器
@@ -16,8 +16,6 @@ import java.util.concurrent.ExecutorService;
  */
 @SuppressWarnings("unused")
 public class ServerManager {
-
-    private static final LogWrapper log = LogWrapper.build("ServerManager");
 
     /**
      * 线程池
@@ -39,7 +37,7 @@ public class ServerManager {
      */
     public ServerManager add(IServer server) {
         serverList.add(server);
-        log.info("Loading {}", server.getClass().getSimpleName());
+        log.info("ServerManager loading {}", server.getClass().getSimpleName());
         return this;
     }
 
@@ -48,7 +46,7 @@ public class ServerManager {
      */
     public void start() {
         serverList.forEach(executorService::execute);
-        log.info(Map.of("Count", serverList.size()), "Start");
+        log.info("ServerManager start");
     }
 
     /**
@@ -57,6 +55,6 @@ public class ServerManager {
     public void stop() {
         serverList.forEach(IServer::shutdown);
         executorService.shutdown();
-        log.info(Map.of("Count", serverList.size()), "Stop");
+        log.info("ServerManager stop");
     }
 }

@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.izhimu.seas.core.entity.DataPermission;
 import com.izhimu.seas.core.entity.User;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.data.annotation.OrderBy;
 import com.izhimu.seas.data.annotation.Permission;
 import com.izhimu.seas.data.annotation.Search;
@@ -18,6 +17,8 @@ import com.izhimu.seas.data.enums.SearchType;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * 参数条件构造器
@@ -27,8 +28,6 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public class ParamWrapper<T> {
-
-    private static final LogWrapper log = LogWrapper.build("ParamWrapper");
 
     private final QueryChainWrapper<T> wrapper;
 

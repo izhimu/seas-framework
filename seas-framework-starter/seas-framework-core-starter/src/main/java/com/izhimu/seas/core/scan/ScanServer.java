@@ -18,7 +18,7 @@ import org.reflections.util.ConfigurationBuilder;
 @SuppressWarnings("unused")
 public class ScanServer implements IServer {
 
-    private static final LogWrapper log = LogWrapper.buildSync("ScanServer");
+    private static final LogWrapper log = LogWrapper.buildSync();
 
     private final String path;
 
@@ -28,7 +28,7 @@ public class ScanServer implements IServer {
 
     @Override
     public void run() {
-        log.info("Path {}", path);
+        log.info("Scan path={}", path);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(path))
                 .addScanners(Scanners.TypesAnnotated);
@@ -37,7 +37,7 @@ public class ScanServer implements IServer {
         ScanHandlerHolder.all().forEach(v -> {
             log.info("Scanning");
             v.scan(reflections);
-            log.info("Done {}ms", timer.interval());
+            log.info("Scan done {}ms", timer.interval());
         });
     }
 }

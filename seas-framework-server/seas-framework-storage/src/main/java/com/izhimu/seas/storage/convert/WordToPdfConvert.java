@@ -2,11 +2,12 @@ package com.izhimu.seas.storage.convert;
 
 import com.aspose.words.Document;
 import com.aspose.words.PdfSaveOptions;
-import com.izhimu.seas.core.log.LogWrapper;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * Word转PDF
@@ -16,8 +17,6 @@ import java.util.Map;
  */
 public class WordToPdfConvert extends SimpleFileConvert {
 
-    private static final LogWrapper log = LogWrapper.build("FileConvert");
-
     @Override
     public void convert(InputStream is, OutputStream os, Map<String, Object> param) {
         try {
@@ -25,7 +24,7 @@ public class WordToPdfConvert extends SimpleFileConvert {
             PdfSaveOptions option = new PdfSaveOptions();
             doc.save(os, option);
         } catch (Exception e) {
-            log.error("Word to pdf error", e);
+            log.error(e);
         }
     }
 }

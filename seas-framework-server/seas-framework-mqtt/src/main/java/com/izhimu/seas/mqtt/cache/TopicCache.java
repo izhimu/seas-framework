@@ -1,20 +1,16 @@
 package com.izhimu.seas.mqtt.cache;
 
-import com.izhimu.seas.cache.service.CacheService;
+import com.izhimu.seas.cache.service.SetCacheService;
 import lombok.experimental.UtilityClass;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.izhimu.seas.mqtt.constant.MQTTConst.*;
 
 /**
- * 规则缓存
+ * 主题缓存
  *
  * @author haoran
  */
@@ -23,8 +19,9 @@ public class TopicCache {
 
     private static final String RULE_CACHE_KEY = "mqtt:rule:";
     private static final String TOPIC_CACHE_KEY = "mqtt:topic";
+    private static final int CACHE_DAY = 7 * 24 * 60 * 60;
 
-    static CacheService cacheService;
+    static SetCacheService setCacheService;
 
     /**
      * 添加主题缓存
@@ -32,16 +29,7 @@ public class TopicCache {
      * @param topic 主题
      */
     public static void put(String topic) {
-        if (cacheService.hasKey(TOPIC_CACHE_KEY)) {
-            //noinspection unchecked
-            Set<String> set = cacheService.get(TOPIC_CACHE_KEY, Set.class);
-            set.add(topic);
-            cacheService.set(TOPIC_CACHE_KEY, set, 7, TimeUnit.DAYS);
-        } else {
-            Set<String> set = new HashSet<>();
-            set.add(topic);
-            cacheService.set(TOPIC_CACHE_KEY, set, 7, TimeUnit.DAYS);
-        }
+        setCacheService.setExpire(TOPIC_CACHE_KEY, CACHE_DAY, topic);
     }
 
     /**
@@ -50,12 +38,7 @@ public class TopicCache {
      * @return 主题规则
      */
     public static Set<String> keys() {
-        Object o = cacheService.get(TOPIC_CACHE_KEY);
-        if (Objects.isNull(o)) {
-            return Collections.emptySet();
-        }
-        //noinspection unchecked
-        return (Set<String>) o;
+        return setCacheService.get(TOPIC_CACHE_KEY, String.class);
     }
 
     /**
@@ -64,12 +47,8 @@ public class TopicCache {
      * @param topic 主题
      */
     public static void putRule(String topic) {
-        String key = RULE_CACHE_KEY + topic;
-        if (cacheService.hasKey(key)) {
-            cacheService.setExpire(key, 7, TimeUnit.DAYS);
-        } else {
-            cacheService.set(key, ruleMatch(topic), 7, TimeUnit.DAYS);
-        }
+        setCacheService.setExpire(getKey(topic), CACHE_DAY, ruleMatch(topic).toArray());
+        put(topic);
     }
 
     /**
@@ -79,12 +58,17 @@ public class TopicCache {
      * @return 主题规则
      */
     public static Set<String> getRule(String topic) {
-        Object o = cacheService.get(RULE_CACHE_KEY + topic);
-        if (Objects.isNull(o)) {
-            return Collections.emptySet();
-        }
-        //noinspection unchecked
-        return (Set<String>) o;
+        return setCacheService.get(getKey(topic), String.class);
+    }
+
+    /**
+     * 规则缓存Keu
+     *
+     * @param topic key
+     * @return key
+     */
+    private String getKey(String topic) {
+        return RULE_CACHE_KEY + topic;
     }
 
     /**
@@ -92,8 +76,18 @@ public class TopicCache {
      *
      * @param topicRule 匹配规则
      */
-    public static void refreshRule(String topicRule) {
-        // TODO
+    public static void refreshRule(String topicRule, boolean isDel) {
+        Pattern pattern = Pattern.compile("^" + topicRule.replace(SINGLE_LAYER_SYMBOL, SINGLE_LAYER_PATTERN)
+                .replace(MULTI_LAYER_SYMBOL, MULTI_LAYER_PATTERN) + "$");
+        keys().stream()
+                .filter(t -> pattern.matcher(t).matches())
+                .forEach(t -> {
+                    if (isDel) {
+                        setCacheService.del(getKey(t), topicRule);
+                    } else {
+                        setCacheService.setExpire(getKey(t), CACHE_DAY, topicRule);
+                    }
+                });
     }
 
     /**
@@ -103,7 +97,7 @@ public class TopicCache {
      * @return 规则
      */
     private static Set<String> ruleMatch(String topic) {
-        Set<String> rule = SubscribeCache.keys();
+        Set<String> rule = SubscribeCache.rules();
         return rule.stream()
                 .filter(r -> {
                     Pattern pattern = Pattern.compile("^" + r.replace(SINGLE_LAYER_SYMBOL, SINGLE_LAYER_PATTERN)

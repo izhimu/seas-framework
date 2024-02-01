@@ -16,9 +16,9 @@ public class LogImpl implements Log {
     private final Logger log;
     private final LogWrapper logWrapper;
 
-    public LogImpl(String clazz) {
-        this.log = LoggerFactory.getLogger(clazz);
-        this.logWrapper = LogWrapper.build(this.log, "Mybatis");
+    public LogImpl(String name) {
+        this.log = LoggerFactory.getLogger(name);
+        this.logWrapper = LogWrapper.build(this.log);
     }
 
     @Override

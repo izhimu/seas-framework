@@ -1,12 +1,13 @@
 package com.izhimu.seas.storage.convert;
 
 import com.aspose.words.*;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.storage.entity.FileInfo;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * Word转图片
@@ -15,8 +16,6 @@ import java.util.Map;
  * @version v1.0
  */
 public class WordToPngConvert implements IFileConvert {
-
-    private static final LogWrapper log = LogWrapper.build("FileConvert");
 
     @Override
     public void convert(InputStream is, OutputStream os, Map<String, Object> param) {
@@ -29,7 +28,7 @@ public class WordToPngConvert implements IFileConvert {
             options.setPageSet(new PageSet((Integer) param.getOrDefault("page", 0)));
             doc.save(os, options);
         } catch (Exception e) {
-            log.error("Word to png error", e);
+            log.error(e);
         }
     }
 

@@ -51,7 +51,7 @@ public interface SetCacheService extends CacheConvertService {
      * @param values 值 可以是多个
      * @return 成功个数
      */
-    boolean set(String key, long time, Object... values);
+    boolean setExpire(String key, long time, Object... values);
 
     /**
      * 获取set缓存的长度

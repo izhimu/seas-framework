@@ -26,7 +26,7 @@ import java.util.Objects;
 @Transactional(rollbackFor = Exception.class)
 public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTimer> implements JobTimerService {
 
-    private static final LogWrapper logger = LogWrapper.build("JobTimerService");
+    private static final LogWrapper logger = LogWrapper.build();
 
     @Resource
     private ScheduleService scheduleService;
@@ -80,7 +80,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
 
     @Override
     public boolean initSchedule() {
-        logger.info("Loading");
+        logger.info("Schedule loading");
         TimeInterval t = DateUtil.timer();
         List<JobTimer> list = this.lambdaQuery()
                 .eq(JobTimer::getStatus, 1)
@@ -94,7 +94,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
                         this.updateById(timer);
                     }
                 });
-        logger.info("Load Done {}ms", t.interval());
+        logger.info("Schedule load done {}ms", t.interval());
         return true;
     }
 

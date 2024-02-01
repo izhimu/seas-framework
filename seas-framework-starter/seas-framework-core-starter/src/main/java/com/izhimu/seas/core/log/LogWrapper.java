@@ -25,50 +25,47 @@ public class LogWrapper {
 
     private static final String BOX_1 = "{}";
     private static final String BOX_2 = "{} {}";
-    private static final String BOX_3 = "{} {} {}";
-    private static final String BOX_4 = "{} {} {} {}";
 
     /**
      * 日志输出
      */
-    private final Logger log;
-    /**
-     * 主题
-     */
-    private final String topic;
+    private final Logger innerLog;
     /**
      * 是否异步
      */
     private final boolean async;
 
-    public LogWrapper(Logger log, String topic, boolean async) {
-        this.log = log;
-        this.topic = StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16);
+    public LogWrapper(Logger log, boolean async) {
+        this.innerLog = log;
         this.async = async;
     }
 
-    public LogWrapper(Class<?> clazz, String topic, boolean async) {
-        this.log = LoggerFactory.getLogger(clazz);
-        this.topic = StrUtil.truncateUtf8(StrUtil.fillAfter(topic, ' ', 16), 16);
+    public LogWrapper(Class<?> clazz, boolean async) {
+        this.innerLog = LoggerFactory.getLogger(clazz);
         this.async = async;
     }
 
-    public static LogWrapper build(Logger log, String topic) {
-        return new LogWrapper(log, topic, true);
+    public LogWrapper(String name, boolean async) {
+        this.innerLog = LoggerFactory.getLogger(name);
+        this.async = async;
     }
 
-    public static LogWrapper build(String topic) {
-        Class<?> clazz = Thread.currentThread().getStackTrace()[1].getClass();
-        return new LogWrapper(clazz, topic, true);
+    public static LogWrapper build(Logger log) {
+        return new LogWrapper(log, true);
     }
 
-    public static LogWrapper buildSync(Logger log, String topic) {
-        return new LogWrapper(log, topic, false);
+    public static LogWrapper build() {
+        String name = Thread.currentThread().getStackTrace()[2].getClassName();
+        return new LogWrapper(name, true);
     }
 
-    public static LogWrapper buildSync(String topic) {
-        Class<?> clazz = Thread.currentThread().getStackTrace()[1].getClass();
-        return new LogWrapper(clazz, topic, false);
+    public static LogWrapper buildSync(Logger log) {
+        return new LogWrapper(log, false);
+    }
+
+    public static LogWrapper buildSync() {
+        String name = Thread.currentThread().getStackTrace()[2].getClassName();
+        return new LogWrapper(name, false);
     }
 
     private void execute(Runnable runnable) {
@@ -96,98 +93,52 @@ public class LogWrapper {
     }
 
     public void info(String msg, Object... params) {
-        execute(() -> log.info(BOX_2, topic, format(msg, params)));
+        execute(() -> innerLog.info(format(msg, params)));
     }
 
     public void infoT(String tag, String msg, Object... params) {
-        execute(() -> log.info(BOX_3, topic, tag(tag), format(msg, params)));
-    }
-
-    public void info(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.info(BOX_3, topic, format(msg, params), param(param)));
-    }
-
-    public void info(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.info(BOX_4, topic, tag(tag), format(msg, params), param(param)));
+        execute(() -> innerLog.info(BOX_2, tag(tag), format(msg, params)));
     }
 
     public void debug(String msg, Object... params) {
-        if (!log.isDebugEnabled()) {
+        if (!innerLog.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_2, topic, format(msg, params)));
+        execute(() -> innerLog.debug(format(msg, params)));
     }
 
     public void debugT(String tag, String msg, Object... params) {
-        if (!log.isDebugEnabled()) {
+        if (!innerLog.isDebugEnabled()) {
             return;
         }
-        execute(() -> log.debug(BOX_3, topic, tag(tag), format(msg, params)));
-    }
-
-    public void debug(Map<String, Object> param, String msg, Object... params) {
-        if (!log.isDebugEnabled()) {
-            return;
-        }
-        execute(() -> log.debug(BOX_3, topic, format(msg, params), param(param)));
-    }
-
-    public void debug(String tag, Map<String, Object> param, String msg, Object... params) {
-        if (!log.isDebugEnabled()) {
-            return;
-        }
-        execute(() -> log.debug(BOX_4, topic, tag(tag), format(msg, params), param(param)));
+        execute(() -> innerLog.debug(BOX_2, tag(tag), format(msg, params)));
     }
 
     public void warn(String msg, Object... params) {
-        execute(() -> log.warn(BOX_2, topic, format(msg, params)));
+        execute(() -> innerLog.warn(format(msg, params)));
     }
 
     public void warnT(String tag, String msg, Object... params) {
-        execute(() -> log.warn(BOX_3, topic, tag(tag), format(msg, params)));
-    }
-
-    public void warn(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.warn(BOX_3, topic, format(msg, params), param(param)));
-    }
-
-    public void warn(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.warn(BOX_4, topic, tag(tag), format(msg, params), param(param)));
+        execute(() -> innerLog.warn(BOX_2, tag(tag), format(msg, params)));
     }
 
     public void error(String msg, Object... params) {
-        execute(() -> log.error(BOX_2, topic, format(msg, params)));
+        execute(() -> innerLog.error(format(msg, params)));
     }
 
     public void errorT(String tag, String msg, Object... params) {
-        execute(() -> log.error(BOX_3, topic, tag(tag), format(msg, params)));
-    }
-
-    public void error(Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.error(BOX_3, topic, format(msg, params), param(param)));
-    }
-
-    public void error(String tag, Map<String, Object> param, String msg, Object... params) {
-        execute(() -> log.error(BOX_4, topic, tag(tag), format(msg, params), param(param)));
+        execute(() -> innerLog.error(BOX_2, tag(tag), format(msg, params)));
     }
 
     public void error(Throwable e) {
-        execute(() -> log.error(BOX_1, topic, e));
+        execute(() -> innerLog.error("", e));
     }
 
     public void error(String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_2, topic, format(msg, params), e));
+        execute(() -> innerLog.error(format(msg, params), e));
     }
 
-    public void error(String tag, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_3, topic, tag(tag), format(msg, params), e));
-    }
-
-    public void error(Map<String, Object> param, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_3, topic, format(msg, params), param(param), e));
-    }
-
-    public void error(String tag, Map<String, Object> param, String msg, Throwable e, Object... params) {
-        execute(() -> log.error(BOX_4, topic, tag(tag), format(msg, params), param(param), e));
+    public void errorT(String tag, String msg, Throwable e, Object... params) {
+        execute(() -> innerLog.error(BOX_2, tag(tag), format(msg, params), e));
     }
 }

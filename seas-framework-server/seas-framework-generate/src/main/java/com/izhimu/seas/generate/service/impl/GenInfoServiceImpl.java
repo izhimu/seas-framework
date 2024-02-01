@@ -9,7 +9,6 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.enums.DbType;
 import com.izhimu.seas.generate.entity.GenDatasource;
 import com.izhimu.seas.generate.entity.GenFieldInfo;
@@ -35,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
 import static com.izhimu.seas.generate.db.engine.AbstractDbEngine.*;
 
 /**
@@ -46,7 +46,6 @@ import static com.izhimu.seas.generate.db.engine.AbstractDbEngine.*;
 @Transactional(rollbackFor = Exception.class)
 public class GenInfoServiceImpl implements GenInfoService {
 
-    private static final LogWrapper log = LogWrapper.build("GenInfoService");
     @Resource
     private GenDatasourceService datasourceService;
     @Resource

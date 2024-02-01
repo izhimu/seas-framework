@@ -1,6 +1,6 @@
 package com.izhimu.seas.mqtt.cache;
 
-import com.izhimu.seas.cache.service.CacheService;
+import com.izhimu.seas.cache.service.SetCacheService;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -14,10 +14,10 @@ public class MQTTCache {
     /**
      * 初始化
      *
-     * @param cacheService CacheService
+     * @param setCacheService SetCacheService
      */
-    public static void init(CacheService cacheService) {
-        TopicCache.cacheService = cacheService;
-        SubscribeCache.cacheService = cacheService;
+    public static void init(SetCacheService setCacheService) {
+        TopicCache.setCacheService = setCacheService;
+        SubscribeCache.setCacheService = setCacheService;
     }
 }

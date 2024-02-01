@@ -2,7 +2,6 @@ package com.izhimu.seas.generate.db.engine;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.generate.db.exception.DbEngineException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * SqlServer数据库引擎
  *
@@ -18,8 +19,6 @@ import java.util.Objects;
  * @version v1.0
  */
 public class SqlServerEngine extends AbstractDbEngine {
-
-    private static final LogWrapper log = LogWrapper.build("SqlServerEngine");
 
     SqlServerEngine(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

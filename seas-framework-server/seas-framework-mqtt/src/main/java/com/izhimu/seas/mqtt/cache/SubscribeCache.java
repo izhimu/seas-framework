@@ -1,16 +1,15 @@
 package com.izhimu.seas.mqtt.cache;
 
-import com.izhimu.seas.cache.service.CacheService;
+import com.izhimu.seas.cache.service.SetCacheService;
 import com.izhimu.seas.mqtt.entity.SubscribeInfo;
 import lombok.experimental.UtilityClass;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * 订阅缓存
+ * topicRule -> subscribeInfo Set
+ * topicRule Set
  *
  * @author haoran
  */
@@ -20,7 +19,7 @@ public class SubscribeCache {
     private static final String SUBSCRIBE_CACHE_KEY = "mqtt:subscribe:";
     private static final String SUBSCRIBE_TOPIC_CACHE_KEY = "mqtt:subscribe.topic";
 
-    static CacheService cacheService;
+    static SetCacheService setCacheService;
 
     /**
      * 获取Key
@@ -39,18 +38,9 @@ public class SubscribeCache {
      * @param subscribeInfo 订阅信息
      */
     public static void put(String topicRule, SubscribeInfo subscribeInfo) {
-        String key = getKey(topicRule);
-        if (cacheService.hasKey(key)) {
-            //noinspection unchecked
-            Set<SubscribeInfo> set = cacheService.get(key, Set.class);
-            set.add(subscribeInfo);
-            cacheService.set(key, set);
-        } else {
-            Set<SubscribeInfo> set = new HashSet<>();
-            set.add(subscribeInfo);
-            cacheService.set(key, set);
-        }
+        setCacheService.set(getKey(topicRule), subscribeInfo);
         putRule(topicRule);
+        TopicCache.refreshRule(topicRule, false);
     }
 
     /**
@@ -60,12 +50,7 @@ public class SubscribeCache {
      * @return 订阅列表
      */
     public static Set<SubscribeInfo> get(String topicRule) {
-        Object o = cacheService.get(getKey(topicRule));
-        if (Objects.isNull(o)) {
-            return Collections.emptySet();
-        }
-        //noinspection unchecked
-        return (Set<SubscribeInfo>) o;
+        return setCacheService.get(getKey(topicRule), SubscribeInfo.class);
     }
 
     /**
@@ -75,20 +60,9 @@ public class SubscribeCache {
      * @param subscribeInfo 订阅信息
      */
     public static void del(String topicRule, SubscribeInfo subscribeInfo) {
-        String key = getKey(topicRule);
-        Object o = cacheService.get(key);
-        if (Objects.isNull(o)) {
-            return;
-        }
-        //noinspection unchecked
-        Set<SubscribeInfo> set = (Set<SubscribeInfo>) o;
-        set.remove(subscribeInfo);
-        if (set.isEmpty()) {
-            cacheService.del(key);
-        } else {
-            cacheService.set(key, set);
-        }
+        setCacheService.del(getKey(topicRule), subscribeInfo);
         delRule(topicRule);
+        TopicCache.refreshRule(topicRule, true);
     }
 
     /**
@@ -97,16 +71,7 @@ public class SubscribeCache {
      * @param topicRule 订阅规则
      */
     public static void putRule(String topicRule) {
-        if (cacheService.hasKey(SUBSCRIBE_TOPIC_CACHE_KEY)) {
-            //noinspection unchecked
-            Set<String> set = cacheService.get(SUBSCRIBE_TOPIC_CACHE_KEY, Set.class);
-            set.add(topicRule);
-            cacheService.set(SUBSCRIBE_TOPIC_CACHE_KEY, set);
-        } else {
-            Set<String> set = new HashSet<>();
-            set.add(topicRule);
-            cacheService.set(SUBSCRIBE_TOPIC_CACHE_KEY, set);
-        }
+        setCacheService.set(SUBSCRIBE_TOPIC_CACHE_KEY, topicRule);
     }
 
     /**
@@ -115,18 +80,7 @@ public class SubscribeCache {
      * @param topicRule 订阅规则
      */
     public static void delRule(String topicRule) {
-        Object o = cacheService.get(SUBSCRIBE_TOPIC_CACHE_KEY);
-        if (Objects.isNull(o)) {
-            return;
-        }
-        //noinspection unchecked
-        Set<String> set = (Set<String>) o;
-        set.remove(topicRule);
-        if (set.isEmpty()) {
-            cacheService.del(SUBSCRIBE_TOPIC_CACHE_KEY);
-        } else {
-            cacheService.set(SUBSCRIBE_TOPIC_CACHE_KEY, set);
-        }
+        setCacheService.del(SUBSCRIBE_TOPIC_CACHE_KEY, topicRule);
     }
 
     /**
@@ -134,12 +88,7 @@ public class SubscribeCache {
      *
      * @return 订阅规则
      */
-    public static Set<String> keys() {
-        Object o = cacheService.get(SUBSCRIBE_TOPIC_CACHE_KEY);
-        if (Objects.isNull(o)) {
-            return Collections.emptySet();
-        }
-        //noinspection unchecked
-        return (Set<String>) o;
+    public static Set<String> rules() {
+        return setCacheService.get(SUBSCRIBE_TOPIC_CACHE_KEY, String.class);
     }
 }

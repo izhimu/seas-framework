@@ -6,8 +6,11 @@ import lombok.experimental.UtilityClass;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 客户端缓存
+ * clientId -> endpoint
  *
  * @author haoran
  */
@@ -23,6 +26,7 @@ public class ClientCache {
      */
     public static void put(MqttEndpoint endpoint) {
         CLIENT_CACHE.put(endpoint.clientIdentifier(), endpoint);
+        log.debug("ClientCache add client, clientId:{}", endpoint.clientIdentifier());
     }
 
     /**
@@ -42,5 +46,6 @@ public class ClientCache {
      */
     public static void del(String clientId) {
         CLIENT_CACHE.remove(clientId);
+        log.debug("ClientCache del client, clientId:{}", clientId);
     }
 }

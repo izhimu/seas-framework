@@ -1,6 +1,5 @@
 package com.izhimu.seas.mqtt.server;
 
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.server.IServer;
 import com.izhimu.seas.mqtt.config.MQTTConfig;
 import com.izhimu.seas.mqtt.handler.EndpointHandler;
@@ -8,7 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.mqtt.MqttServer;
 import io.vertx.mqtt.MqttServerOptions;
 
-import java.util.Map;
+import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
  * MQTT服务端
@@ -17,8 +16,6 @@ import java.util.Map;
  */
 
 public class MQTTServer implements IServer {
-
-    private static final LogWrapper log = LogWrapper.build("MQTTServer");
 
     private final MQTTConfig config;
 
@@ -45,7 +42,7 @@ public class MQTTServer implements IServer {
                 .endpointHandler(new EndpointHandler())
                 .listen(ar -> {
                     if (ar.succeeded()) {
-                        log.info(Map.of("port", config.getPort()), "Start success");
+                        log.info("Start success,port={}", config.getPort());
                     } else {
                         log.error(ar.cause());
                     }

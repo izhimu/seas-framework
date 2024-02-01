@@ -2,7 +2,6 @@ package com.izhimu.seas.core.web.handler;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.izhimu.seas.core.log.LogWrapper;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -20,6 +19,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.izhimu.seas.core.log.LogHelper.log;
+
 /**
  * 全局异常处理
  *
@@ -30,8 +31,6 @@ import java.util.List;
 @ControllerAdvice
 @ConditionalOnClass({ControllerAdvice.class})
 public class CoreExceptionHandler {
-
-    private static final LogWrapper log = LogWrapper.build("ExceptionHandler");
 
     /**
      * 找不到页面
