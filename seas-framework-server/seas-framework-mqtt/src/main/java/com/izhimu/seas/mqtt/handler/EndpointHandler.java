@@ -16,16 +16,22 @@ public class EndpointHandler implements Handler<MqttEndpoint> {
     @Override
     public void handle(MqttEndpoint endpoint) {
         endpoint.accept(false);
-        log.infoT(endpoint.clientIdentifier(), "client connect");
-        ClientCache.put(endpoint);
-        endpoint.pingHandler(new PingHandler(endpoint))
-                .disconnectMessageHandler(new DisconnectHandler(endpoint))
+        endpoint.publishHandler(new PublishHandler(endpoint))
+                // QoS 1
+                .publishAcknowledgeMessageHandler(new PubAcknowledgeHandler(endpoint))
+                // QoS 2
+                .publishReceivedHandler(endpoint::publishRelease)
+                .publishReleaseHandler(endpoint::publishComplete)
+                .publishCompletionMessageHandler(new PubCompletionHandler(endpoint))
+                // 订阅/取消订阅
                 .subscribeHandler(new SubscribeHandler(endpoint))
                 .unsubscribeHandler(new UnsubscribeHandler(endpoint))
-                .publishHandler(new PublishHandler(endpoint))
-                .publishReleaseHandler(endpoint::publishComplete)
-                .publishReceivedHandler(endpoint::publishRelease)
-                .publishCompletionMessageHandler(new PubCompletionHandler(endpoint))
-                .publishAcknowledgeMessageHandler(new PubAcknowledgeHandler(endpoint));
+                // 心跳
+                .pingHandler(new PingHandler(endpoint))
+                // 断开/关闭
+                .disconnectMessageHandler(new DisconnectHandler(endpoint))
+                .closeHandler(new CloseHandler(endpoint));
+        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client connect");
+        ClientCache.put(endpoint);
     }
 }

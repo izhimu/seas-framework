@@ -4,4 +4,4 @@ spring:
 logging:
   level:
     root: INFO
-    com.izhimu: DEBUG
+    com.izhimu: INFO

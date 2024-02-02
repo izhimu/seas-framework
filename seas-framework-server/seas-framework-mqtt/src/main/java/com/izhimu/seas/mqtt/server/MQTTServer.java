@@ -32,7 +32,7 @@ public class MQTTServer implements IServer {
 
     @Override
     public void shutdown() {
-        server.close(v -> log.info("Close"));
+        server.close(v -> log.info("[MQTT Server] close"));
     }
 
     private void server(Vertx vertx) {
@@ -42,7 +42,7 @@ public class MQTTServer implements IServer {
                 .endpointHandler(new EndpointHandler())
                 .listen(ar -> {
                     if (ar.succeeded()) {
-                        log.info("MQTT Server start success, port: {}", config.getPort());
+                        log.info("[MQTT Server] start success, port: {}", config.getPort());
                     } else {
                         log.error(ar.cause());
                     }

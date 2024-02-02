@@ -15,6 +15,6 @@ public record PubCompletionHandler(MqttEndpoint endpoint) implements Handler<Mqt
 
     @Override
     public void handle(MqttPubCompMessage event) {
-        log.infoT(endpoint.clientIdentifier(), "received comp for message, id: {}", event.messageId());
+        log.debugT(endpoint.clientIdentifier(), "[MQTT Server] received comp for message, id: {}", event.messageId());
     }
 }

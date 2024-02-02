@@ -3,20 +3,18 @@ package com.izhimu.seas.mqtt.handler;
 import com.izhimu.seas.mqtt.cache.ClientCache;
 import io.vertx.core.Handler;
 import io.vertx.mqtt.MqttEndpoint;
-import io.vertx.mqtt.messages.MqttDisconnectMessage;
 
 import static com.izhimu.seas.core.log.LogHelper.log;
 
 /**
- * 断开连接处理
+ * 客户端关闭处理
  *
  * @author haoran
  */
-public record DisconnectHandler(MqttEndpoint endpoint) implements Handler<MqttDisconnectMessage> {
-
+public record CloseHandler(MqttEndpoint endpoint) implements Handler<Void> {
     @Override
-    public void handle(MqttDisconnectMessage message) {
-        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client disconnected");
+    public void handle(Void event) {
+        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client close");
         ClientCache.del(endpoint.clientIdentifier());
     }
 }

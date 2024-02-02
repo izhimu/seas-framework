@@ -18,7 +18,7 @@ public record UnsubscribeHandler(MqttEndpoint endpoint) implements Handler<MqttU
     @Override
     public void handle(MqttUnsubscribeMessage unsubscribe) {
         for (String t : unsubscribe.topics()) {
-            log.infoT(endpoint.clientIdentifier(), "Unsubscription for {}", t);
+            log.infoT(endpoint.clientIdentifier(), "[MQTT Server] unsubscription for {}", t);
             SubscribeCache.del(t, new SubscribeInfo(endpoint.clientIdentifier(), null));
         }
         endpoint.unsubscribeAcknowledge(unsubscribe.messageId());

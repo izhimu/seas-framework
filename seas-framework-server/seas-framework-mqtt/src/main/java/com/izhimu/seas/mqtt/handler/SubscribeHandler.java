@@ -25,7 +25,7 @@ public record SubscribeHandler(MqttEndpoint endpoint) implements Handler<MqttSub
     public void handle(MqttSubscribeMessage subscribe) {
         List<MqttSubAckReasonCode> reasonCodes = new ArrayList<>();
         for (MqttTopicSubscription s : subscribe.topicSubscriptions()) {
-            log.infoT(endpoint.clientIdentifier(), "Subscription for {} with QoS {}", s.topicName(), s.qualityOfService());
+            log.infoT(endpoint.clientIdentifier(), "[MQTT Server] subscription for {} with QoS {}", s.topicName(), s.qualityOfService());
             SubscribeCache.put(s.topicName(), new SubscribeInfo(endpoint.clientIdentifier(), s.qualityOfService()));
             reasonCodes.add(MqttSubAckReasonCode.qosGranted(s.qualityOfService()));
         }
