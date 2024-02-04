@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    name: dataSource
+    url: jdbc:postgresql://192.168.31.243:5432/seas_db
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: 192.168.31.243
+      password: 123456
+logging:
+  level:
+    root: INFO
+    com.izhimu: DEBUG

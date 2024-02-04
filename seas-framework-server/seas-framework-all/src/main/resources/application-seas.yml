@@ -1,6 +1,6 @@
 seas:
   cache:
-    type: redis
+    type: mem
   security:
     supers:
       - admin

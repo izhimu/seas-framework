@@ -6,6 +6,7 @@ import com.izhimu.seas.mqtt.cache.MQTTCache;
 import com.izhimu.seas.mqtt.config.MQTTConfig;
 import com.izhimu.seas.mqtt.server.MQTTServer;
 import jakarta.annotation.Resource;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author haoran
  * @version v1.0
  */
+@MapperScan({"com.izhimu.seas.mqtt.mapper"})
 @ComponentScan(basePackages = {"com.izhimu.seas"})
 @SpringBootApplication
 public class SeasMqttApplication implements ApplicationRunner, DisposableBean {

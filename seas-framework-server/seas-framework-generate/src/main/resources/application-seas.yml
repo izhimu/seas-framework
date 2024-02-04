@@ -1,0 +1,3 @@
+seas:
+  cache:
+    type: mem
