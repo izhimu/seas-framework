@@ -18,4 +18,12 @@ public class MQTTConfig {
      * 端口
      */
     private int port = 1883;
+    /**
+     * 启用Websocket
+     */
+    private boolean wsEnable = false;
+    /**
+     * Websocket 端口
+     */
+    private int wsPort = 8080;
 }

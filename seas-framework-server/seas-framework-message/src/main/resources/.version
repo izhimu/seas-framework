@@ -1,0 +1,4 @@
+[Version]
+name = @project.artifactId@
+ver = @project.version@
+time = @maven.build.timestamp@

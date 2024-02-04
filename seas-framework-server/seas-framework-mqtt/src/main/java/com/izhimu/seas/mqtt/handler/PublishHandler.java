@@ -22,7 +22,7 @@ public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPubli
 
     @Override
     public void handle(MqttPublishMessage message) {
-        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] publish message: {}", message.payload().toString(Charset.defaultCharset()));
+        log.debugT(endpoint.clientIdentifier(), "[MQTT Server] publish message: {}", message.payload().toString(Charset.defaultCharset()));
         TopicCache.putRule(message.topicName());
         publish(message);
         ack(message);

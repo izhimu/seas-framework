@@ -20,6 +20,7 @@ public class MQTTServer implements IServer {
     private final MQTTConfig config;
 
     private MqttServer server;
+    private MqttServer wsServer;
 
     public MQTTServer(MQTTConfig config) {
         this.config = config;
@@ -33,6 +34,9 @@ public class MQTTServer implements IServer {
     @Override
     public void shutdown() {
         server.close(v -> log.info("[MQTT Server] close"));
+        if (config.isWsEnable()) {
+            wsServer.close(v -> log.info("[MQTT Server] websocket close"));
+        }
     }
 
     private void server(Vertx vertx) {
@@ -47,5 +51,19 @@ public class MQTTServer implements IServer {
                         log.error(ar.cause());
                     }
                 });
+        if (config.isWsEnable()) {
+            MqttServerOptions wsOptions = new MqttServerOptions();
+            wsOptions.setPort(config.getWsPort());
+            wsOptions.setUseWebSocket(true);
+            wsServer = MqttServer.create(vertx, wsOptions)
+                    .endpointHandler(new EndpointHandler())
+                    .listen(ar -> {
+                        if (ar.succeeded()) {
+                            log.info("[MQTT Server] websocket start success, port: {}", config.getWsPort());
+                        } else {
+                            log.error(ar.cause());
+                        }
+                    });
+        }
     }
 }

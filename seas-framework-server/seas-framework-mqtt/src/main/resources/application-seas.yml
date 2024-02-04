@@ -1,3 +1,5 @@
 seas:
   mqtt:
     port: 1883
+    ws-enable: true
+    ws-port: 8083
