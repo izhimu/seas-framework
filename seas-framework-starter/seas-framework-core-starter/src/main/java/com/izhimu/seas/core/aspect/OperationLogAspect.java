@@ -18,9 +18,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.izhimu.seas.core.log.LogHelper.log;
 
@@ -51,7 +54,7 @@ public class OperationLogAspect {
         Object[] args = pjp.getArgs();
         String params;
         try {
-            params = JsonUtil.toJsonStr(args);
+            params = "[".concat(Arrays.stream(args).filter(Serializable.class::isInstance).map(JsonUtil::toJsonStr).collect(Collectors.joining(","))).concat("]");
         } catch (Exception e) {
             log.warn("OperationLog param to json str error: {}", e.getMessage());
             params = "";
