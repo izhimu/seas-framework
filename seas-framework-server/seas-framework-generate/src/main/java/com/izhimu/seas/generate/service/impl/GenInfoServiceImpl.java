@@ -137,21 +137,22 @@ public class GenInfoServiceImpl implements GenInfoService {
 
     private Map<String, Object> getParam(GenInfo genInfo) {
         Map<String, Object> param = new HashMap<>();
-        param.put("author", genInfo.getAuthor());
-        param.put("packageName", genInfo.getPackageName());
-        param.put("tableName", genInfo.getTableName());
-        param.put("tableDesc", genInfo.getTableDesc());
-        param.put("className", genInfo.getClassName());
-        param.put("fileName", CharSequenceUtil.lowerFirst(genInfo.getClassName()));
-        param.put("pathName", "/".concat(CharSequenceUtil.toUnderlineCase(genInfo.getClassName()).replace("_", "/")));
-        param.put("keyName", CharSequenceUtil.toUnderlineCase(genInfo.getClassName()).replace("_", "."));
-        param.put("fieldList", genInfo.getFieldList());
+        param.put("author", Optional.ofNullable(genInfo.getAuthor()).orElse(""));
+        param.put("packageName", Optional.ofNullable(genInfo.getPackageName()).orElse(""));
+        param.put("tableName", Optional.ofNullable(genInfo.getTableName()).orElse(""));
+        param.put("tableDesc", Optional.ofNullable(genInfo.getTableDesc()).orElse(""));
+        param.put("className", Optional.ofNullable(genInfo.getClassName()).orElse(""));
+        param.put("fileName", CharSequenceUtil.lowerFirst(Optional.ofNullable(genInfo.getClassName()).orElse("")));
+        param.put("pathName", "/".concat(CharSequenceUtil.toUnderlineCase(Optional.ofNullable(genInfo.getClassName()).orElse("")).replace("_", "/")));
+        param.put("keyName", CharSequenceUtil.toUnderlineCase(Optional.ofNullable(genInfo.getClassName()).orElse("")).replace("_", "."));
+        param.put("fieldList", Optional.ofNullable(genInfo.getFieldList()).orElse(Collections.emptyList()));
         extJavaParam(param, genInfo);
         return param;
     }
 
     private void extJavaParam(Map<String, Object> param, GenInfo genInfo) {
-        param.put("importList", TypeUtil.getJavaImport(genInfo.getFieldList().stream().map(GenFieldInfo::getJavaType).toList()));
-        param.put("importSearch", genInfo.getFieldList().stream().map(GenFieldInfo::getSearchable).anyMatch(v -> v == 1));
+        List<GenFieldInfo> genFieldInfos = Optional.ofNullable(genInfo.getFieldList()).orElse(Collections.emptyList());
+        param.put("importList", TypeUtil.getJavaImport(genFieldInfos.stream().map(GenFieldInfo::getJavaType).toList()));
+        param.put("importSearch", genFieldInfos.stream().map(GenFieldInfo::getSearchable).anyMatch(v -> v == 1));
     }
 }
