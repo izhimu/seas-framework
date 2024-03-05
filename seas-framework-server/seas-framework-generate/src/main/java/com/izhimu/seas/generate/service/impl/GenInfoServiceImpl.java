@@ -86,7 +86,7 @@ public class GenInfoServiceImpl implements GenInfoService {
     @Override
     public void create(GenInfo genInfo, HttpServletResponse response) {
         List<GenTemplateAssets> assetsList = preview(genInfo);
-        String tempPath = FileUtil.getTmpDirPath().concat(IdUtil.nanoId()).concat(File.separator);
+        String tempPath = FileUtil.getTmpDirPath().concat(File.separator).concat(IdUtil.nanoId()).concat(File.separator);
         try (ServletOutputStream os = response.getOutputStream()) {
             assetsList.forEach(assets -> {
                 String filePath = tempPath.concat(assets.getOutPath());
