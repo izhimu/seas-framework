@@ -54,4 +54,53 @@ INSERT INTO "public"."seas_bas_menu" ("id", "created_by", "created_time", "updat
 INSERT INTO "public"."seas_bas_menu" ("id", "created_by", "created_time", "updated_by", "updated_time", "version", "logic_del", "parent_id", "sort", "menu_name", "menu_type", "menu_icon", "menu_url", "remarks", "display", "menu_component", "menu_code") VALUES (1680778264626380801, 1503940219005603842, '2023-07-17 11:15:40.307749', 1503940219005603842, '2023-07-17 11:15:40.307749', 1, 0, 1680777632112754690, 0, '页面', 1, NULL, NULL, NULL, 1, NULL, 'system.org.page');
 INSERT INTO "public"."seas_bas_menu" ("id", "created_by", "created_time", "updated_by", "updated_time", "version", "logic_del", "parent_id", "sort", "menu_name", "menu_type", "menu_icon", "menu_url", "remarks", "display", "menu_component", "menu_code") VALUES (1680778113706934273, 1503940219005603842, '2023-07-17 11:15:04.324819', 1503940219005603842, '2023-07-17 11:15:04.324819', 1, 0, 1680777632112754690, 0, '修改', 1, NULL, NULL, NULL, 1, NULL, 'system.org.update');
 
+create table seas_bas_conf
+(
+    id           bigint not null
+        primary key,
+    conf_name    varchar(255),
+    conf_key     varchar(255),
+    conf_value   text,
+    conf_info    varchar(255),
+    created_by   bigint,
+    created_time timestamp(6),
+    updated_by   bigint,
+    updated_time timestamp(6),
+    version      integer default 1,
+    logic_del    integer default 0
+);
+
+comment on table seas_bas_conf is '配置信息表';
+
+comment on column seas_bas_conf.id is 'ID';
+
+comment on column seas_bas_conf.conf_name is '配置名称';
+
+comment on column seas_bas_conf.conf_key is '配置标识';
+
+comment on column seas_bas_conf.conf_value is '配置值';
+
+comment on column seas_bas_conf.conf_info is '备注信息';
+
+comment on column seas_bas_conf.created_by is '创建者';
+
+comment on column seas_bas_conf.created_time is '创建时间';
+
+comment on column seas_bas_conf.updated_by is '修改者';
+
+comment on column seas_bas_conf.updated_time is '修改时间';
+
+comment on column seas_bas_conf.version is '版本';
+
+comment on column seas_bas_conf.logic_del is '逻辑删除';
+
+alter table seas_bas_conf
+    owner to postgres;
+
+INSERT INTO public.seas_bas_menu (id, created_by, created_time, updated_by, updated_time, version, logic_del, parent_id, sort, menu_name, menu_type, menu_icon, menu_url, remarks, display, menu_component, menu_code) VALUES (1675325108299796481, 1503940219005603842, '2023-07-02 10:06:46.522868', 1503940219005603842, '2023-07-17 11:13:50.843241', 1, 0, 1504021318394232834, 6, '配置管理', 0, null, 'system/conf', null, 1, '../../view/base/ConfPage.vue', 'system.conf');
+INSERT INTO public.seas_bas_menu (id, created_by, created_time, updated_by, updated_time, version, logic_del, parent_id, sort, menu_name, menu_type, menu_icon, menu_url, remarks, display, menu_component, menu_code) VALUES (1675325286675156993, 1503940219005603842, '2023-07-02 10:07:29.047948', 1503940219005603842, '2023-07-02 10:07:29.049516', 1, 0, 1675325108299796481, 0, '新增', 1, null, null, null, 1, null, 'system.conf.add');
+INSERT INTO public.seas_bas_menu (id, created_by, created_time, updated_by, updated_time, version, logic_del, parent_id, sort, menu_name, menu_type, menu_icon, menu_url, remarks, display, menu_component, menu_code) VALUES (1675325462932393985, 1503940219005603842, '2023-07-02 10:08:11.072562', 1503940219005603842, '2023-07-02 10:08:11.072562', 1, 0, 1675325108299796481, 0, '删除', 1, null, null, null, 1, null, 'system.conf.delete');
+INSERT INTO public.seas_bas_menu (id, created_by, created_time, updated_by, updated_time, version, logic_del, parent_id, sort, menu_name, menu_type, menu_icon, menu_url, remarks, display, menu_component, menu_code) VALUES (1675325230689587202, 1503940219005603842, '2023-07-02 10:07:15.695918', 1503940219005603842, '2023-07-02 10:07:15.695918', 1, 0, 1675325108299796481, 0, '页面', 1, null, null, null, 1, null, 'system.conf.page');
+INSERT INTO public.seas_bas_menu (id, created_by, created_time, updated_by, updated_time, version, logic_del, parent_id, sort, menu_name, menu_type, menu_icon, menu_url, remarks, display, menu_component, menu_code) VALUES (1675325414257496066, 1503940219005603842, '2023-07-02 10:07:59.471791', 1503940219005603842, '2023-07-02 10:07:59.472797', 1, 0, 1675325108299796481, 0, '修改', 1, null, null, null, 1, null, 'system.conf.update');
+
 
