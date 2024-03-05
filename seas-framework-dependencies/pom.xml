@@ -13,19 +13,19 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.1.7</spring.boot.version>
-        <hutool.version>5.8.25</hutool.version>
+        <spring.boot.version>3.1.9</spring.boot.version>
+        <hutool.version>5.8.26</hutool.version>
         <mybatis.plus.version>3.5.5</mybatis.plus.version>
-        <kryo.version>5.5.0</kryo.version>
-        <minio.version>8.5.7</minio.version>
-        <oshi.version>6.4.10</oshi.version>
+        <kryo.version>5.6.0</kryo.version>
+        <minio.version>8.5.9</minio.version>
+        <oshi.version>6.4.13</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.77</bcprov.version>
         <satoken.version>1.37.0</satoken.version>
         <camunda.version>7.20.0</camunda.version>
         <aspose.version>23.5</aspose.version>
         <fury.version>0.4.1</fury.version>
-        <vertx.version>4.5.1</vertx.version>
+        <vertx.version>4.5.4</vertx.version>
     </properties>
 
     <dependencyManagement>
@@ -150,11 +150,6 @@
                 <groupId>com.aspose</groupId>
                 <artifactId>aspose-words</artifactId>
                 <version>${aspose.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.furyio</groupId>
-                <artifactId>fury-core</artifactId>
-                <version>${fury.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.furyio</groupId>
