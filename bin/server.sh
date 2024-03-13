@@ -5,6 +5,7 @@ SERVER_NAME="Seas"
 BASE_PATH=/usr/local/seas
 JRE_PATH=${BASE_PATH}/jre/bin/java
 APP_PATH=${BASE_PATH}/lib/seas.jar
+LOG_PATH=${BASE_PATH}/log/server.log
 JAVA_OPTION="-Xms128m -Xmx128m"
 MAX_TIMEOUT=120
 
