@@ -58,36 +58,6 @@ restart(){
 log(){
     tail -f ${LOG_PATH}
 }
-## 编写退出程序的方法
-quit(){
-    ## 调用 判断程序是否正在运行
-    isExist
-    ## 判断是否存在，返回值0不存在
-    if [ $? -eq "0" ]; then
-    	echo "服务未运行，无需停止"
-    else
-    	echo "服务退出中 - PID: ${pid} "
-    	kill -15 ${pid}
-		## 等待程序退出
-		for((i=0;i<$MAX_TIMEOUT;i++))
-		do
-		sleep 1
-		pid=$(ps -ef | grep ${APP_PATH} | grep -v "grep" | awk '{print $2}')
-		if [ -n "$pid" ]; then
-			echo -e ".\c"
-		else
-			echo ""
-			break
-		fi
-		done
-		## 未退出，直接终止
-		pid=$(ps -ef | grep ${APP_PATH} | grep -v "grep" | awk '{print $2}')
-		if [ -n "$pid" ]; then
-  			stop
-		fi
-    	echo "服务退出成功"
-    fi
-}
 
 echo "${SERVER_NAME} >>>>>>"
  
@@ -107,12 +77,9 @@ case "$1" in
 	"log")
 		log
 		;;
-	"quit")
-		quit
-		;;
 	*)
 		echo "请输入正确的命令: "
-		echo "[ start | stop | restart | log | quit ]"
+		echo "[ start | stop | restart | log ]"
 		;;
 esac
 

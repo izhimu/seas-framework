@@ -4,6 +4,7 @@ import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
+import com.izhimu.seas.core.web.exception.WarnTips;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +89,18 @@ public class CoreExceptionHandler {
             return Result.fail(ResultCode.VERIFY_ERROR).buildResponseEntity();
         }
     }
+
+    /**
+     * 警告提示
+     *
+     * @return ErrResult
+     */
+    @ExceptionHandler(value = WarnTips.class)
+    @ResponseBody
+    public ResponseEntity<Result<Serializable>> warnTipsHandler(Exception e) {
+        return Result.fail(ResultCode.FAIL, e.getMessage()).buildResponseEntity();
+    }
+
 
     /**
      * 默认处理
