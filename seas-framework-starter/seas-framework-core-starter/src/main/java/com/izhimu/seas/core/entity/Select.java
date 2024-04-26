@@ -1,10 +1,9 @@
 package com.izhimu.seas.core.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 选择器数据
@@ -13,11 +12,29 @@ import java.io.Serializable;
  * @version v1.0
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Select<T extends Serializable> implements Serializable {
 
     private String label;
 
     private T value;
+
+    private boolean disabled;
+
+    private Map<String, Object> extend;
+
+    public Select() {
+    }
+
+    public Select(String label, T value) {
+        this.label = label;
+        this.value = value;
+        this.disabled = false;
+    }
+
+    public Select(String label, T value, Map<String, Object> extend) {
+        this.label = label;
+        this.value = value;
+        this.extend = extend;
+        this.disabled = false;
+    }
 }
