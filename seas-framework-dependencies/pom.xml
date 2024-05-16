@@ -26,6 +26,7 @@
         <aspose.version>23.5</aspose.version>
         <fury.version>0.4.1</fury.version>
         <vertx.version>4.5.5</vertx.version>
+        <kotlin.version>1.9.24</kotlin.version>
     </properties>
 
     <dependencyManagement>
@@ -160,6 +161,17 @@
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-mqtt</artifactId>
                 <version>${vertx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-test</artifactId>
+                <version>${kotlin.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

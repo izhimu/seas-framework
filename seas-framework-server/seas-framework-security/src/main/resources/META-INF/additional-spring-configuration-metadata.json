@@ -4,5 +4,10 @@
       "name": "seas.security.encrypt-mode",
       "type": "java.lang.String",
       "description": "Description for seas.security.encrypt-mode."
-  }
-] }
+    },
+    {
+      "name": "seas.cache.type",
+      "type": "java.lang.String",
+      "description": "Description for seas.cache.type."
+    }
+  ] }

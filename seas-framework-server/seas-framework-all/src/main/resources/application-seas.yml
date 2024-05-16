@@ -1,6 +1,6 @@
 seas:
   cache:
-    type: mem
+    type: redis
   security:
     supers:
       - admin
@@ -9,7 +9,7 @@ seas:
     token-time: 1800
   storage:
     minio:
-      end-point: http://192.168.31.243:9001
+      end-point: http://192.168.31.226:9001
       access-key: minioadmin
       secret-key: minioadmin
       bucket: seas

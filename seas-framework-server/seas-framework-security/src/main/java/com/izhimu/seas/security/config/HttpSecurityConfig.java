@@ -33,7 +33,7 @@ public class HttpSecurityConfig {
     @Resource
     public void configSaToken(SaTokenConfig config) {
         config.setTokenName(TOKEN_NAME);
-        config.setActiveTimeout(securityConfig.getTokenTime());
+        config.setTimeout(securityConfig.getTokenTime());
         config.setIsShare(false);
         config.setIsPrint(false);
         config.setTokenStyle("tik");

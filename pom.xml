@@ -23,6 +23,7 @@
         <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
+        <maven.kotlin.plugin.version>1.9.24</maven.kotlin.plugin.version>
     </properties>
 
     <repositories>
@@ -62,16 +63,21 @@
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${maven.dependency.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <version>${maven.kotlin.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <distributionManagement>
-<!--        <repository>-->
-<!--            <id>izhimu-seas-maven-releases-open</id>-->
-<!--            <name>maven-releases-open</name>-->
-<!--            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>-->
-<!--        </repository>-->
+        <!--        <repository>-->
+        <!--            <id>izhimu-seas-maven-releases-open</id>-->
+        <!--            <name>maven-releases-open</name>-->
+        <!--            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>-->
+        <!--        </repository>-->
         <repository>
             <id>izhimu-seas-maven-releases</id>
             <name>maven-releases</name>

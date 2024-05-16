@@ -1,6 +1,7 @@
 package com.izhimu.seas.security.service.impl;
 
 import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.izhimu.seas.cache.entity.EncryptKey;
@@ -107,7 +108,13 @@ public class LoginServiceImpl implements LoginService {
         }
 
         try {
-            StpUtil.login(user.getId());
+            SaLoginModel model = new SaLoginModel();
+            model.setDevice(dto.getDeviceType().toString());
+            model.setTimeout(switch (dto.getDeviceType()) {
+                case MOBILE, APPLETS -> securityConfig.getAppTokenTime();
+                default -> securityConfig.getTokenTime();
+            });
+            StpUtil.login(user.getId(), model);
             Login token = createToken(user);
             sessionHandle(user);
             // 清除错误次数
@@ -116,7 +123,7 @@ public class LoginServiceImpl implements LoginService {
             EventManager.trigger(CoreEvent.E_LOGIN, dto);
             return token;
         } catch (Exception e) {
-            StpUtil.logout(user.getId());
+            StpUtil.logout();
             log.error(e);
         }
         dto.setStatus(5);

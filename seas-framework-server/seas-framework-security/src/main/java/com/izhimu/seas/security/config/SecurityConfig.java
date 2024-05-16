@@ -23,6 +23,10 @@ public class SecurityConfig {
      */
     private Long tokenTime = 1800L;
     /**
+     * APP token有效期（秒）
+     */
+    private Long appTokenTime = 2592000L;
+    /**
      * 错误重试时间（秒）
      */
     private Long errTime = 300L;

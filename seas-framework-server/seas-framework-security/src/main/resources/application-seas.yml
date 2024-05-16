@@ -1,0 +1,12 @@
+seas:
+  cache:
+    type: redis
+  security:
+    supers:
+      - admin
+      - root
+    err-time: 300
+    err-num: 5
+    encrypt-mode: SM2
+    token-time: 1800
+    app-token-time: 2592000
