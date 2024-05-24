@@ -111,7 +111,7 @@ public class LoginServiceImpl implements LoginService {
             SaLoginModel model = new SaLoginModel();
             model.setDevice(dto.getDeviceType().toString());
             model.setTimeout(switch (dto.getDeviceType()) {
-                case MOBILE, APPLETS -> securityConfig.getAppTokenTime();
+                case ANDROID, IOS, DESKTOP, APPLETS -> securityConfig.getAppTokenTime();
                 default -> securityConfig.getTokenTime();
             });
             StpUtil.login(user.getId(), model);
