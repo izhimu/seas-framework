@@ -7,6 +7,7 @@ import com.izhimu.seas.security.service.impl.TokenCacheServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import static com.izhimu.seas.security.constant.SecurityConstant.TOKEN_NAME;
 
@@ -25,6 +26,7 @@ public class HttpSecurityConfig {
     @Resource
     private CacheService cacheService;
 
+    @Primary
     @Bean
     public SaTokenDao saTokenDao() {
         return new TokenCacheServiceImpl(cacheService);
