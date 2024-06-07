@@ -24,7 +24,6 @@
         <satoken.version>1.38.0</satoken.version>
         <camunda.version>7.21.0</camunda.version>
         <aspose.version>23.5</aspose.version>
-        <fury.version>0.4.1</fury.version>
         <vertx.version>4.5.8</vertx.version>
     </properties>
 
@@ -150,11 +149,6 @@
                 <groupId>com.aspose</groupId>
                 <artifactId>aspose-words</artifactId>
                 <version>${aspose.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.furyio</groupId>
-                <artifactId>fury-core</artifactId>
-                <version>${fury.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
