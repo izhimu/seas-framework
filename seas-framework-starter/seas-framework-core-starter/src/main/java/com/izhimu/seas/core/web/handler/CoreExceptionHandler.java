@@ -8,6 +8,7 @@ import com.izhimu.seas.core.web.exception.WarnTips;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -88,6 +89,17 @@ public class CoreExceptionHandler {
         } else {
             return Result.fail(ResultCode.VERIFY_ERROR).buildResponseEntity();
         }
+    }
+
+    /**
+     * 请求参数错误
+     *
+     * @return ErrResult
+     */
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    @ResponseBody
+    public ResponseEntity<Result<Serializable>> httpMessageNotReadableExceptionHandler() {
+        return Result.fail(ResultCode.VERIFY_ERROR).buildResponseEntity();
     }
 
     /**
