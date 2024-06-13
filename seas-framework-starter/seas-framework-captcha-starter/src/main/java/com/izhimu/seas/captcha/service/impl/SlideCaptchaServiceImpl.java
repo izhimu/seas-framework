@@ -48,20 +48,20 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
     private EncryptService<EncryptKey, String> encryptService;
 
     @Override
-    public Captcha get(Captcha captcha) {
+    public Captcha get() {
         //原生图片
         String originalImageBase64 = loadImage(config.getOriginalPath(), config.getOriginalSize());
         BufferedImage originalImage = ImgUtil.toImage(originalImageBase64);
         if (Objects.isNull(originalImage)) {
             log.error("Original image init error");
-            return captcha;
+            return null;
         }
         //抠图图片
         String blockImageBase64 = loadImage(config.getBlockPath(), config.getBlockSize());
         BufferedImage blockImage = ImgUtil.toImage(blockImageBase64);
         if (Objects.isNull(blockImage)) {
             log.error("Slide image init error");
-            return captcha;
+            return null;
         }
         Captcha newCaptcha = pictureTemplatesCut(originalImage, blockImage, blockImageBase64);
         // 将坐标信息存入redis中

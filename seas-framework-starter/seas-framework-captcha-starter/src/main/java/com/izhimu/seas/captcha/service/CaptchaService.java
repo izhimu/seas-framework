@@ -13,10 +13,9 @@ public interface CaptchaService {
     /**
      * 获取验证码
      *
-     * @param captcha Captcha
      * @return Captcha
      */
-    Captcha get(Captcha captcha);
+    Captcha get();
 
     /**
      * 核对验证码(前端)

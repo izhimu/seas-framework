@@ -21,8 +21,8 @@ public class CaptchaController {
 
     @OperationLog(value = "验证码-获取", enable = false)
     @PostMapping("/get")
-    public Captcha get(@RequestBody Captcha data) {
-        return captchaService.get(data);
+    public Captcha get() {
+        return captchaService.get();
     }
 
     @OperationLog(value = "验证码-校验", enable = false)
