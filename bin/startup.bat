@@ -1,10 +1,13 @@
 @echo off
+reg add HKEY_CURRENT_USER\Console /v QuickEdit /t REG_DWORD /d 00000000 /f >nul
 set SERVER_NAME=宇航微系统质量保证数字化平台
 set BASE_PATH=C:\Seas\package
 set APP_PATH=%BASE_PATH%/lib/seas-project-warranty-1.0.1.jar
 set JAVA_OPTION=-Xms512m -Xmx512m
 set NGINX_PATH=C:\Seas\nginx-1.27.0
 set POSTGRESQL_SERVER_NAME=postgresql-x64-16
+
+title Seas Framework App Launcher
 
 echo.
 echo -- Seas Framework App Launcher --
@@ -30,7 +33,6 @@ if "%ERRORLEVEL%"=="0" (
     start "nginx" nginx.exe
     echo [%time%] Nginx服务启动成功
 )
-
 
 echo [%time%] 检查%SERVER_NAME%
 tasklist /FI "imagename eq %SERVER_NAME%" 2>nul | find /I /N "%SERVER_NAME%">nul
