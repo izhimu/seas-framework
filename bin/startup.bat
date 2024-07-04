@@ -1,45 +1,47 @@
 @echo off
-set SERVER_NAME=Óîº½Î¢ÏµÍ³ÖÊÁ¿±£Ö¤Êý×Ö»¯Æ½Ì¨
+reg add HKEY_CURRENT_USER\Console /v QuickEdit /t REG_DWORD /d 00000000 /f >nul
+set SERVER_NAME=å®‡èˆªå¾®ç³»ç»Ÿè´¨é‡ä¿è¯æ•°å­—åŒ–å¹³å°
 set BASE_PATH=C:\Seas\package
 set APP_PATH=%BASE_PATH%/lib/seas-project-warranty-1.0.1.jar
 set JAVA_OPTION=-Xms512m -Xmx512m
 set NGINX_PATH=C:\Seas\nginx-1.27.0
 set POSTGRESQL_SERVER_NAME=postgresql-x64-16
 
+title Seas Framework App Launcher
+
 echo.
 echo -- Seas Framework App Launcher --
 echo.
 
-echo [%time%] ¼ì²éPostgreSQL·þÎñ
+echo [%time%] æ£€æŸ¥PostgreSQLæœåŠ¡
 sc query "%POSTGRESQL_SERVER_NAME%" | find "RUNNING" >nul 2>&1
 if "%ERRORLEVEL%"=="0" (
-    echo [%time%] PostgreSQL·þÎñÕýÔÚÔËÐÐ
+    echo [%time%] PostgreSQLæœåŠ¡æ­£åœ¨è¿è¡Œ
 ) else (
-    echo [%time%] ÕýÔÚÆô¶¯PostgreSQL·þÎñ...
+    echo [%time%] æ­£åœ¨å¯åŠ¨PostgreSQLæœåŠ¡...
     net start "%POSTGRESQL_SERVER_NAME%"
-    echo [%time%] PostgreSQL·þÎñÆô¶¯³É¹¦
+    echo [%time%] PostgreSQLæœåŠ¡å¯åŠ¨æˆåŠŸ
 )
 
-echo [%time%] ¼ì²éNginx·þÎñ
+echo [%time%] æ£€æŸ¥NginxæœåŠ¡
 tasklist /FI "imagename eq nginx.exe" 2>nul | find /I /N "nginx.exe">nul
 if "%ERRORLEVEL%"=="0" (
-    echo [%time%] Nginx·þÎñÕýÔÚÔËÐÐ
+    echo [%time%] NginxæœåŠ¡æ­£åœ¨è¿è¡Œ
 ) else (
-    echo [%time%] ÕýÔÚÆô¶¯Nginx·þÎñ...
+    echo [%time%] æ­£åœ¨å¯åŠ¨NginxæœåŠ¡...
     cd %NGINX_PATH%
     start "nginx" nginx.exe
-    echo [%time%] Nginx·þÎñÆô¶¯³É¹¦
+    echo [%time%] NginxæœåŠ¡å¯åŠ¨æˆåŠŸ
 )
 
-
-echo [%time%] ¼ì²é%SERVER_NAME%
+echo [%time%] æ£€æŸ¥%SERVER_NAME%
 tasklist /FI "imagename eq %SERVER_NAME%" 2>nul | find /I /N "%SERVER_NAME%">nul
 if "%ERRORLEVEL%"=="0" (
-    echo [%time%] %SERVER_NAME%ÕýÔÚÔËÐÐ
+    echo [%time%] %SERVER_NAME%æ­£åœ¨è¿è¡Œ
 ) else (
-    echo [%time%] ÕýÔÚÆô¶¯%SERVER_NAME%...
+    echo [%time%] æ­£åœ¨å¯åŠ¨%SERVER_NAME%...
     start "%SERVER_NAME%" java %JAVA_OPTION% -jar %APP_PATH%
-    echo [%time%] %SERVER_NAME%Æô¶¯³É¹¦
+    echo [%time%] %SERVER_NAME%å¯åŠ¨æˆåŠŸ
 )
 
 pause
