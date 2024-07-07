@@ -1,6 +1,8 @@
 @echo off
 reg add HKEY_CURRENT_USER\Console /v QuickEdit /t REG_DWORD /d 00000000 /f >nul
 set SERVER_NAME=宇航微系统质量保证数字化平台
+reg add HKEY_CURRENT_USER\Console /v QuickEdit /t REG_DWORD /d 00000000 /f >nul
+set SERVER_NAME=宇航微系统质量保证数字化平台
 set BASE_PATH=C:\Seas\package
 set APP_PATH=%BASE_PATH%/lib/seas-project-warranty-1.0.1.jar
 set JAVA_OPTION=-Xms512m -Xmx512m
