@@ -1,0 +1,9 @@
+${AnsiColor.BRIGHT_CYAN}
+__________________ ________
+__  ___/  _ \  __ `/_  ___/
+_(__  )/  __/ /_/ /_(__  )
+/____/ \___/\__,_/ /____/
+${AnsiColor.WHITE}
+ 🌱 spring-boot: v${spring-boot.version}
+ 🐋 @project.artifactId@: v@project.version@(@maven.build.timestamp@)
+${AnsiColor.DEFAULT}

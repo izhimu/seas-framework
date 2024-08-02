@@ -1,0 +1,8 @@
+seas:
+  storage:
+    type: minio
+    minio:
+      end-point: http://192.168.31.221:9000
+      access-key: minioadmin
+      secret-key: minioadmin
+      bucket: seas

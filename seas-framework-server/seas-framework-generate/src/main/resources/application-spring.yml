@@ -6,6 +6,8 @@ spring:
     password: 123456
     driver-class-name: org.postgresql.Driver
 logging:
+  file:
+    path: ./logs
   level:
     root: INFO
     com.izhimu: DEBUG

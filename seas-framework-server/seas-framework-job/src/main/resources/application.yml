@@ -5,26 +5,11 @@ server:
       force: true
       enabled: true
 spring:
-  mvc:
-    throw-exception-if-no-handler-found: true
+  profiles:
+    include: spring,seas
   web:
     resources:
       add-mappings: false
-  servlet:
-    multipart:
-      max-file-size: 1GB
-      max-request-size: 10GB
-  data:
-    redis:
-      host: 192.168.31.201
-      port: 6379
-      database: 0
-  datasource:
-    name: dataSource
-    url: jdbc:postgresql://192.168.31.200:5432/seas_db
-    username: postgres
-    password: 123456
-    driver-class-name: org.postgresql.Driver
 mybatis-plus:
   configuration:
     log-impl: com.izhimu.seas.data.service.impl.LogImpl
@@ -35,14 +20,10 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 logging:
-  level:
-    root: INFO
-    com.izhimu: DEBUG
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:%3.-3p}) |%clr(%12.12t){magenta}| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
     file: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:%3.-3p} |%12.12t| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
   file:
-    path: ./log
     name: ${logging.file.path}/seas.log
   logback:
     rollingpolicy:

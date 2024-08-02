@@ -10,12 +10,6 @@ spring:
   web:
     resources:
       add-mappings: false
-  servlet:
-    multipart:
-      max-file-size: 1GB
-      max-request-size: 10GB
-  freemarker:
-    check-template-location: false
 mybatis-plus:
   configuration:
     log-impl: com.izhimu.seas.data.service.impl.LogImpl
@@ -32,7 +26,6 @@ logging:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:%3.-3p}) |%clr(%12.12t){magenta}| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
     file: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:%3.-3p} |%12.12t| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
   file:
-    path: ./log
     name: ${logging.file.path}/server.log
   logback:
     rollingpolicy:
