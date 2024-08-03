@@ -6,5 +6,5 @@ _(__  )/  __/ /_/ /_(__  )
 ${AnsiColor.WHITE}
 > spring-boot: v${spring-boot.version}
 > seas-framework: v@project.version@
-> @project.artifactId@: v@project.version@(@maven.build.timestamp@)
+> @project.artifactId@: v@project.version@_@build.time@
 ${AnsiColor.DEFAULT}
