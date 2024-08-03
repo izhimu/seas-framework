@@ -1,13 +1,7 @@
 package com.izhimu.seas.base.controller;
 
-import com.izhimu.seas.base.entity.BasAuthMenu;
-import com.izhimu.seas.base.entity.BasAuthOrg;
-import com.izhimu.seas.base.entity.BasRole;
-import com.izhimu.seas.base.entity.BasUserRole;
-import com.izhimu.seas.base.service.BasAuthMenuService;
-import com.izhimu.seas.base.service.BasAuthOrgService;
-import com.izhimu.seas.base.service.BasRoleService;
-import com.izhimu.seas.base.service.BasUserRoleService;
+import com.izhimu.seas.base.entity.*;
+import com.izhimu.seas.base.service.*;
 import com.izhimu.seas.core.annotation.OperationLog;
 import com.izhimu.seas.core.entity.Select;
 import com.izhimu.seas.data.controller.AbsBaseController;
@@ -32,6 +26,8 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
     private BasAuthOrgService authOrgService;
     @Resource
     private BasUserRoleService userRoleService;
+    @Resource
+    private BasAuthTopicService authTopicService;
 
     @Override
     public String logPrefix() {
@@ -116,5 +112,28 @@ public class BasRoleController extends AbsBaseController<BasRoleService, BasRole
     @GetMapping("/select")
     public List<Select<Long>> select() {
         return service.select();
+    }
+
+    /**
+     * 获取主题
+     *
+     * @param id id
+     * @return 主题列表
+     */
+    @OperationLog("@-获取主题")
+    @GetMapping("/topic/{id}")
+    public List<Long> topic(@PathVariable Long id) {
+        return authTopicService.getTopicIdsByRoleId(id);
+    }
+
+    /**
+     * 更新主题
+     *
+     * @param entity 主题关联 {@link BasAuthTopic BasAuthTopic}
+     */
+    @OperationLog("@-更新主题")
+    @PostMapping("/topic")
+    public void updateTopic(@RequestBody BasAuthTopic entity) {
+        authTopicService.updateAuthTopic(entity);
     }
 }

@@ -270,6 +270,9 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
         DataPermission dataPermission = roleService.getDataPermissionByUserId(user);
         user.setMenuAuth(menuAuth);
         user.setDataAuth(dataPermission);
+        // 角色
+        Set<Long> roleIds = userRoleService.findRoleIdByUserIdDistinct(user.getId());
+        user.setRoleIds(roleIds);
         return user;
     }
 

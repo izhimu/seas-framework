@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户信息
@@ -58,6 +59,10 @@ public class User implements Serializable {
      * 菜单权限列表
      */
     private List<String> menuAuth;
+    /**
+     * 角色ID列表
+     */
+    private Set<Long> roleIds;
     /**
      * 数据权限列表
      */
