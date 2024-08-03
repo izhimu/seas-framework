@@ -1,5 +1,6 @@
 package com.izhimu.seas.core.web.handler;
 
+import com.izhimu.seas.core.annotation.React;
 import com.izhimu.seas.core.web.Result;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -33,13 +34,17 @@ public class CoreResponseHandler implements ResponseBodyAdvice<Serializable> {
 
     @Override
     public Serializable beforeBodyWrite(Serializable body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
-        if (body instanceof ResponseEntity) {
+        // 响应式数据直接返回
+        if (returnType.getExecutable().isAnnotationPresent(React.class)) {
             return body;
         }
-        if (body instanceof Result) {
+        if (body instanceof ResponseEntity || returnType.getGenericParameterType() == ResponseEntity.class) {
             return body;
         }
-        if (body instanceof String) {
+        if (body instanceof Result || returnType.getGenericParameterType() == Result.class) {
+            return body;
+        }
+        if (body instanceof String || returnType.getGenericParameterType() == String.class) {
             return Result.ok(body).toString();
         }
         return Result.ok(body);

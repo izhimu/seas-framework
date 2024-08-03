@@ -1,9 +1,8 @@
 spring:
   ai:
     ollama:
-      base-url: http://192.168.2.166:11434
       chat:
-        model: mistral-nemo
+        model: llama3.1
 logging:
   file:
     path: ./logs

@@ -1,5 +1,6 @@
 package com.izhimu.seas.ai.controller;
 
+import com.izhimu.seas.core.annotation.React;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -36,6 +37,7 @@ public class AiChatController {
         return output.getContent();
     }
 
+    @React
     @GetMapping("/stream/generate")
     public Flux<String> generateStream(String input) {
         UserMessage userMessage = new UserMessage(input);
