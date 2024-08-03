@@ -1,0 +1,20 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 10GB
+  data:
+    redis:
+      host: 192.168.31.221
+  datasource:
+    name: dataSource
+    url: jdbc:postgresql://192.168.31.221:5432/seas_db
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+logging:
+  file:
+    path: ./logs
+  level:
+    root: INFO
+    com.izhimu: DEBUG

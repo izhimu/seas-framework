@@ -5,8 +5,8 @@ server:
       force: true
       enabled: true
 spring:
-  mvc:
-    throw-exception-if-no-handler-found: true
+  profiles:
+    include: spring,seas
   web:
     resources:
       add-mappings: false
@@ -15,9 +15,7 @@ logging:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:%3.-3p}) |%clr(%12.12t){magenta}| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
     file: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:%3.-3p} |%12.12t| %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
   file:
-    path: ./log
     name: ${logging.file.path}/seas.log
   logback:
     rollingpolicy:
       clean-history-on-start: true
-
