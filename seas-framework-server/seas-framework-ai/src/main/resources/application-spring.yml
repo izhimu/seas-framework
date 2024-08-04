@@ -1,8 +1,19 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://192.168.31.203:5432/seas_ai
+    username: postgres
+    password: 123456
   ai:
     ollama:
       chat:
         model: mistral-nemo
+      embedding:
+        model: nomic-embed-text
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        initialize-schema: true
 logging:
   file:
     path: ./logs
