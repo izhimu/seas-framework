@@ -2,7 +2,7 @@ spring:
   ai:
     ollama:
       chat:
-        model: llama3.1
+        model: mistral-nemo
 logging:
   file:
     path: ./logs
