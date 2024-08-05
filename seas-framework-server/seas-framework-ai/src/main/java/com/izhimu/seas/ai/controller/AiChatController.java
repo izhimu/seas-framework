@@ -1,5 +1,6 @@
 package com.izhimu.seas.ai.controller;
 
+import com.izhimu.seas.ai.entity.AiInput;
 import com.izhimu.seas.ai.function.BaiduSearchFunction;
 import com.izhimu.seas.core.annotation.React;
 import jakarta.annotation.Resource;
@@ -14,9 +15,7 @@ import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -40,9 +39,9 @@ public class AiChatController {
     @Resource
     private VectorStore vectorStore;
 
-    @GetMapping("/generate")
-    public String generate(String input) {
-        UserMessage userMessage = new UserMessage(input);
+    @PostMapping
+    public String generate(@RequestBody AiInput input) {
+        UserMessage userMessage = new UserMessage(input.getMsg());
         ChatResponse response = chatModel.call(new Prompt(List.of(new SystemMessage(FUNCTION_SYSTEM_MANAGER), userMessage),
                 OllamaOptions.builder()
                         .withFunctionCallbacks(List.of(new BaiduSearchFunction().getWrapper()))
@@ -53,9 +52,9 @@ public class AiChatController {
     }
 
     @React
-    @GetMapping("/stream/generate")
-    public Flux<String> generateStream(String input) {
-        Flux<ChatResponse> response = chatModel.stream(new Prompt(input));
+    @PostMapping("/stream")
+    public Flux<String> generateStream(@RequestBody AiInput input) {
+        Flux<ChatResponse> response = chatModel.stream(new Prompt(input.getMsg()));
         return response.map(v -> v.getResult().getOutput().getContent());
     }
 

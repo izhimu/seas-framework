@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 public abstract class ToolsFunction<REQ, RES> implements Function<REQ, RES> {
 
-    public static final String FUNCTION_SYSTEM_MANAGER = "If a tool is invoked, the response is strictly followed by the tool's return value, and no additional judgment is required。";
+    public static final String FUNCTION_SYSTEM_MANAGER = "如果调用了一个工具，则响应后严格跟随工具的返回值，无需额外判断。";
 
     public FunctionCallbackWrapper<REQ, RES> getWrapper() {
         Description description = this.getClass().getAnnotation(Description.class);

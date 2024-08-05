@@ -5,15 +5,17 @@ spring:
     password: 123456
   ai:
     ollama:
+      base-url: http://192.168.2.166:11434
       chat:
-        model: mistral-nemo
+        model: sam4096/qwen2tools
       embedding:
-        model: nomic-embed-text
+        model: shaw/dmeta-embedding-zh
     vectorstore:
       pgvector:
         index-type: HNSW
         distance-type: COSINE_DISTANCE
         initialize-schema: true
+        remove-existing-vector-store-table: true
 logging:
   file:
     path: ./logs
