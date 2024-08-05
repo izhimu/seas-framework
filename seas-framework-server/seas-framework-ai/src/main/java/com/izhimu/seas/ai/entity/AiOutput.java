@@ -5,13 +5,12 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 用户输入数据
+ * AI输出数据
  *
  * @author haoran
- * @version v1.0
  */
 @Data
-public class AiInput implements Serializable {
+public class AiOutput implements Serializable {
 
     /**
      * 聊天ID
