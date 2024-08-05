@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -55,6 +56,8 @@ public class JsonUtil {
     public static void config(ObjectMapper mapper) {
         // 属性为NULL时可被序列化
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // 忽略未知字段
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // 对象属性为空时，可序列化
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         // 字符串带反斜杠可序列化
