@@ -1,6 +1,6 @@
 seas:
   cache:
-    type: redis
+    type: mem
   security:
     supers:
       - admin
@@ -8,10 +8,8 @@ seas:
     err-num: 5
     token-time: 1800
   storage:
-    minio:
-      end-point: http://192.168.31.226:9001
-      access-key: minioadmin
-      secret-key: minioadmin
-      bucket: seas
+    type: local
+    local:
+      path: /home/haoran/temp/seas
   log:
     enable-ip-address-query: false

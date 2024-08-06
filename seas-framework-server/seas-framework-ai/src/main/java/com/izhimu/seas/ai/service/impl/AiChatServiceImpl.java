@@ -35,7 +35,7 @@ public class AiChatServiceImpl implements AiChatService {
     private OllamaChatModel chatModel;
 
     @Resource
-    private AiHistoryService historyService;
+    private AiHistoryService aiHistoryService;
 
 
     @Override
@@ -43,14 +43,34 @@ public class AiChatServiceImpl implements AiChatService {
         if (Objects.isNull(input.getChatId())) {
             input.setChatId(IdUtil.getSnowflakeNextId());
         }
-        List<AiHistory> historyList = historyService.lambdaQuery()
-                .select(AiHistory::getSort, AiHistory::getRole, AiHistory::getTotalToken, AiHistory::getMessage)
-                .eq(AiHistory::getChatId, input.getChatId())
-                .orderByAsc(AiHistory::getSort)
-                .list();
+        List<AiHistory> historyList = aiHistoryService.findHistoryByChatId(input.getChatId());
         boolean isNewChat = historyList.isEmpty();
+        // 发起请求
+        List<Message> messages = getHistoryMessages(historyList, isNewChat);
+        messages.add(new UserMessage(input.getMsg()));
+        ChatResponse response = chatModel.call(new Prompt(messages, OllamaOptions.builder()
+                .withFunctionCallbacks(List.of(new BaiduSearchFunction().getWrapper()))
+                .build()));
+        String result = response.getResult().getOutput().getContent();
+        // 保存历史
+        if (isNewChat) {
+            aiHistoryService.saveSystemMessage(input.getChatId(), FUNCTION_SYSTEM_MANAGER);
+        }
+        AiHistory last = isNewChat ? null : historyList.getLast();
+        Usage usage = response.getMetadata().getUsage();
+        aiHistoryService.saveChatMessage(input.getChatId(), last, usage, input.getMsg(), result);
+        return output(input.getChatId(), result);
+    }
+
+    /**
+     * 获取历史消息
+     *
+     * @param historyList 历史消息列表
+     * @param isNewChat   是否是新聊天
+     * @return 历史消息列表
+     */
+    private List<Message> getHistoryMessages(List<AiHistory> historyList, boolean isNewChat) {
         List<Message> messages = new ArrayList<>();
-        AiHistory last = null;
         if (isNewChat) {
             messages.add(new SystemMessage(FUNCTION_SYSTEM_MANAGER));
         } else {
@@ -64,46 +84,23 @@ public class AiChatServiceImpl implements AiChatService {
                                 new AssistantMessage(new String(v.getMessage(), StandardCharsets.UTF_8));
                         default -> null;
                     })
+                    .filter(Objects::nonNull)
                     .forEach(messages::add);
-            last = historyList.getLast();
         }
-        messages.add(new UserMessage(input.getMsg()));
-        ChatResponse response = chatModel.call(new Prompt(messages, OllamaOptions.builder()
-                .withFunctionCallbacks(List.of(new BaiduSearchFunction().getWrapper()))
-                .build()));
-        String result = response.getResult().getOutput().getContent();
-        // 保存历史
-        long chatId = isNewChat ? IdUtil.getSnowflakeNextId() : input.getChatId();
-        Usage usage = response.getMetadata().getUsage();
-        if (isNewChat) {
-            AiHistory history0 = new AiHistory();
-            history0.setChatId(chatId);
-            history0.setSort(0);
-            history0.setRole(MessageType.SYSTEM);
-            history0.setToken(0L);
-            history0.setTotalToken(0L);
-            history0.setMessage(FUNCTION_SYSTEM_MANAGER.getBytes(StandardCharsets.UTF_8));
-            historyService.save(history0);
-        }
-        AiHistory history1 = new AiHistory();
-        history1.setChatId(chatId);
-        history1.setSort(last == null ? 1 : last.getSort() + 1);
-        history1.setRole(MessageType.USER);
-        history1.setToken(usage.getPromptTokens());
-        history1.setTotalToken((last == null ? 0 : last.getTotalToken()) + usage.getPromptTokens());
-        history1.setMessage(input.getMsg().getBytes(StandardCharsets.UTF_8));
-        historyService.save(history1);
-        AiHistory history2 = new AiHistory();
-        history2.setChatId(chatId);
-        history2.setSort(history1.getSort() + 1);
-        history2.setRole(MessageType.ASSISTANT);
-        history2.setToken(usage.getGenerationTokens());
-        history2.setTotalToken(history1.getTotalToken() + usage.getGenerationTokens());
-        history2.setMessage(result.getBytes(StandardCharsets.UTF_8));
-        historyService.save(history2);
+        return messages;
+    }
+
+    /**
+     * 输出结果
+     *
+     * @param chatId 聊天ID
+     * @param msg    输出消息
+     * @return 输出结果
+     */
+    private AiOutput output(long chatId, String msg) {
         AiOutput output = new AiOutput();
         output.setChatId(chatId);
-        output.setMsg(result);
+        output.setMsg(msg);
         return output;
     }
 }

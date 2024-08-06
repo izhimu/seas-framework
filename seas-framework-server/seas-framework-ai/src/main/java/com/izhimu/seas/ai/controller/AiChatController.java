@@ -28,7 +28,7 @@ import java.util.Map;
 public class AiChatController {
 
     @Resource
-    private AiChatService chatService;
+    private AiChatService aiChatService;
 
     @Resource
     private OllamaChatModel chatModel;
@@ -38,7 +38,7 @@ public class AiChatController {
 
     @PostMapping
     public AiOutput chat(@RequestBody AiInput input) {
-        return chatService.chat(input);
+        return aiChatService.chat(input);
     }
 
     @React
