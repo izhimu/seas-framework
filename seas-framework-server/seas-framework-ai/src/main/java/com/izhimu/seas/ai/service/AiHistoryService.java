@@ -28,6 +28,7 @@ public interface AiHistoryService extends IBaseService<AiHistory> {
      * @param message 系统消息
      * @return 保存结果
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean saveSystemMessage(long chatId, String message);
 
     /**
@@ -40,5 +41,6 @@ public interface AiHistoryService extends IBaseService<AiHistory> {
      * @param assistantMessage 机器人消息
      * @return 保存结果
      */
+    @SuppressWarnings("UnusedReturnValue")
     boolean saveChatMessage(long chatId, AiHistory last, Usage usage, String userMessage, String assistantMessage);
 }

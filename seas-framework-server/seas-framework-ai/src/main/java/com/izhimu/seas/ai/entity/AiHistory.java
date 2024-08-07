@@ -3,6 +3,7 @@ package com.izhimu.seas.ai.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.izhimu.seas.core.annotation.ViewIgnore;
 import com.izhimu.seas.data.entity.IdEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,17 +50,23 @@ public class AiHistory extends IdEntity {
     /**
      * 消息
      */
+    @ViewIgnore
     private byte[] message;
+
+    @TableField(exist = false)
+    private String messageStr;
 
     /**
      * 用户ID
      */
+    @ViewIgnore
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
      * 创建时间
      */
+    @ViewIgnore
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 }
