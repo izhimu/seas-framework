@@ -6,7 +6,9 @@ seas:
       - admin
     err-time: 300
     err-num: 5
-    token-time: 1800
+    token-timeout: 2592000
+    active-timeout:
+      web: 1800
   storage:
     type: local
     local:

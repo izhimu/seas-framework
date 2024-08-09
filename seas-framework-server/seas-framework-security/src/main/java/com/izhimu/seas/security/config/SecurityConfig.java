@@ -1,11 +1,14 @@
 package com.izhimu.seas.security.config;
 
+import com.izhimu.seas.core.enums.DeviceType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 登录配置
@@ -21,11 +24,11 @@ public class SecurityConfig {
     /**
      * token有效期（秒）
      */
-    private Long tokenTime = 1800L;
+    private Long tokenTimeout = 2592000L;
     /**
-     * APP token有效期（秒）
+     * active有效期（秒）
      */
-    private Long appTokenTime = 2592000L;
+    private Map<DeviceType, Long> activeTimeout = new HashMap<>();
     /**
      * 错误重试时间（秒）
      */

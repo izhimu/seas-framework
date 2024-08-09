@@ -110,10 +110,7 @@ public class LoginServiceImpl implements LoginService {
         try {
             SaLoginModel model = new SaLoginModel();
             model.setDevice(dto.getDeviceType().toString());
-            model.setTimeout(switch (dto.getDeviceType()) {
-                case ANDROID, IOS, DESKTOP, APPLETS -> securityConfig.getAppTokenTime();
-                default -> securityConfig.getTokenTime();
-            });
+            model.setActiveTimeout(securityConfig.getActiveTimeout().getOrDefault(dto.getDeviceType(), 1800L));
             StpUtil.login(user.getId(), model);
             Login token = createToken(user);
             sessionHandle(user);

@@ -35,10 +35,11 @@ public class HttpSecurityConfig {
     @Resource
     public void configSaToken(SaTokenConfig config) {
         config.setTokenName(TOKEN_NAME);
-        config.setTimeout(securityConfig.getTokenTime());
+        config.setTimeout(securityConfig.getTokenTimeout());
         config.setIsShare(false);
         config.setIsPrint(false);
         config.setTokenStyle("tik");
         config.setIsReadCookie(false);
+        config.setDynamicActiveTimeout(true);
     }
 }
