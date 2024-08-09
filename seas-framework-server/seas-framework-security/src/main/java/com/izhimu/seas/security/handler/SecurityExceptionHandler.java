@@ -4,6 +4,7 @@ import cn.dev33.satoken.exception.NotLoginException;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.security.exception.SecurityException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;

@@ -2,9 +2,11 @@ package com.izhimu.seas.core.web.handler;
 
 import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.web.Result;
 import com.izhimu.seas.core.web.ResultCode;
 import com.izhimu.seas.core.web.exception.WarnTips;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -122,9 +124,13 @@ public class CoreExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ResponseEntity<Result<Serializable>> defaultErrorHandler(Exception e) {
+    public ResponseEntity<Result<Serializable>> defaultErrorHandler(Exception e, HttpServletRequest request) {
         //500
-        log.error(e);
+        log.error("ExceptionHandler default:", e);
+        String accept = request.getHeader("accept");
+        if (StrUtil.isNotBlank(accept) && accept.contains("text/html")) {
+            return null;
+        }
         return Result.error().buildResponseEntity();
     }
 }

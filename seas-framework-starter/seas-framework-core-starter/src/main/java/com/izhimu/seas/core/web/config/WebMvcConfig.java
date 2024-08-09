@@ -1,6 +1,7 @@
 package com.izhimu.seas.core.web.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.izhimu.seas.core.pool.ThreadPoolFactory;
 import com.izhimu.seas.core.utils.JsonUtil;
 import com.izhimu.seas.core.web.interceptor.IExpansionInterceptor;
 import jakarta.annotation.Nonnull;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -50,5 +53,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         interceptorList.forEach(interceptor -> registry.addInterceptor(interceptor)
                 .addPathPatterns(interceptor.addPath())
                 .excludePathPatterns(interceptor.excludePath()));
+    }
+
+    @Override
+    public void configureAsyncSupport(@Nonnull AsyncSupportConfigurer configurer) {
+        ConcurrentTaskExecutor executor = new ConcurrentTaskExecutor(ThreadPoolFactory.build("Async"));
+        configurer.setTaskExecutor(executor);
     }
 }
