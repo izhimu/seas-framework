@@ -13,19 +13,19 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.3.1</spring.boot.version>
+        <spring.boot.version>3.3.2</spring.boot.version>
         <spring.ai.version>1.0.0-SNAPSHOT</spring.ai.version>
         <hutool.version>5.8.29</hutool.version>
         <mybatis.plus.version>3.5.7</mybatis.plus.version>
         <kryo.version>5.6.0</kryo.version>
         <minio.version>8.5.11</minio.version>
-        <oshi.version>6.6.1</oshi.version>
+        <oshi.version>6.6.2</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.78.1</bcprov.version>
         <satoken.version>1.38.0</satoken.version>
         <camunda.version>7.21.0</camunda.version>
         <aspose.version>23.5</aspose.version>
-        <vertx.version>4.5.8</vertx.version>
+        <vertx.version>4.5.9</vertx.version>
     </properties>
 
     <dependencyManagement>
