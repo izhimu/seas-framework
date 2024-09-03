@@ -66,7 +66,7 @@
                             <mainClass>com.izhimu.seas.job.SeasJobServerApplication</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>../conf/${project.artifactId}/</Class-Path>
+                            <Class-Path>../conf/</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -113,7 +113,7 @@
                                     </includes>
                                 </resource>
                             </resources>
-                            <outputDirectory>target/package/conf/${project.artifactId}/</outputDirectory>
+                            <outputDirectory>target/package/conf/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

@@ -56,10 +56,10 @@
             <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-generate</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.izhimu</groupId>
-            <artifactId>seas-framework-ai</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.izhimu</groupId>-->
+<!--            <artifactId>seas-framework-ai</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-message</artifactId>
@@ -106,7 +106,7 @@
                             <mainClass>com.izhimu.seas.all.SeasServerApplication</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>../conf/${project.artifactId}/</Class-Path>
+                            <Class-Path>../conf/</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -153,7 +153,7 @@
                                     </includes>
                                 </resource>
                             </resources>
-                            <outputDirectory>target/package/conf/${project.artifactId}/</outputDirectory>
+                            <outputDirectory>target/package/conf/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

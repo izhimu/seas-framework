@@ -74,4 +74,28 @@ public class GenTemplateServiceImpl extends BaseServiceImpl<GenTemplateMapper, G
                 .forEach(templateAssetsService::save);
         return true;
     }
+
+    @Override
+    public boolean copy(Long id) {
+        List<GenTemplate> list = this.lambdaQuery()
+                .eq(GenTemplate::getId, id)
+                .list();
+        if (list.isEmpty()){
+            return false;
+        }
+        GenTemplate template = list.getFirst();
+        template.setId(null);
+        template.setTemplateName(template.getTemplateName() + "（副本）");
+        this.save(template);
+        templateAssetsService.lambdaQuery()
+                .eq(GenTemplateAssets::getTemplateId, id)
+                .list()
+                .stream()
+                .peek(v -> {
+                     v.setId(null);
+                     v.setTemplateId(template.getId());
+                 })
+                .forEach(templateAssetsService::save);
+        return true;
+    }
 }

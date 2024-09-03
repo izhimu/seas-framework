@@ -30,4 +30,12 @@ public interface GenTemplateService extends IBaseService<GenTemplate> {
      */
     @SuppressWarnings("SameReturnValue")
     boolean assetsSave(List<GenTemplateAssets> assetsList);
+
+    /**
+     * 复制模板
+     *
+     * @param id 模板ID
+     * @return boolean
+     */
+    boolean copy(Long id);
 }

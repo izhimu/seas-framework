@@ -1,6 +1,6 @@
 seas:
   cache:
-    type: mem
+    type: redis
   security:
     supers:
       - admin
@@ -9,9 +9,5 @@ seas:
     token-timeout: 2592000
     active-timeout:
       web: 1800
-  storage:
-    type: local
-    local:
-      path: /home/haoran/temp/seas
   log:
     enable-ip-address-query: false
