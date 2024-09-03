@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 代码生成信息
@@ -57,4 +58,8 @@ public class GenInfo implements Serializable {
      * 字段信息
      */
     private List<GenFieldInfo> fieldList;
+    /**
+     * 拓展参数
+     */
+    private Map<String, Object> ext;
 }

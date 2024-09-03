@@ -146,6 +146,7 @@ public class GenInfoServiceImpl implements GenInfoService {
         param.put("pathName", "/".concat(CharSequenceUtil.toUnderlineCase(Optional.ofNullable(genInfo.getClassName()).orElse("")).replace("_", "/")));
         param.put("keyName", CharSequenceUtil.toUnderlineCase(Optional.ofNullable(genInfo.getClassName()).orElse("")).replace("_", "."));
         param.put("fieldList", Optional.ofNullable(genInfo.getFieldList()).orElse(Collections.emptyList()));
+        param.put("ext", Optional.ofNullable(genInfo.getExt()).orElse(Collections.emptyMap()));
         extJavaParam(param, genInfo);
         return param;
     }

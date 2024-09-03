@@ -84,5 +84,10 @@ comment on column seas_bas_topic_menu.topic_id is '主题ID';
 
 comment on column seas_bas_topic_menu.is_checked is '选中的，0否，1是';
 
+alter table public.seas_gen_template
+    add ext text;
+
+comment on column public.seas_gen_template.ext is '附加参数';
+
 
 

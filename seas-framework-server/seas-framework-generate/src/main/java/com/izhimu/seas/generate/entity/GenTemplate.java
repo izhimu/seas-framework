@@ -32,4 +32,8 @@ public class GenTemplate extends IdEntity {
      */
     @Search
     private String remark;
+    /**
+     * 附加参数
+     */
+    private String ext;
 }
