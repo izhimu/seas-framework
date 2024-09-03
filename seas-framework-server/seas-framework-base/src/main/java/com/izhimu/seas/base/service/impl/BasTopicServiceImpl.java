@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -68,12 +69,18 @@ public class BasTopicServiceImpl extends BaseServiceImpl<BasTopicMapper, BasTopi
             return list();
         }
         Set<Long> roleIds = user.getRoleIds();
+        if (roleIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         Set<Long> topicIds = authTopicService.lambdaQuery()
                 .in(BasAuthTopic::getRoleId, roleIds)
                 .list()
                 .stream()
                 .map(BasAuthTopic::getTopicId)
                 .collect(Collectors.toSet());
+        if (topicIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         return this.lambdaQuery()
                 .eq(BasTopic::getId, topicIds)
                 .list()
