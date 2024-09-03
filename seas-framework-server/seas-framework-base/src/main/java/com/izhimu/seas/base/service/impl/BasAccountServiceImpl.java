@@ -86,6 +86,9 @@ public class BasAccountServiceImpl extends BaseServiceImpl<BasAccountMapper, Bas
                 .eq(BasAccount::getUserId, userId)
                 .notIn(!ids.isEmpty(), BasAccount::getId, ids)
                 .list();
+        if (delIdList.isEmpty()) {
+            return true;
+        }
         return SpringUtil.getBean(BasAccountService.class).removeBatchByIds(delIdList);
     }
 
