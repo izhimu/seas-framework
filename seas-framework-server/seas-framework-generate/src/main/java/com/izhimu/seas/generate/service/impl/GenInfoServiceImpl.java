@@ -121,7 +121,7 @@ public class GenInfoServiceImpl implements GenInfoService {
         list.forEach(v -> {
             v.setAssetsName(engine.getTemplate(v.getAssetsName()).render(param));
             v.setAssetsDataStr(engine.getTemplate(new String(v.getAssetsData(), StandardCharsets.UTF_8)).render(param));
-            v.setOutPath(engine.getTemplate(v.getOutPath()).render(param));
+            v.setOutPath(engine.getTemplate(v.getOutPath()).render(param).replace(".", File.separator));
         });
         return list;
     }
