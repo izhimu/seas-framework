@@ -42,7 +42,7 @@ public class TypeUtil {
     }
 
     public static String getJavaTypeByMysql(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_BOOL, DB_TYPE_BOOLEAN -> JAVA_TYPE_BOOLEAN;
             case DB_TYPE_DECIMAL, DB_TYPE_NUMBERIC -> JAVA_TYPE_BIG_DECIMAL;
@@ -60,7 +60,7 @@ public class TypeUtil {
     }
 
     public static String getJavaTypeByOracle(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_DECIMAL -> JAVA_TYPE_BIG_DECIMAL;
             case DB_TYPE_NUMBER, DB_TYPE_BINARY_DOUBLE -> JAVA_TYPE_DOUBLE;
@@ -73,7 +73,7 @@ public class TypeUtil {
     }
 
     public static String getJavaTypeBySqlserver(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_BIT -> JAVA_TYPE_BOOLEAN;
             case DB_TYPE_DECIMAL, DB_TYPE_NUMERIC -> JAVA_TYPE_BIG_DECIMAL;
@@ -111,7 +111,7 @@ public class TypeUtil {
     }
 
     public static String getJsTypeByMysql(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_BOOL, DB_TYPE_BOOLEAN -> JS_TYPE_BOOLEAN;
             case DB_TYPE_BIT, DB_TYPE_TINYINT, DB_TYPE_SMALLINT, DB_TYPE_MEDIUMINT, DB_TYPE_INT, DB_TYPE_INTEGER, DB_TYPE_DECIMAL, DB_TYPE_NUMBERIC, DB_TYPE_DOUBLE, DB_TYPE_FLOAT ->
@@ -123,7 +123,7 @@ public class TypeUtil {
     }
 
     public static String getJsTypeByOracle(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_DECIMAL, DB_TYPE_NUMBER, DB_TYPE_BINARY_DOUBLE, DB_TYPE_FLOAT, DB_TYPE_REAL, DB_TYPE_BINARY_FLOAT, DB_TYPE_INTEGER, DB_TYPE_INT, DB_TYPE_SMALLINT ->
                     JS_TYPE_NUMBER;
@@ -134,7 +134,7 @@ public class TypeUtil {
     }
 
     public static String getJsTypeBySqlserver(String type) {
-        type = type.substring(0, type.indexOf("("));
+        type = fmt(type);
         return switch (type.toLowerCase()) {
             case DB_TYPE_BIT -> JS_TYPE_BOOLEAN;
             case DB_TYPE_DECIMAL, DB_TYPE_NUMERIC, DB_TYPE_FLOAT, DB_TYPE_REAL, DB_TYPE_TINYINT, DB_TYPE_SMALLINT, DB_TYPE_INT ->
@@ -157,5 +157,13 @@ public class TypeUtil {
                 })
                 .filter(StrUtil::isNotBlank)
                 .toList();
+    }
+
+    private static String fmt(String type) {
+        int sub = type.indexOf("(");
+        if (sub > 0) {
+            type = type.substring(0, sub);
+        }
+        return type;
     }
 }
