@@ -40,7 +40,8 @@ create table seas_gen_template
             primary key,
     template_name    varchar(255),
     template_version varchar(64),
-    remark           varchar(1024)
+    remark           varchar(1024),
+    ext              text
 );
 
 comment on table seas_gen_template is '模板表';
@@ -50,6 +51,8 @@ comment on column seas_gen_template.id is 'ID';
 comment on column seas_gen_template.template_name is '模板名称';
 
 comment on column seas_gen_template.template_version is '模板版本';
+
+comment on column seas_gen_template.ext is '附加参数';
 
 alter table seas_gen_template
     owner to postgres;
