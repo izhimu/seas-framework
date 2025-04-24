@@ -80,7 +80,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
 
     @Override
     public boolean initSchedule() {
-        logger.info("Schedule loading");
+        logger.infoT("Scheduler", "loading");
         TimeInterval t = DateUtil.timer();
         List<JobTimer> list = this.lambdaQuery()
                 .eq(JobTimer::getStatus, 1)
@@ -94,7 +94,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
                         this.updateById(timer);
                     }
                 });
-        logger.info("Schedule load done {}ms", t.interval());
+        logger.infoT("Scheduler", "load done {}ms", t.interval());
         return true;
     }
 

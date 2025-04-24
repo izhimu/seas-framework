@@ -53,7 +53,7 @@ public class EventManager {
             List<EventListenerWrapper> list = map.get(event);
             list.add(wrapper);
             sort(list);
-            log.infoT(event, "EventManager loading {}", wrapper.getListener().getClass().getSimpleName());
+            log.infoT("Event", "loading, event: {}, listener: {}", event, wrapper.getListener().getClass().getSimpleName());
         }
     }
 
@@ -71,7 +71,7 @@ public class EventManager {
         boolean hasAsync = ASYNC_EVENT_LISTENER_MAP.containsKey(key);
         if (!hasSync && !hasAsync) {
             NO_LISTENER_EVENT.add(key);
-            log.warnT(key, "EventManager not found listener");
+            log.warnT("Event", "not found listener, key: {}", key);
             return;
         }
         Object loginId = LoginIdHolder.get();
@@ -79,7 +79,7 @@ public class EventManager {
             try {
                 loginId = StpUtil.getSession().getLoginId();
             } catch (Exception e) {
-                log.warnT(key, "EventManager get session error: {}", e.getMessage());
+                log.warnT("Event", "get session error, key: {}, msg: {}", key, e.getMessage());
             }
         }
         Object finalLoginId = loginId;
@@ -88,7 +88,7 @@ public class EventManager {
             if (hasAsync) {
                 List<EventListenerWrapper> list = ASYNC_EVENT_LISTENER_MAP.get(key);
                 EVENT_POOL.submit(() -> list.parallelStream().map(EventListenerWrapper::getListener).forEach(listener -> {
-                    log.infoT(key, "EventManager trigger async listener {}, data: {}", listener.getClass().getSimpleName(), data);
+                    log.infoT("Event", "trigger async, key: {}, listener {}, data: {}", key, listener.getClass().getSimpleName(), data);
                     try {
                         LoginIdHolder.set(finalLoginId);
                         listener.onEvent(data);
@@ -104,7 +104,7 @@ public class EventManager {
                 boolean flag = true;
                 while (flag && iterator.hasNext()) {
                     IEventListener listener = iterator.next().getListener();
-                    log.infoT(key, "EventManager trigger sync listener {}, data: {}", listener.getClass().getSimpleName(), data);
+                    log.infoT("Event", "trigger sync, key: {}, listener {}, data: {}", key, listener.getClass().getSimpleName(), data);
                     flag = listener.onEvent(data);
                 }
             }

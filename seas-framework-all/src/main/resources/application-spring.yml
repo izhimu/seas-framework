@@ -2,13 +2,12 @@ server:
   port:
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.31.203:5432/seas_db
+    url: jdbc:postgresql://192.168.31.224:5432/seas_ai
     username: postgres
-    password: 123456
+    password: haoran@8392
   data:
     redis:
-      host: 192.168.31.206
-      database: 1
+      host: 192.168.31.224
   ai:
     ollama:
       base-url: http://192.168.2.166:11434

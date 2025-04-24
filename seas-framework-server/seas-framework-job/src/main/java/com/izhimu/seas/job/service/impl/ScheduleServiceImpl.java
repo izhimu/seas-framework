@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         ScheduledFuture<?> schedule = scheduler.schedule(job, trigger);
         TASK_MAP.put(timer.getKey(), schedule);
-        log.infoT(timer.getName(), "Added expression: {}, class: {}", timer.getExpression(), timer.getClassPath());
+        log.infoT("Scheduler", "Added, name: {}, expression: {}, class: {}", timer.getName(), timer.getExpression(), timer.getClassPath());
         return true;
     }
 

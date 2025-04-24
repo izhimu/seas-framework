@@ -28,16 +28,15 @@ public class ScanServer implements IServer {
 
     @Override
     public void run() {
-        log.info("Scan path: {}", path);
+        log.infoT("Scan", "path: {}", path);
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(path))
                 .addScanners(Scanners.TypesAnnotated);
         Reflections reflections = new Reflections(configurationBuilder);
         TimeInterval timer = DateUtil.timer();
         ScanHandlerHolder.all().forEach(v -> {
-            log.info("Scanning");
             v.scan(reflections);
-            log.info("Scan done {}ms", timer.interval());
+            log.infoT("Scan", "done {}ms", timer.interval());
         });
     }
 }

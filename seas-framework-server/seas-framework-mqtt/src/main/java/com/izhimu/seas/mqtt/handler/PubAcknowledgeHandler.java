@@ -15,6 +15,6 @@ public record PubAcknowledgeHandler(MqttEndpoint endpoint) implements Handler<Mq
 
     @Override
     public void handle(MqttPubAckMessage event) {
-        log.debugT(endpoint.clientIdentifier(), "[MQTT Server] received ack for message, id: {}", event.messageId());
+        log.debugT("MQTT Server", "received ack for message, client: {}, client: {}", endpoint.clientIdentifier(), event.messageId());
     }
 }

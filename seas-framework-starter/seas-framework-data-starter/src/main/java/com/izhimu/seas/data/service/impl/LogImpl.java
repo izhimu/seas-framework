@@ -33,17 +33,17 @@ public class LogImpl implements Log {
 
     @Override
     public void error(String s, Throwable e) {
-        logWrapper.error(s, e);
+        logWrapper.errorT("DB", s, e);
     }
 
     @Override
     public void error(String s) {
-        logWrapper.error(s);
+        logWrapper.errorT("DB", s);
     }
 
     @Override
     public void debug(String s) {
-        logWrapper.debug(s);
+        logWrapper.debugT("DB", s);
     }
 
     @Override
@@ -53,6 +53,6 @@ public class LogImpl implements Log {
 
     @Override
     public void warn(String s) {
-        logWrapper.warn(s);
+        logWrapper.warnT("DB", s);
     }
 }

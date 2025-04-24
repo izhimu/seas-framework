@@ -3,7 +3,6 @@ package com.izhimu.seas.core.event;
 import com.izhimu.seas.core.scan.IScanHandler;
 import org.reflections.Reflections;
 
-import java.util.Optional;
 import java.util.Set;
 
 import static com.izhimu.seas.core.log.LogHelper.log;
@@ -28,7 +27,7 @@ public class EventListenerScanHandler implements IScanHandler {
         for (Class<?> aClass : typesAnnotatedWith) {
             try {
                 EventListener annotation = aClass.getAnnotation(EventListener.class);
-                if (annotation.autoRegister()) {
+                if (annotation != null && annotation.autoRegister()) {
                     Object o = aClass.getDeclaredConstructor().newInstance();
                     if (o instanceof IEventListener listener) {
                         EventListenerWrapper wrapper = new EventListenerWrapper();

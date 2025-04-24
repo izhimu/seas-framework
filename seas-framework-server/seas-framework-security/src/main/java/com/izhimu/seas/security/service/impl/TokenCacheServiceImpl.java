@@ -1,6 +1,6 @@
 package com.izhimu.seas.security.service.impl;
 
-import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.dao.auto.SaTokenDaoBySessionFollowObject;
 import cn.dev33.satoken.util.SaFoxUtil;
 import com.izhimu.seas.cache.service.CacheService;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author haoran
  */
 @Service
-public class TokenCacheServiceImpl implements SaTokenDao {
+public class TokenCacheServiceImpl implements SaTokenDaoBySessionFollowObject {
 
     private final CacheService cacheService;
 
@@ -65,6 +65,11 @@ public class TokenCacheServiceImpl implements SaTokenDao {
     }
 
     @Override
+    public <T> T getObject(String key, Class<T> classType) {
+        return cacheService.get(key, classType);
+    }
+
+    @Override
     public void setObject(String key, Object object, long timeout) {
         if (timeout != 0L && timeout > -2L) {
             if (timeout == -1L) {
@@ -85,17 +90,17 @@ public class TokenCacheServiceImpl implements SaTokenDao {
 
     @Override
     public void deleteObject(String key) {
-        cacheService.del(key);
+        this.delete(key);
     }
 
     @Override
     public long getObjectTimeout(String key) {
-        return cacheService.getExpire(key);
+        return this.getTimeout(key);
     }
 
     @Override
     public void updateObjectTimeout(String key, long timeout) {
-        cacheService.setExpire(key, timeout);
+        this.updateTimeout(key, timeout);
     }
 
     @Override

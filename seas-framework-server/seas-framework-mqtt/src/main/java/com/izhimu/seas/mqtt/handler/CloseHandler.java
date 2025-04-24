@@ -14,7 +14,7 @@ import static com.izhimu.seas.core.log.LogHelper.log;
 public record CloseHandler(MqttEndpoint endpoint) implements Handler<Void> {
     @Override
     public void handle(Void event) {
-        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client close");
+        log.infoT("MQTT Server", "client close, client: {}", endpoint.clientIdentifier());
         ClientCache.del(endpoint.clientIdentifier());
     }
 }

@@ -1,6 +1,5 @@
 package com.izhimu.seas.core.log;
 
-import cn.hutool.core.util.StrUtil;
 import com.izhimu.seas.core.pool.ThreadPoolFactory;
 import com.izhimu.seas.core.utils.JsonUtil;
 import org.slf4j.Logger;
@@ -81,7 +80,7 @@ public class LogWrapper {
     }
 
     private String tag(String tag) {
-        return "<".concat(StrUtil.truncateUtf8(StrUtil.fillAfter(tag, ' ', 16), 16)).concat(">");
+        return "[".concat(tag).concat("]");
     }
 
     private String param(Map<String, Object> param) {

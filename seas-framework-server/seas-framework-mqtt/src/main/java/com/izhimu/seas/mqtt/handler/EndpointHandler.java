@@ -31,7 +31,7 @@ public class EndpointHandler implements Handler<MqttEndpoint> {
                 // 断开/关闭
                 .disconnectMessageHandler(new DisconnectHandler(endpoint))
                 .closeHandler(new CloseHandler(endpoint));
-        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client connect");
+        log.infoT("MQTT Server", "client connect, client: {}", endpoint.clientIdentifier());
         ClientCache.put(endpoint);
     }
 }

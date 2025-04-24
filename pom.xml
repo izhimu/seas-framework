@@ -7,11 +7,11 @@
     <groupId>com.izhimu</groupId>
     <artifactId>seas-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.10</version>
+    <version>1.2.0</version>
 
     <modules>
         <module>seas-framework-all</module>
-        <module>seas-framework-dependencies</module>
+        <module>seas-framework-bom</module>
         <module>seas-framework-server</module>
         <module>seas-framework-starter</module>
     </modules>
@@ -25,7 +25,6 @@
         <maven.jar.plugin.version>3.4.1</maven.jar.plugin.version>
         <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
         <build.helper.plugin.version>3.6.0</build.helper.plugin.version>
-        <version.plugin.version>2.17.1</version.plugin.version>
     </properties>
 
     <build>
@@ -71,13 +70,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <configuration>
-                    <generateBackupPoms>false</generateBackupPoms>
-                </configuration>
-            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -107,11 +99,6 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${build.helper.plugin.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>${version.plugin.version}</version>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -127,22 +114,6 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
 

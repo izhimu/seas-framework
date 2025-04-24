@@ -6,7 +6,7 @@
     <parent>
         <artifactId>seas-framework-starter</artifactId>
         <groupId>com.izhimu</groupId>
-        <version>1.1.10</version>
+        <version>1.2.0</version>
     </parent>
 
     <artifactId>seas-framework-core-starter</artifactId>
@@ -15,11 +15,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -36,7 +31,15 @@
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.dev33</groupId>

@@ -16,7 +16,7 @@ public record DisconnectHandler(MqttEndpoint endpoint) implements Handler<MqttDi
 
     @Override
     public void handle(MqttDisconnectMessage message) {
-        log.infoT(endpoint.clientIdentifier(), "[MQTT Server] client disconnected");
+        log.infoT("MQTT Server", "client disconnected, client: {}", endpoint.clientIdentifier());
         ClientCache.del(endpoint.clientIdentifier());
     }
 }

@@ -6,30 +6,31 @@
     <parent>
         <artifactId>seas-framework</artifactId>
         <groupId>com.izhimu</groupId>
-        <version>1.1.10</version>
+        <version>1.2.0</version>
     </parent>
 
-    <artifactId>seas-framework-dependencies</artifactId>
+    <artifactId>seas-framework-bom</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.3.2</spring.boot.version>
-        <spring.ai.version>1.0.0-SNAPSHOT</spring.ai.version>
-        <hutool.version>5.8.29</hutool.version>
-        <mybatis.plus.version>3.5.7</mybatis.plus.version>
-        <kryo.version>5.6.0</kryo.version>
-        <minio.version>8.5.11</minio.version>
-        <oshi.version>6.6.2</oshi.version>
+        <spring.boot.version>3.4.4</spring.boot.version>
+        <spring.ai.version>1.0.0-M6</spring.ai.version>
+        <vertx.version>4.5.14</vertx.version>
+        <hutool.version>5.8.37</hutool.version>
+        <satoken.version>1.42.0</satoken.version>
+        <mybatis.plus.version>3.5.11</mybatis.plus.version>
+        <kryo.version>5.6.2</kryo.version>
+        <minio.version>8.5.17</minio.version>
+        <oshi.version>6.8.1</oshi.version>
         <reflections.version>0.10.2</reflections.version>
-        <bcprov.version>1.78.1</bcprov.version>
-        <satoken.version>1.38.0</satoken.version>
-        <camunda.version>7.21.0</camunda.version>
+        <bcprov.version>1.80</bcprov.version>
+        <camunda.version>7.23.0</camunda.version>
         <aspose.version>23.5</aspose.version>
-        <vertx.version>4.5.9</vertx.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -41,6 +42,34 @@
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
                 <version>${spring.ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-dependencies</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-bom</artifactId>
+                <version>${satoken.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-bom</artifactId>
+                <version>${mybatis.plus.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -111,18 +140,7 @@
                 <artifactId>seas-framework-message</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-                <version>${mybatis.plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
+            <!-- Other -->
             <dependency>
                 <groupId>com.esotericsoftware</groupId>
                 <artifactId>kryo</artifactId>
@@ -149,16 +167,6 @@
                 <version>${bcprov.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot3-starter</artifactId>
-                <version>${satoken.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-core</artifactId>
-                <version>${satoken.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.camunda.bpm.springboot</groupId>
                 <artifactId>camunda-bpm-spring-boot-starter</artifactId>
                 <version>${camunda.version}</version>
@@ -167,11 +175,6 @@
                 <groupId>com.aspose</groupId>
                 <artifactId>aspose-words</artifactId>
                 <version>${aspose.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-mqtt</artifactId>
-                <version>${vertx.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
