@@ -47,15 +47,15 @@ public class AiHistoryServiceImpl extends BaseServiceImpl<AiHistoryMapper, AiHis
         history1.setChatId(chatId);
         history1.setSort(last == null ? 1 : last.getSort() + 1);
         history1.setRole(MessageType.USER);
-        history1.setToken(usage.getPromptTokens());
+        history1.setToken(Long.valueOf(usage.getPromptTokens()));
         history1.setTotalToken((last == null ? 0 : last.getTotalToken()) + usage.getPromptTokens());
         history1.setMessage(userMessage.getBytes(StandardCharsets.UTF_8));
         AiHistory history2 = new AiHistory();
         history2.setChatId(chatId);
         history2.setSort(history1.getSort() + 1);
         history2.setRole(MessageType.ASSISTANT);
-        history2.setToken(usage.getGenerationTokens());
-        history2.setTotalToken(history1.getTotalToken() + usage.getGenerationTokens());
+        history2.setToken(Long.valueOf(usage.getCompletionTokens()));
+        history2.setTotalToken(history1.getTotalToken() + usage.getCompletionTokens());
         history2.setMessage(assistantMessage.getBytes(StandardCharsets.UTF_8));
         return this.save(history1) && this.save(history2);
     }

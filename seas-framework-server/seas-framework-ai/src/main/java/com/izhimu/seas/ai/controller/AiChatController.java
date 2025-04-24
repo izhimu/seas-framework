@@ -48,7 +48,7 @@ public class AiChatController {
     @PostMapping("/stream")
     public Flux<String> chatStream(@RequestBody AiInput input) {
         Flux<ChatResponse> response = chatModel.stream(new Prompt(input.getMsg()));
-        return response.map(v -> v.getResult().getOutput().getContent());
+        return response.map(v -> v.getResult().getOutput().getText());
     }
 
     @GetMapping("/documents")
@@ -58,8 +58,10 @@ public class AiChatController {
                 new Document("The World is Big and Salvation Lurks Around the Corner"),
                 new Document("You walk forward facing the past and you turn back toward the future.", Map.of("meta2", "meta2")));
         vectorStore.add(documents);
-        List<Document> documentList = vectorStore.similaritySearch(SearchRequest.query("Spring").withTopK(5));
-        vectorStore.delete(documentList.stream().map(Document::getId).toList());
+        List<Document> documentList = vectorStore.similaritySearch(SearchRequest.builder().query("Spring").topK(5).build());
+        if (documentList != null) {
+            vectorStore.delete(documentList.stream().map(Document::getId).toList());
+        }
         return documentList;
     }
 }

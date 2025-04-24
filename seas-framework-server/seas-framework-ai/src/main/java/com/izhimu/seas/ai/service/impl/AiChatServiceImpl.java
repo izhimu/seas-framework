@@ -4,7 +4,6 @@ import cn.hutool.core.util.IdUtil;
 import com.izhimu.seas.ai.entity.AiHistory;
 import com.izhimu.seas.ai.entity.AiInput;
 import com.izhimu.seas.ai.entity.AiOutput;
-import com.izhimu.seas.ai.function.BaiduSearchFunction;
 import com.izhimu.seas.ai.service.AiChatService;
 import com.izhimu.seas.ai.service.AiHistoryService;
 import jakarta.annotation.Resource;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.izhimu.seas.ai.function.ToolsFunction.FUNCTION_SYSTEM_MANAGER;
 
 /**
  * AI聊天服务实现类
@@ -49,12 +47,11 @@ public class AiChatServiceImpl implements AiChatService {
         List<Message> messages = getHistoryMessages(historyList, isNewChat);
         messages.add(new UserMessage(input.getMsg()));
         ChatResponse response = chatModel.call(new Prompt(messages, OllamaOptions.builder()
-                .withFunctionCallbacks(List.of(new BaiduSearchFunction().getWrapper()))
                 .build()));
-        String result = response.getResult().getOutput().getContent();
+        String result = response.getResult().getOutput().getText();
         // 保存历史
         if (isNewChat) {
-            aiHistoryService.saveSystemMessage(input.getChatId(), FUNCTION_SYSTEM_MANAGER);
+//            aiHistoryService.saveSystemMessage(input.getChatId(), FUNCTION_SYSTEM_MANAGER);
         }
         AiHistory last = isNewChat ? null : historyList.getLast();
         Usage usage = response.getMetadata().getUsage();
@@ -72,7 +69,7 @@ public class AiChatServiceImpl implements AiChatService {
     private List<Message> getHistoryMessages(List<AiHistory> historyList, boolean isNewChat) {
         List<Message> messages = new ArrayList<>();
         if (isNewChat) {
-            messages.add(new SystemMessage(FUNCTION_SYSTEM_MANAGER));
+//            messages.add(new SystemMessage(FUNCTION_SYSTEM_MANAGER));
         } else {
             historyList
                     .stream()
