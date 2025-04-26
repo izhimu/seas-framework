@@ -3,6 +3,8 @@ package com.izhimu.seas.cache.helper;
 import cn.hutool.extra.spring.SpringUtil;
 import com.izhimu.seas.cache.service.CacheService;
 
+import java.util.Objects;
+
 /**
  * RedisHelper
  *
@@ -20,7 +22,7 @@ public class CacheHelper {
     }
 
     public static CacheService get() {
-        if (helper == null) {
+        if (Objects.isNull(helper)) {
             helper = new CacheHelper();
         }
         return helper.service;

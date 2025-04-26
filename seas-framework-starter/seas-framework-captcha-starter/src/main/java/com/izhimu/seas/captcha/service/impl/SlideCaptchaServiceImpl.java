@@ -91,7 +91,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         Point checkPoint = JsonUtil.toObject(pointJson, Point.class);
         if (Objects.isNull(checkPoint) ||
                 Math.abs(point.getX() - checkPoint.getX()) > config.getSlipOffset() ||
-                point.getY() != checkPoint.getY()) {
+                !Objects.equals(point.getY(), checkPoint.getY())) {
             return captcha;
         }
         // 校验成功，将信息存入缓存
@@ -149,7 +149,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
             newBlockImage = graphics.getDeviceConfiguration().createCompatibleImage(blockWidth, blockHeight, Transparency.TRANSLUCENT);
             // 新建的图像根据模板颜色赋值,源图生成遮罩
             cutByTemplate(originalImage, blockImage, newBlockImage, x);
-            if (config.getInterferenceOptions() == 1) {
+            if (Objects.equals(1, config.getInterferenceOptions())) {
                 int position;
                 if (originalWidth - x - 5 > blockWidth * 2) {
                     //在原扣图右边插入干扰图
@@ -281,7 +281,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                 }
 
                 //防止数组越界判断
-                if (i == (xLength - 1) || j == (yLength - 1)) {
+                if (Objects.equals(i, xLength - 1) || Objects.equals(j, yLength - 1)) {
                     continue;
                 }
                 int rightRgb = templateImage.getRGB(i + 1, j);
@@ -323,7 +323,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
                     oriImage.setRGB(x + i, j, avgMatrix(matrix));
                 }
                 //防止数组越界判断
-                if (i == (xLength - 1) || j == (yLength - 1)) {
+                if (Objects.equals(i, xLength - 1) || Objects.equals(j, yLength - 1)) {
                     continue;
                 }
                 int rightRgb = templateImage.getRGB(i + 1, j);
@@ -395,7 +395,7 @@ public class SlideCaptchaServiceImpl implements CaptchaService {
         int b = 0;
         for (int[] x : matrix) {
             for (int j = 0; j < x.length; j++) {
-                if (j == 1) {
+                if (Objects.equals(1, j)) {
                     continue;
                 }
                 Color c = new Color(x[j]);

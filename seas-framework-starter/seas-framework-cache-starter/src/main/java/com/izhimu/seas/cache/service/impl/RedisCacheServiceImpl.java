@@ -7,10 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.izhimu.seas.core.log.LogHelper.log;
@@ -33,8 +30,7 @@ public class RedisCacheServiceImpl implements CacheService {
     @Override
     public boolean hasKey(String key) {
         try {
-            Optional<Boolean> optional = Optional.ofNullable(redisTemplate.hasKey(key));
-            return optional.orElse(false);
+            return redisTemplate.hasKey(key);
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -44,17 +40,16 @@ public class RedisCacheServiceImpl implements CacheService {
     @Override
     public boolean del(String... key) {
         try {
-            if (key == null || key.length == 0) {
+            if (Objects.isNull(key) || key.length == 0) {
                 return false;
             }
-            Optional<Boolean> optional;
-            if (key.length == 1) {
-                optional = Optional.ofNullable(redisTemplate.delete(key[0]));
+            boolean result;
+            if (Objects.equals(1, key.length)) {
+                result = redisTemplate.delete(key[0]);
             } else {
-                Optional<Long> optionalLong = Optional.ofNullable(redisTemplate.delete(Arrays.asList(key)));
-                optional = Optional.of(optionalLong.orElse(-1L) > 0);
+                result = redisTemplate.delete(Arrays.asList(key)) > 0;
             }
-            return optional.orElse(false);
+            return result;
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -116,7 +111,7 @@ public class RedisCacheServiceImpl implements CacheService {
     @Override
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
         try {
-            if (time <= 0 || timeUnit == null) {
+            if (time <= 0 || Objects.isNull(timeUnit)) {
                 return false;
             }
             redisTemplate.opsForValue().set(key, value, time, timeUnit);
@@ -163,8 +158,7 @@ public class RedisCacheServiceImpl implements CacheService {
             if (time <= 0) {
                 return false;
             }
-            Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, TimeUnit.SECONDS));
-            return optional.orElse(false);
+            return redisTemplate.expire(key, time, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -174,11 +168,10 @@ public class RedisCacheServiceImpl implements CacheService {
     @Override
     public boolean setExpire(String key, long time, TimeUnit timeUnit) {
         try {
-            if (time <= 0 || timeUnit == null) {
+            if (time <= 0 || Objects.isNull(timeUnit)) {
                 return false;
             }
-            Optional<Boolean> optional = Optional.ofNullable(redisTemplate.expire(key, time, timeUnit));
-            return optional.orElse(false);
+            return redisTemplate.expire(key, time, timeUnit);
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -188,8 +181,7 @@ public class RedisCacheServiceImpl implements CacheService {
     @Override
     public long getExpire(String key) {
         try {
-            Optional<Long> optional = Optional.ofNullable(redisTemplate.getExpire(key, TimeUnit.SECONDS));
-            return optional.orElse(-1L);
+            return redisTemplate.getExpire(key, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(e);
             return -1L;

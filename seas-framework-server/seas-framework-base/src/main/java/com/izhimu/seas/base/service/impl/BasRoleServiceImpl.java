@@ -191,7 +191,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
             return permission;
         }
         // 全部数据
-        if (typeSet.size() == 1 && typeSet.contains(0)) {
+        if (Objects.equals(1, typeSet.size()) && typeSet.contains(0)) {
             permission.setType(0);
             permission.setAuthList(ids);
             return permission;
@@ -202,7 +202,7 @@ public class BasRoleServiceImpl extends BaseServiceImpl<BasRoleMapper, BasRole> 
             Set<Integer> subTypeSet = orgAuth.stream()
                     .map(BasRole::getAuthType)
                     .collect(Collectors.toSet());
-            permission.setType(subTypeSet.size() == 1 ? subTypeSet.stream().findFirst().orElse(1) : 1);
+            permission.setType(Objects.equals(1, subTypeSet.size()) ? subTypeSet.stream().findFirst().orElse(1) : 1);
             for (BasRole role : orgAuth) {
                 // 自定义部门
                 if (Objects.equals(1, role.getAuthType())) {

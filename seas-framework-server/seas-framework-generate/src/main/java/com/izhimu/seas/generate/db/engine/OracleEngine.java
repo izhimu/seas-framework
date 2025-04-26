@@ -153,10 +153,10 @@ public class OracleEngine extends AbstractDbEngine {
      */
     private void oracleDataType(List<Map<String, Object>> fieldList) {
         fieldList.forEach(map -> {
-            if (map.get(DATA_PRECISION) != null) {
+            if (Objects.nonNull(map.get(DATA_PRECISION))) {
                 StringBuilder length = new StringBuilder();
                 length.append(map.get(DATA_PRECISION));
-                if (map.get(DATA_SCALE) != null) {
+                if (Objects.nonNull(map.get(DATA_SCALE))) {
                     length.append(",").append(map.get(DATA_SCALE));
                 }
                 map.put("DATA_LENGTH", length);

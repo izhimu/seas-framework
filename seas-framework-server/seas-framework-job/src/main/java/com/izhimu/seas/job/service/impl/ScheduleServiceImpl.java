@@ -118,12 +118,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     private Trigger getTrigger(JobTimer timer) {
         String expression = timer.getExpression();
         Integer type = timer.getType();
-        if (type == 0) {
+        if (Objects.equals(0, type)) {
             return new RangeCronTrigger(timer.getKey(), expression, timer.getStartTime(), timer.getEndTime());
-        } else if (type == 1) {
+        } else if (Objects.equals(1, type)) {
             LocalDateTime parse = LocalDateTime.parse(expression, DateTimeFormatter.ofPattern(DATE_FORMAT));
             return new OnlyTrigger(timer.getKey(), parse.atZone(ZoneId.systemDefault()).toInstant());
-        } else if (type == 2) {
+        } else if (Objects.equals(2, type)) {
             TimeUnit timeUnit = null;
             long time = 0;
             if (expression.endsWith("ms")) {

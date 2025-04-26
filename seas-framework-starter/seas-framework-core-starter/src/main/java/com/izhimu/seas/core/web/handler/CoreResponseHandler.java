@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 统一响应处理
@@ -38,13 +39,13 @@ public class CoreResponseHandler implements ResponseBodyAdvice<Serializable> {
         if (returnType.getExecutable().isAnnotationPresent(React.class)) {
             return body;
         }
-        if (body instanceof ResponseEntity || returnType.getGenericParameterType() == ResponseEntity.class) {
+        if (body instanceof ResponseEntity || Objects.equals(ResponseEntity.class, returnType.getGenericParameterType())) {
             return body;
         }
-        if (body instanceof Result || returnType.getGenericParameterType() == Result.class) {
+        if (body instanceof Result || Objects.equals(Result.class, returnType.getGenericParameterType())) {
             return body;
         }
-        if (body instanceof String || returnType.getGenericParameterType() == String.class) {
+        if (body instanceof String || Objects.equals(String.class, returnType.getGenericParameterType())) {
             return Result.ok(body).toString();
         }
         return Result.ok(body);

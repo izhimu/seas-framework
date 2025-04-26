@@ -153,7 +153,7 @@ public class BasUserServiceImpl extends BaseServiceImpl<BasUserMapper, BasUser> 
                         if (CharSequenceUtil.isNotBlank(v.getUserCertificate())) {
                             basAccount.setUserCertificate(BCrypt.hashpw(encryptService.decrypt(key.get(), v.getUserCertificate())));
                         }
-                        if (basUser.getStatus() == 1) {
+                        if (Objects.equals(1, basUser.getStatus())) {
                             basAccount.setStatus(1);
                         } else {
                             basAccount.setStatus(v.getStatus());

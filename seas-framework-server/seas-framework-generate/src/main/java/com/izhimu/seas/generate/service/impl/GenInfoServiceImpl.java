@@ -154,6 +154,6 @@ public class GenInfoServiceImpl implements GenInfoService {
     private void extJavaParam(Map<String, Object> param, GenInfo genInfo) {
         List<GenFieldInfo> genFieldInfos = Optional.ofNullable(genInfo.getFieldList()).orElse(Collections.emptyList());
         param.put("importList", TypeUtil.getJavaImport(genFieldInfos.stream().map(GenFieldInfo::getJavaType).toList()));
-        param.put("importSearch", genFieldInfos.stream().map(GenFieldInfo::getSearchable).anyMatch(v -> v == 1));
+        param.put("importSearch", genFieldInfos.stream().map(GenFieldInfo::getSearchable).anyMatch(v -> Objects.equals(1, v)));
     }
 }

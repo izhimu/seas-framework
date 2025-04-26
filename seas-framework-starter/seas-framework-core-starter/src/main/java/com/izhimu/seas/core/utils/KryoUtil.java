@@ -9,6 +9,7 @@ import lombok.experimental.UtilityClass;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.izhimu.seas.core.log.LogHelper.log;
 
@@ -61,7 +62,7 @@ public class KryoUtil {
      * @return Object
      */
     public static Object deserialize(byte[] bytes) {
-        if (bytes == null || bytes.length == 0) {
+        if (Objects.isNull(bytes) || Objects.equals(0, bytes.length)) {
             return null;
         }
         Kryo kryo = KRYO_POOL.obtain();

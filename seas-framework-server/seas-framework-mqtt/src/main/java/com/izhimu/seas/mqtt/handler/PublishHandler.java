@@ -48,9 +48,9 @@ public record PublishHandler(MqttEndpoint endpoint) implements Handler<MqttPubli
      * @param message MqttPublishMessage
      */
     private void ack(MqttPublishMessage message) {
-        if (message.qosLevel() == MqttQoS.AT_LEAST_ONCE) {
+        if (Objects.equals(MqttQoS.AT_LEAST_ONCE, message.qosLevel())) {
             endpoint.publishAcknowledge(message.messageId());
-        } else if (message.qosLevel() == MqttQoS.EXACTLY_ONCE) {
+        } else if (Objects.equals(MqttQoS.EXACTLY_ONCE, message.qosLevel())) {
             endpoint.publishReceived(message.messageId());
         }
     }

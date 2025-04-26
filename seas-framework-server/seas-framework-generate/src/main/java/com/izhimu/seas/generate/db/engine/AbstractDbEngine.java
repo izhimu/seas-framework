@@ -40,7 +40,7 @@ public abstract class AbstractDbEngine implements AutoCloseable {
      */
     public boolean testConnection() throws DbEngineException {
         DataSource dataSource = jdbcTemplate.getDataSource();
-        if (dataSource == null) {
+        if (Objects.isNull(dataSource)) {
             return false;
         }
         try (Connection conn = dataSource.getConnection()) {

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * AI聊天记录服务层实现
@@ -45,10 +46,10 @@ public class AiHistoryServiceImpl extends BaseServiceImpl<AiHistoryMapper, AiHis
     public boolean saveChatMessage(long chatId, AiHistory last, Usage usage, String userMessage, String assistantMessage) {
         AiHistory history1 = new AiHistory();
         history1.setChatId(chatId);
-        history1.setSort(last == null ? 1 : last.getSort() + 1);
+        history1.setSort(Objects.isNull(last) ? 1 : last.getSort() + 1);
         history1.setRole(MessageType.USER);
         history1.setToken(Long.valueOf(usage.getPromptTokens()));
-        history1.setTotalToken((last == null ? 0 : last.getTotalToken()) + usage.getPromptTokens());
+        history1.setTotalToken((Objects.isNull(last) ? 0 : last.getTotalToken()) + usage.getPromptTokens());
         history1.setMessage(userMessage.getBytes(StandardCharsets.UTF_8));
         AiHistory history2 = new AiHistory();
         history2.setChatId(chatId);

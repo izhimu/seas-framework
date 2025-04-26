@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -88,7 +89,7 @@ public class LogWrapper {
     }
 
     private String format(String msg, Object... params) {
-        return params.length == 0 ? msg : MessageFormatter.basicArrayFormat(msg, params);
+        return Objects.equals(0, params.length) ? msg : MessageFormatter.basicArrayFormat(msg, params);
     }
 
     public void info(String msg, Object... params) {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author haoran
@@ -27,8 +28,8 @@ public class TokenCacheServiceImpl implements SaTokenDaoBySessionFollowObject {
 
     @Override
     public void set(String key, String value, long timeout) {
-        if (timeout != 0L && timeout > -2L) {
-            if (timeout == -1L) {
+        if (!Objects.equals(0L, timeout) && timeout > -2L) {
+            if (Objects.equals(-1L, timeout)) {
                 cacheService.set(key, value);
             } else {
                 cacheService.set(key, value, timeout);
@@ -71,8 +72,8 @@ public class TokenCacheServiceImpl implements SaTokenDaoBySessionFollowObject {
 
     @Override
     public void setObject(String key, Object object, long timeout) {
-        if (timeout != 0L && timeout > -2L) {
-            if (timeout == -1L) {
+        if (!Objects.equals(0L, timeout) && timeout > -2L) {
+            if (Objects.equals(-1L, timeout)) {
                 cacheService.set(key, object);
             } else {
                 cacheService.set(key, object, timeout);

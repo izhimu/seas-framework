@@ -36,7 +36,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
         if (Objects.isNull(entity.getStatus())) {
             entity.setStatus(0);
         }
-        if (entity.getStatus() == 1) {
+        if (Objects.equals(1, entity.getStatus())) {
             boolean result = scheduleService.add(entity);
             if (!result) {
                 entity.setStatus(3);
@@ -59,7 +59,7 @@ public class JobTimerServiceImpl extends BaseServiceImpl<JobTimerMapper, JobTime
         if (scheduleService.has(timer.getKey())) {
             scheduleService.del(timer);
         }
-        if (timer.getStatus() == 1) {
+        if (Objects.equals(1, timer.getStatus())) {
             boolean result = scheduleService.add(timer);
             if (!result) {
                 entity.setStatus(3);

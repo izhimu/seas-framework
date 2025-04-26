@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -95,7 +96,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
                 return false;
             }
             redisTemplate.opsForList().rightPush(key, value);
-            return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
+            return redisTemplate.expire(key, time, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -105,11 +106,11 @@ public class RedisListCacheServiceImpl implements ListCacheService {
     @Override
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
         try {
-            if (time <= 0 || timeUnit == null) {
+            if (time <= 0 || Objects.isNull(timeUnit)) {
                 return false;
             }
             redisTemplate.opsForList().rightPush(key, value);
-            return Boolean.TRUE.equals(redisTemplate.expire(key, time, timeUnit));
+            return redisTemplate.expire(key, time, timeUnit);
         } catch (Exception e) {
             log.error(e);
             return false;
@@ -134,7 +135,7 @@ public class RedisListCacheServiceImpl implements ListCacheService {
                 return false;
             }
             redisTemplate.opsForList().rightPushAll(key, value);
-            return Boolean.TRUE.equals(redisTemplate.expire(key, time, TimeUnit.SECONDS));
+            return redisTemplate.expire(key, time, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(e);
             return false;

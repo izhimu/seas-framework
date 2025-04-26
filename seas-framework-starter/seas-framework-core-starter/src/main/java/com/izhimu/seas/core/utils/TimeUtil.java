@@ -2,6 +2,8 @@ package com.izhimu.seas.core.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.Objects;
+
 /**
  * 时间工具类
  *
@@ -22,10 +24,10 @@ public class TimeUtil {
         long h = second % 86400 / 3600;
         long m = second % 86400 % 3600 / 60;
         long s = second % 86400 % 3600 % 60;
-        return (d == 0 ? "" : String.valueOf(d).concat("天"))
-                .concat(h == 0 ? "" : String.valueOf(h).concat("小时"))
-                .concat(m == 0 ? "" : String.valueOf(m).concat("分钟"))
-                .concat(s == 0 ? "" : String.valueOf(s).concat("秒"));
+        return (Objects.equals(0, d) ? "" : String.valueOf(d).concat("天"))
+                .concat(Objects.equals(0, h) ? "" : String.valueOf(h).concat("小时"))
+                .concat(Objects.equals(0, m) ? "" : String.valueOf(m).concat("分钟"))
+                .concat(Objects.equals(0, s) ? "" : String.valueOf(s).concat("秒"));
     }
 
     /**
@@ -36,6 +38,6 @@ public class TimeUtil {
      */
     public static String millisecondsToStr(long milliseconds) {
         long seconds = milliseconds / 1000;
-        return seconds == 0 ? String.valueOf(milliseconds).concat("毫秒") : secondToStr(seconds);
+        return Objects.equals(0, seconds) ? String.valueOf(milliseconds).concat("毫秒") : secondToStr(seconds);
     }
 }

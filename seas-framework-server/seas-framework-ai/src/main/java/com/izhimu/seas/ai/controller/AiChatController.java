@@ -1,5 +1,6 @@
 package com.izhimu.seas.ai.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.izhimu.seas.ai.entity.AiInput;
 import com.izhimu.seas.ai.entity.AiOutput;
 import com.izhimu.seas.ai.service.AiChatService;
@@ -59,7 +60,7 @@ public class AiChatController {
                 new Document("You walk forward facing the past and you turn back toward the future.", Map.of("meta2", "meta2")));
         vectorStore.add(documents);
         List<Document> documentList = vectorStore.similaritySearch(SearchRequest.builder().query("Spring").topK(5).build());
-        if (documentList != null) {
+        if (CollectionUtil.isNotEmpty(documentList)) {
             vectorStore.delete(documentList.stream().map(Document::getId).toList());
         }
         return documentList;
