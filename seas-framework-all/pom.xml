@@ -56,10 +56,10 @@
             <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-generate</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.izhimu</groupId>-->
-<!--            <artifactId>seas-framework-ai</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.izhimu</groupId>
+            <artifactId>seas-framework-ai</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.izhimu</groupId>
             <artifactId>seas-framework-message</artifactId>

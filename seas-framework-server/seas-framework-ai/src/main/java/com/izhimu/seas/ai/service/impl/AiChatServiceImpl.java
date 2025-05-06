@@ -9,10 +9,10 @@ import com.izhimu.seas.ai.service.AiHistoryService;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.messages.*;
 import org.springframework.ai.chat.metadata.Usage;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ import java.util.Objects;
 public class AiChatServiceImpl implements AiChatService {
 
     @Resource
-    private OllamaChatModel chatModel;
+    private ChatModel chatModel;
 
     @Resource
     private AiHistoryService aiHistoryService;
@@ -46,7 +46,7 @@ public class AiChatServiceImpl implements AiChatService {
         // 发起请求
         List<Message> messages = getHistoryMessages(historyList, isNewChat);
         messages.add(new UserMessage(input.getMsg()));
-        ChatResponse response = chatModel.call(new Prompt(messages, OllamaOptions.builder()
+        ChatResponse response = chatModel.call(new Prompt(messages, ChatOptions.builder()
                 .build()));
         String result = response.getResult().getOutput().getText();
         // 保存历史

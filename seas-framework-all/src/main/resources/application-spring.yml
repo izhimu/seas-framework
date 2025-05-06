@@ -2,25 +2,19 @@ server:
   port:
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.31.224:5432/seas_ai
+    url: jdbc:postgresql://localhost:5432/seas-ai-hub
     username: postgres
-    password: haoran@8392
+    password: izhimu@8392
   data:
     redis:
-      host: 192.168.31.224
+      host: localhost
   ai:
-    ollama:
-      base-url: http://192.168.2.166:11434
+    openai:
+      base-url: https://openrouter.ai/api/v1
+      api-key: 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
       chat:
-        model: sam4096/qwen2tools
-      embedding:
-        model: shaw/dmeta-embedding-zh
-    vectorstore:
-      pgvector:
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        initialize-schema: true
-        remove-existing-vector-store-table: true
+        options:
+          model: qwen/qwen3-235b-a22b:free
 logging:
   level:
     root: INFO
