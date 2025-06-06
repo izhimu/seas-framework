@@ -13,15 +13,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.boot.version>3.4.4</spring.boot.version>
-        <spring.ai.version>1.0.0-M6</spring.ai.version>
-        <vertx.version>4.5.14</vertx.version>
-        <hutool.version>5.8.37</hutool.version>
-        <satoken.version>1.42.0</satoken.version>
-        <mybatis.plus.version>3.5.11</mybatis.plus.version>
+        <spring.boot.version>3.5.0</spring.boot.version>
+        <vertx.version>5.0.0</vertx.version>
+        <hutool.version>5.8.38</hutool.version>
+        <satoken.version>1.43.0</satoken.version>
+        <mybatis.plus.version>3.5.12</mybatis.plus.version>
         <kryo.version>5.6.2</kryo.version>
         <minio.version>8.5.17</minio.version>
-        <oshi.version>6.8.1</oshi.version>
+        <oshi.version>6.8.2</oshi.version>
         <reflections.version>0.10.2</reflections.version>
         <bcprov.version>1.80</bcprov.version>
         <camunda.version>7.23.0</camunda.version>
@@ -35,13 +34,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring.ai.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

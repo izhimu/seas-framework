@@ -8,7 +8,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.izhimu.seas.cache.entity.ExpireCache;
 import com.izhimu.seas.cache.service.CacheService;
-import org.checkerframework.checker.index.qual.NonNegative;
+import jakarta.annotation.Nonnull;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -32,17 +32,17 @@ public class MemCacheServiceImpl implements CacheService {
                 .initialCapacity(16)
                 .expireAfter(new Expiry<String, ExpireCache>() {
                     @Override
-                    public long expireAfterCreate(String key, ExpireCache value, long currentTime) {
+                    public long expireAfterCreate(@Nonnull String key,@Nonnull ExpireCache value, long currentTime) {
                         return value.getTimeUnit().toNanos(value.getExpireTime());
                     }
 
                     @Override
-                    public long expireAfterUpdate(String key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
+                    public long expireAfterUpdate(@Nonnull String key,@Nonnull ExpireCache value, long currentTime, long currentDuration) {
                         return value.getTimeUnit().toNanos(value.getExpireTime());
                     }
 
                     @Override
-                    public long expireAfterRead(String key, ExpireCache value, long currentTime, @NonNegative long currentDuration) {
+                    public long expireAfterRead(@Nonnull String key,@Nonnull ExpireCache value, long currentTime, long currentDuration) {
                         return currentDuration;
                     }
                 })
