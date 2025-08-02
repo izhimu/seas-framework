@@ -1,9 +1,0 @@
-<settings>
-    <servers>
-        <server>
-            <id>izhimu-seas-maven-releases</id>
-            <username>${repo.user}</username>
-            <password>${repo.pass}</password>
-        </server>
-    </servers>
-</settings>

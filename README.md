@@ -1,6 +1,6 @@
 # Seas Framework
 
-[![Maven Central](https://img.shields.io/badge/maven-v1.2.0-blue)](https://izhimu.coding.net/public-artifacts/seas/maven-releases-open/com.izhimu:seas-framework-dependencies/version/36168358/overview) [![License](https://img.shields.io/badge/license-Apache%202.0-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://www.oracle.com/java/) [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5%2B-green.svg)](https://spring.io/projects/spring-boot)
+[![Maven Central](https://img.shields.io/badge/maven-v1.2.0-blue)](https://izhimu.coding.net/public-artifacts/seas/maven-releases-open/com.izhimu:seas-framework-bom/version/54230285/overview) [![License](https://img.shields.io/badge/license-Apache%202.0-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://www.oracle.com/java/) [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5%2B-green.svg)](https://spring.io/projects/spring-boot)
 
 **Seas Framework** 是一个专注效率的模块化开发框架，基于Spring Boot构建，提供完整的基础架构和丰富的功能组件，帮助开发者快速构建安全、稳定、高效的现代化应用。
 
