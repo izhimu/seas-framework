@@ -137,28 +137,17 @@
 
     <repositories>
         <repository>
-            <id>izhimu-seas-maven-releases</id>
-            <name>maven-releases</name>
-            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+            <id>izhimu-seas-maven-releases-open</id>
+            <name>maven-releases-open</name>
+            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>
         </repository>
     </repositories>
 
     <distributionManagement>
-        <!--        <repository>-->
-        <!--            <id>izhimu-seas-maven-releases-open</id>-->
-        <!--            <name>maven-releases-open</name>-->
-        <!--            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>-->
-        <!--        </repository>-->
         <repository>
-            <id>izhimu-seas-maven-releases</id>
-            <name>maven-releases</name>
-            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases/</url>
+            <id>izhimu-seas-maven-releases-open</id>
+            <name>maven-releases-open</name>
+            <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>
         </repository>
     </distributionManagement>
 </project>

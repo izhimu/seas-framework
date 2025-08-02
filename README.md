@@ -26,6 +26,14 @@
 在您的 `pom.xml` 中添加：
 
 ```xml
+<repositories>
+    <repository>
+        <id>izhimu-seas-maven-releases-open</id>
+        <name>maven-releases-open</name>
+        <url>https://izhimu-maven.pkg.coding.net/repository/seas/maven-releases-open/</url>
+    </repository>
+</repositories>
+
 <dependencyManagement>
     <dependencies>
         <dependency>
