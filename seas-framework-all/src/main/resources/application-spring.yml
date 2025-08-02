@@ -2,12 +2,12 @@ server:
   port:
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.31.223:5432/seas-all
-    username: postgres
-    password: izhimu@8392
+    url: jdbc:postgresql://127.0.0.1:5432/seas-all
+    username: username
+    password: password
   data:
     redis:
-      host: 192.168.31.223
+      host: 127.0.0.1
 logging:
   level:
     root: INFO
