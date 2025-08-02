@@ -8,6 +8,10 @@
     <artifactId>seas-framework</artifactId>
     <packaging>pom</packaging>
     <version>1.2.0</version>
+    <name>Seas Framework</name>
+    <description>一个专注效率的模块化开发框架，基于Spring Boot构建，提供完整的基础架构和丰富的功能组件</description>
+    <url>https://github.com/izhimu/seas-framework</url>
+    <inceptionYear>2025</inceptionYear>
 
     <modules>
         <module>seas-framework-all</module>
@@ -26,6 +30,34 @@
         <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
         <build.helper.plugin.version>3.6.0</build.helper.plugin.version>
     </properties>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Seas Framework Team</name>
+            <email>haoran@izhimu.cn</email>
+            <organization>Seas</organization>
+            <organizationUrl>https://www.izhimu.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/izhimu/seas-framework.git</connection>
+        <developerConnection>scm:git:ssh://github.com:izhimu/seas-framework.git</developerConnection>
+        <url>https://github.com/izhimu/seas-framework</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/izhimu/seas-framework/issues</url>
+    </issueManagement>
 
     <build>
         <plugins>
